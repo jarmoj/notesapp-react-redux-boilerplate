@@ -16,6 +16,9 @@ module.exports = {
     contentBase: './dist'
   },
   plugins: [
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin({
+    title: 'React TodoMVC',
+    appMountId: 'app'
+  })
   ]
 };
