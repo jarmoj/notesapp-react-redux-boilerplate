@@ -8,7 +8,8 @@ export default class NotesApp extends React.Component {
     return <div>
       <section className="notes-app">
         <section className="main">
-          <input className="search-input" type="search" />
+          <h1>Notes</h1>
+          <input className="notes-search" type="search" />
           <ul className="notes-list">
             {this.getItems().map(item =>
               <li className="active" key={item.get('text')}>
