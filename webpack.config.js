@@ -17,8 +17,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-    title: 'React TodoMVC',
-    appMountId: 'app'
-  })
+      inject: false,
+      template: require('html-webpack-template'),
+      title: 'App Name',
+      appMountId: 'app'
+    })
   ]
 };
