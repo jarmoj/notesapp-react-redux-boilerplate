@@ -1,28 +1,12 @@
 import React from 'react';
+import NotesList from './NotesList'
 
 export default class NotesApp extends React.Component {
-  getItems() {
-    return this.props.notes || [];
-  }
   render() {
     return <div>
       <section className="notes-app">
-        <section className="main">
-          <h1>Notes</h1>
-          <input className="notes-search" type="search" />
-          <ul className="notes-list">
-            {this.getItems().map(item =>
-              <li className="active" key={item.get('text')}>
-                <div className="view">
-                  <label htmlFor="notesListItem">
-                    {item.get('title')} {item.get('modified')}
-                  </label>
-                  <button className="destroy"></button>
-                </div>
-              </li>
-            )}
-          </ul>
-        </section>
+        <input className="notes-search" type="search" />
+        <NotesList notes={this.props.notes} />
       </section>
     </div>
   }
