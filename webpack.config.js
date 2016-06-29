@@ -1,3 +1,5 @@
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   entry: [
     './src/index.js'
@@ -12,5 +14,8 @@ module.exports = {
   },
   devServer: {
     contentBase: './dist'
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin()
+  ]
 };
