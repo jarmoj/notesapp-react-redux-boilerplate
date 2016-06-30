@@ -14,8 +14,8 @@ export default class NotesList extends React.Component {
           <NotesListItem key={item.get('id')}
                          title={item.get('title')}
                          text={item.get('text')}
-                         created={item.get('created')}
-                         modified={item.get('modified')}/>
+                         timestamp={item.get('timestamp')}/>
+
         )}
       </ul>
     </section>
