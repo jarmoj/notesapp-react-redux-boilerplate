@@ -31,7 +31,7 @@ const notes = List.of(
   })
 );
 
-describe('TodoList', () => {
+describe('NotesList', () => {
   it('renders a list with notes in modified sort order if set to modified', () => {
     const orderBy = 'modified';
     const component = renderIntoDocument(
@@ -46,7 +46,7 @@ describe('TodoList', () => {
   });
 });
 
-describe('TodoList', () => {
+describe('NotesList', () => {
   it('renders a list with notes in created sort order if set to created', () => {
     const orderBy = 'created';
     const component = renderIntoDocument(
