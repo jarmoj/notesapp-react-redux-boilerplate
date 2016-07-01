@@ -10,7 +10,7 @@ export default class NotesListItem extends React.Component {
     return <li className="notes-list-item">
       <div className="view">
         <label htmlFor="notesListItem">
-          {this.props.title} {this.props.timestamp[this.props.orderBy]}
+          {this.props.title} {this.props.text} {this.props.timestamp[this.props.orderBy]}
         </label>
         <button className="destroy"></button>
       </div>
