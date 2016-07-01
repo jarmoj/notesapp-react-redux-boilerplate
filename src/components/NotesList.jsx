@@ -5,12 +5,16 @@ import NotesListItem from './NotesListItem';
 export default class NotesList extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      orderBy: 'modified'
+    };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   getNotes() {
+    let that = this;
     if (this.props.notes) {
-      _.sortBy(this.props.notes, 'timestamp', function(timestamp) {
-        return timestamp[this.props.orderBy];
+      return this.props.notes.sort(function(noteA, noteB) {
+        return noteA.get('timestamp')[that.props.orderBy] < noteB.get('timestamp')[that.props.orderBy];
       });
     }
     return [];
@@ -18,7 +22,7 @@ export default class NotesList extends React.Component {
   render() {
     return <section className="main">
       <ul className="notes-list">
-        {this.props.notes.map(item =>
+        {this.getNotes().map(item =>
           <NotesListItem key={item.get('id')}
                          title={item.get('title')}
                          text={item.get('text')}
