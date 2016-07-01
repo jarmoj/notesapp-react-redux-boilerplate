@@ -7,6 +7,14 @@ export default class NotesList extends React.Component {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+  getNotes() {
+    if (this.props.notes) {
+      _.sortBy(this.props.notes, 'timestamp', function(timestamp) {
+        return timestamp[this.props.orderBy];
+      });
+    }
+    return [];
+  }
   render() {
     return <section className="main">
       <ul className="notes-list">
