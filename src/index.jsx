@@ -28,11 +28,13 @@ const notes = List.of(
   })
 );
 
+const editing = 'a1';
+
 if (typeof window !== 'undefined') {
   require('./styles/index.scss');
 }
 
 ReactDOM.render(
-  <NotesApp notes={notes} />,
+  <NotesApp notes={notes} editing={editing} />,
   document.getElementById('app')
 );
