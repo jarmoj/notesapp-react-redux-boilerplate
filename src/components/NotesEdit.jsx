@@ -8,7 +8,10 @@ export default class NotesEdit extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   render() {
-    console.log(this.props.note);
-    return <textarea className="notes-edit" value={this.props.note.get('text')} />
+    return (
+      <div className="notes-edit-border">
+        <textarea className="notes-edit" value={this.props.note.get('text')} />
+      </div>
+      );
   }
 };
