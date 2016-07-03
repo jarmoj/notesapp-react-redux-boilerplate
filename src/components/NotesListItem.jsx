@@ -19,7 +19,7 @@ export default class NotesListItem extends React.Component {
           {this.props.timestamp[this.props.orderBy]}
         </td>
         <td className="notes-list-item-destroy">
-          <button className="destroy" />
+          <button className="destroy">X</button>
         </td>
       </tr>
     )

@@ -99,6 +99,7 @@ th {
 
 .notes-list-item-text {
   color: #AAAAAA;
+  font-size: 12px;
 }
 
 .notes-list-header-date, .notes-list-item-date {
@@ -106,7 +107,24 @@ th {
 }
 
 .notes-list-header-destroy, .notes-list-item-destroy {
-   text-align: right;
+   text-align: center;
+}
+
+.notes-list-row:hover {
+	background-color: #BBBBBB;
+  button {
+    display: inline-block;
+  }
+}
+
+.notes-list-item-destroy {
+  button {
+    display: none;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+  }
 }
 
 .notes-edit {
