@@ -11,14 +11,16 @@ export default class NotesApp extends React.Component {
     });
   }
   render() {
-    return <div className="root">
-      <section className="notes-app">
+    return (
+      <div className="notes-app">
         <NotesSearch/>
-        <SplitPane split="horizontal" defaultSize="50%">
-          <NotesList notes={this.props.notes} />
-          <NotesEdit note={this.getNote(this.props.editing)} />
-        </SplitPane>
-      </section>
-    </div>
+        <div className="contain-absolute">
+          <SplitPane split="horizontal" defaultSize="50%">
+            <NotesList notes={this.props.notes} />
+            <NotesEdit note={this.getNote(this.props.editing)} />
+          </SplitPane>
+        </div>
+      </div>
+    );
   }
 };
