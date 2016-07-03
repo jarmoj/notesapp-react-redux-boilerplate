@@ -22,17 +22,18 @@ export default class NotesList extends React.Component {
     return [];
   }
   render() {
-    return <section className="main">
-      <ul className="notes-list">
-        {this.getNotes().map(item =>
-          <NotesListItem key={item.get('id')}
-                         title={item.get('title')}
-                         text={item.get('text')}
-                         timestamp={item.get('timestamp')}
-                         orderBy={this.state.orderBy} />
-
-        )}
-      </ul>
-    </section>
+    return (
+      <div className="notes-list-border">
+        <table className="notes-list-rows">
+          {this.getNotes().map((item, index) =>
+            <NotesListItem isOddRow={index&1} key={item.get('id')}
+                           title={item.get('title')}
+                           text={item.get('text')}
+                           timestamp={item.get('timestamp')}
+                           orderBy={this.state.orderBy} />
+            )}
+        </table>
+      </div>
+    );
   }
 };
