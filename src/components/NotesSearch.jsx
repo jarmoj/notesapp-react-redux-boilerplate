@@ -7,8 +7,10 @@ export default class NotesSearch extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   render() {
-    return <input className="notes-search"
-                  autoFocus={true}
-                  type="text" />
+    return (
+      <div className="notes-search-border">
+        <input className="notes-search" autoFocus={true} type="text" />
+      </div>
+      );
   }
 };
