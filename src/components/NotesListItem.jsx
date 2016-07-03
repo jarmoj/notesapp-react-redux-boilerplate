@@ -7,13 +7,21 @@ export default class NotesListItem extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   render() {
-    return <li className="notes-list-item">
-      <div className="view">
-        <label htmlFor="notesListItem">
-          {this.props.title} {this.props.text} {this.props.timestamp[this.props.orderBy]}
-        </label>
-        <button className="destroy"></button>
-      </div>
-    </li>
+    return (
+      <tr className="notes-list-row">
+        <td className="notes-list-item">
+          {this.props.title}
+        </td>
+        <td className="notes-list-item">
+          {this.props.text}
+        </td>
+        <td className="notes-list-item">
+          {this.props.timestamp[this.props.orderBy]}
+        </td>
+        <td className="notes-list-item">
+          <button className="destroy" />
+        </td>
+      </tr>
+    )
   }
 };
