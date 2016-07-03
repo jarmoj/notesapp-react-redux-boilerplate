@@ -25,13 +25,22 @@ export default class NotesList extends React.Component {
     return (
       <div className="notes-list-border">
         <table className="notes-list-rows">
-          {this.getNotes().map((item, index) =>
-            <NotesListItem isOddRow={index&1} key={item.get('id')}
-                           title={item.get('title')}
-                           text={item.get('text')}
-                           timestamp={item.get('timestamp')}
-                           orderBy={this.state.orderBy} />
-            )}
+          <thead>
+            <tr>
+              <th className="notes-list-header-title">Title</th>
+              <th className="notes-list-header-date">Date</th>
+              <th className="notes-list-header-destroy">{"\u25BC"}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.getNotes().map((item, index) =>
+              <NotesListItem isOddRow={index&1} key={item.get('id')}
+                             title={item.get('title')}
+                             text={item.get('text')}
+                             timestamp={item.get('timestamp')}
+                             orderBy={this.state.orderBy} />
+              )}
+          </tbody>
         </table>
       </div>
     );

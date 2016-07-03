@@ -9,16 +9,16 @@ export default class NotesListItem extends React.Component {
   render() {
     return (
       <tr className="notes-list-row">
-        <td className="notes-list-item">
+        <td className="notes-list-item-title">
           {this.props.title}
+          <span className="notes-list-item-text">
+            {' '} - {this.props.text}
+          </span>
         </td>
-        <td className="notes-list-item">
-          {this.props.text}
-        </td>
-        <td className="notes-list-item">
+        <td className="notes-list-item-date">
           {this.props.timestamp[this.props.orderBy]}
         </td>
-        <td className="notes-list-item">
+        <td className="notes-list-item-destroy">
           <button className="destroy" />
         </td>
       </tr>
