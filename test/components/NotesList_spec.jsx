@@ -32,31 +32,14 @@ const notes = List.of(
 );
 
 describe('NotesList', () => {
-  it('renders a list with notes in modified sort order if set to modified', () => {
-    const orderBy = 'modified';
+  it('renders a list with notes in default (modified) order', () => {
     const component = renderIntoDocument(
-      <NotesList orderBy={orderBy} notes={notes} />
+      <NotesList notes={notes} />
     );
-    const items = scryRenderedDOMComponentsWithTag(component, 'li');
-
-    expect(items.length).to.equal(3);
+    const items = scryRenderedDOMComponentsWithTag(component, 'td');
+    expect(items.length).to.equal(9);
     expect(items[0].textContent).to.contain('react');
-    expect(items[1].textContent).to.contain('redux');
-    expect(items[2].textContent).to.contain('immutable');
-  });
-});
-
-describe('NotesList', () => {
-  it('renders a list with notes in created sort order if set to created', () => {
-    const orderBy = 'created';
-    const component = renderIntoDocument(
-      <NotesList orderBy={orderBy} notes={notes} />
-    );
-    const items = scryRenderedDOMComponentsWithTag(component, 'li');
-
-    expect(items.length).to.equal(3);
-    expect(items[0].textContent).to.contain('immutable');
-    expect(items[1].textContent).to.contain('redux');
-    expect(items[2].textContent).to.contain('react');
+    expect(items[3].textContent).to.contain('redux');
+    expect(items[6].textContent).to.contain('immutable');
   });
 });

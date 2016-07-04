@@ -30,7 +30,7 @@ describe('NotesListItem', () => {
                       timestamp={item.get('timestamp')}
                       orderBy={orderBy} />
      );
-     const items = scryRenderedDOMComponentsWithTag(component, 'li');
+     const items = scryRenderedDOMComponentsWithTag(component, 'tr');
 
      expect(items.length).to.equal(1);
      expect(items[0].textContent).to.contain('react');
