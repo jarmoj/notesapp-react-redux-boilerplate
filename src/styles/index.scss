@@ -116,7 +116,7 @@ th {
    text-align: center;
 }
 
-.notes-list-row:hover {
+.notes-list-row:hover, .notes-list-row.selected {
 	background-color: $notes-list-highlight-color;
   button {
     display: inline-block;
