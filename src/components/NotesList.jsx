@@ -34,7 +34,7 @@ export default class NotesList extends React.Component {
           </thead>
           <tbody>
             {this.getNotes().map((item, index) =>
-              <NotesListItem isOddRow={index&1} key={item.get('id')}
+              <NotesListItem key={item.get('id')}
                              title={item.get('title')}
                              text={item.get('text')}
                              timestamp={item.get('timestamp')}
