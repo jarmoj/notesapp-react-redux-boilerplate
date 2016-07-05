@@ -11,7 +11,7 @@ export default class NotesApp extends React.Component {
     super();
     this.state = {
       notes: List.of(),
-      edition: undefined
+      editing: undefined
     }
   }
   getNote(id) {
