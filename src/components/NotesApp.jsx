@@ -38,6 +38,7 @@ export default class NotesApp extends React.Component {
       notes: undefined,
       editing: undefined
     };
+    document.onkeydown = this.onKeyDown.bind(this);
   }
   componentDidMount() {
     this.notesSearch("");
