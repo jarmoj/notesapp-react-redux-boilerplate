@@ -5,6 +5,29 @@ import SplitPane from "../../node_modules/react-split-pane/lib/SplitPane";
 import NotesEdit from './NotesEdit'
 import {List, Map} from 'immutable';
 
+const notes_expect = List.of(
+  Map({
+   id: 'a1', title: 'react', text: 'Stuff about React.',
+   timestamp: Map({
+     created: 'EEST 1970-10-12 11:33',
+     modified: 'EEST 1980-10-12 12:33'
+   })
+  }),
+  Map({
+   id: '2e', title: 'redux', text: 'Stuff about Redux.',
+   timestamp: Map({
+     created: 'EEST 1970-10-12 11:34',
+     modified: 'EEST 1980-10-12 12:32'
+   })
+  }),
+  Map({
+   id: '3r', title: 'immutable', text: 'Stuff about Immutable.',
+   timestamp: Map({
+     created: 'EEST 1970-10-12 11:35',
+     modified: 'EEST 1980-10-12 12:31'
+   })
+  })
+);
 
 export default class NotesApp extends React.Component {
   constructor() {
@@ -19,10 +42,7 @@ export default class NotesApp extends React.Component {
       return note.get('id') == id;
     });
   }
-  notesSearch(notes) {
-    if (!notes.length)
-      return;
-
+  notesSearch(query) {
     this.setState({
       notes: notes,
       editing: notes[0].get('id')
@@ -31,7 +51,7 @@ export default class NotesApp extends React.Component {
   render() {
     return (
       <div className="notes-app">
-        <NotesSearch onSearchDone={this.notesSearch.bind(this)}/>
+        <NotesSearch notesSearch={this.notesSearch.bind(this)}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
             <NotesList notes={this.props.notes} />
