@@ -83,7 +83,6 @@ export default class NotesApp extends React.Component {
       });
     }
   }
-
   onSelect(id) {
     this.setState({ editing: id });
   }
