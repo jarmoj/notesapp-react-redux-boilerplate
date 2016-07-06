@@ -83,6 +83,18 @@ export default class NotesApp extends React.Component {
     }
   }
 
+  onSelect(id) {
+    this.setState({ editing: id });
+  }
+  clearSelection() {
+    this.onSelect(undefined);
+    this._search.clearSearch();
+    ReactDOM.findDOMNode(this._search._input).focus();
+  }
+  onKeyDown(e) {
+    if (e.keyCode == 27)
+      this.clearSelection();
+  }
   render() {
     return (
       <div className="notes-app">
