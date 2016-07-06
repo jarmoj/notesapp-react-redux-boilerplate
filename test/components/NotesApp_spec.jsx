@@ -34,7 +34,7 @@ const notes = List.of(
 
 const editing = 'a1';
 
-describe('NotesApp', () => {
+describe('NotesApp - Searching', () => {
   let component;
   beforeEach(() => {
     component = renderIntoDocument(
@@ -49,5 +49,5 @@ describe('NotesApp', () => {
   });
   it('search notes suitably should return one of the notes', () => {
     expect(component.makeSearch("react")).to.equal(List.of(notes.get(0)));
-  });
+  });  
 });

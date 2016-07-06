@@ -49,11 +49,23 @@ export default class NotesApp extends React.Component {
       return note.get('id') == id;
     });
   }
+  tokenize(s) {
+    let parts = s.split(" ");
+    return parts.filter(function (item) {
+      return item.length > 0;
+    });
+  }
   makeSearch(query) {
     if (query == "")
       return _notes;
-    else
-      return List.of();
+
+    let query_tokens = this.tokenize(query);
+
+    return this.state.notes.filter(function(note) {
+      return query_tokens.some(function(token) {
+        return note.get('title').indexOf(token) != -1 || note.get('text').indexOf(token) != -1;
+      });
+    });
   }
   notesSearch(query) {
     const notesGot = this.makeSearch(query);
