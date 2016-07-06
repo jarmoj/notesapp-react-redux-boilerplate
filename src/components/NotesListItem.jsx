@@ -8,7 +8,7 @@ export default class NotesListItem extends React.Component {
   }
   render() {
     return (
-      <tr className="notes-list-row">
+      <tr className="notes-list-row" onClick={() => this.props.onSelect(this.props.id)}>
         <td className="notes-list-item-title">
           {this.props.title}
           <span className="notes-list-item-text">

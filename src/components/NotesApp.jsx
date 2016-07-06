@@ -89,7 +89,7 @@ export default class NotesApp extends React.Component {
         <NotesSearch notesSearch={this.notesSearch.bind(this)}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
-            <NotesList notes={this.state.notes} />
+            <NotesList notes={this.state.notes} onSelect={this.onSelect.bind(this)}/>
             <NotesEdit note={this.getNote(this.state.editing)} />
           </SplitPane>
         </div>
