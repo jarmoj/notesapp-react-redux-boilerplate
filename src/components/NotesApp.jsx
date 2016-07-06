@@ -1,9 +1,9 @@
 import React from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin'
-import NotesList from './NotesList'
-import NotesSearch from './NotesSearch'
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import NotesList from './NotesList';
+import NotesSearch from './NotesSearch';
 import SplitPane from "../../node_modules/react-split-pane/lib/SplitPane";
-import NotesEdit from './NotesEdit'
+import NotesEdit from './NotesEdit';
 import {List, Map} from 'immutable';
 
 const _notes = List.of(
