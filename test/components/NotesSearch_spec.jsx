@@ -25,7 +25,7 @@ describe('NotesSearch', () => {
       <NotesSearch notesSearch={notesSearch}/>
     );
 
-    node = component.refs.input;
+    node = ReactDOM.findDOMNode(component._input);
   });
 
   it('the search input is displayed on the search field', () => {

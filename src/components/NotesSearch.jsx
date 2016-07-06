@@ -17,12 +17,13 @@ export default class NotesSearch extends React.Component {
   render() {
     return (
       <div className="notes-search-border">
-        <input ref="input"
+        <input
             className="notes-search"
             autoFocus={true}
             type="text"
             value={this.state.value}
             onChange={this.onQueryChanged.bind(this)} />
+            ref={(c) => this._input = c} />
       </div>
       );
   }
