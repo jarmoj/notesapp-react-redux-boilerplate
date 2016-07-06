@@ -42,10 +42,14 @@ export default class NotesApp extends React.Component {
       return note.get('id') == id;
     });
   }
+  makeSearch(query) {
+    return [];
+  }
   notesSearch(query) {
+    const notesGot = makeSearch(query);
     this.setState({
-      notes: notes,
-      editing: notes[0].get('id')
+      notes: notesGot,
+      editing: notesGot[0].get('id')
     });
   }
   render() {
