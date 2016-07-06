@@ -5,7 +5,8 @@ import {expect} from 'chai';
 import {List, Map} from 'immutable';
 
 const {renderIntoDocument,
-       scryRenderedDOMComponentsWithTag} = TestUtils;
+       scryRenderedDOMComponentsWithTag,
+       Simulate} = TestUtils;
 
 const notes = List.of(
   Map({
@@ -32,14 +33,30 @@ const notes = List.of(
 );
 
 describe('NotesList', () => {
-  it('renders a list with notes in default (modified) order', () => {
-    const component = renderIntoDocument(
-      <NotesList notes={notes} />
+  let wasCalled;
+  let onSelect;
+  let component;
+  let rows;
+  let items;
+  beforeEach(() => {
+    wasCalled = false;
+    onSelect = function (id) {
+      wasCalled = true;
+    };
+    component = renderIntoDocument(
+      <NotesList notes={notes} onSelect={onSelect}/>
     );
-    const items = scryRenderedDOMComponentsWithTag(component, 'td');
+    rows = scryRenderedDOMComponentsWithTag(component, 'tr');
+    items = scryRenderedDOMComponentsWithTag(component, 'td');
+  });
+  it('renders a list with notes in default (modified) order', () => {
     expect(items.length).to.equal(9);
     expect(items[0].textContent).to.contain('react');
     expect(items[3].textContent).to.contain('redux');
     expect(items[6].textContent).to.contain('immutable');
+  });
+  it('clicking note in list will call noteClicked handler', () => {
+    Simulate.click(rows[0]);
+    expect(wasCalled);
   });
 });
