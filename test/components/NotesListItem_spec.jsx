@@ -25,6 +25,7 @@ describe('NotesListItem', () => {
      const item = notes.get(0);
      const component = renderIntoDocument(
        <NotesListItem key={item.get('id')}
+                      id={item.get('id')}
                       title={item.get('title')}
                       text={item.get('text')}
                       timestamp={item.get('timestamp')}
