@@ -73,7 +73,7 @@ export default class NotesApp extends React.Component {
     if (notesGot.count() > 0) {
       this.setState({
         notes: notesGot,
-        editing: notesGot.get(0).get('id')
+        editing: undefined
       });
     }
     else {
