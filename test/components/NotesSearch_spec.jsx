@@ -15,8 +15,9 @@ describe('NotesSearch', () => {
   let notesSearch;
   let component;
   let node;
+  let text;
   beforeEach(() => {
-    query = false;
+    query = "";
     notesSearch = function(_query) {
       query = _query;
     };
@@ -28,14 +29,8 @@ describe('NotesSearch', () => {
     node = ReactDOM.findDOMNode(component._input);
   });
 
-  it('the search input is displayed on the search field', () => {
+  it('returns the query string in notesSearch when edited', () => {
     Simulate.change(node, {target: {value: inputStr}});
-
-    expect(node.value).to.equal(inputStr);
-  });
-  it('calls the onSearchDone when edited', () => {
-    Simulate.change(node, {target: {value: inputStr}});
-
     expect(query).to.equal(inputStr);
   });
 });
