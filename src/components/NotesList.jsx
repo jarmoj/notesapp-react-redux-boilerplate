@@ -19,7 +19,7 @@ export default class NotesList extends React.Component {
         return noteA.get('timestamp')[that.state.orderBy] < noteB.get('timestamp')[that.state.orderBy];
       });
     }
-    return [];
+    return List.of();
   }
   render() {
     return (

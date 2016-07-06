@@ -11,24 +11,24 @@ const {renderIntoDocument,
 const notes = List.of(
   Map({
     id: 'a1', title: 'react', text: 'Stuff about React.',
-    timestamp: {
+    timestamp: Map({
       created: 'EEST 1970-10-12 11:33',
       modified: 'EEST 1980-10-12 12:33'
-    }
+    })
   }),
   Map({
     id: '2e', title: 'redux', text: 'Stuff about Redux.',
-    timestamp: {
+    timestamp: Map({
       created: 'EEST 1970-10-12 11:34',
       modified: 'EEST 1980-10-12 12:32'
-    }
+    })
   }),
   Map({
     id: '3r', title: 'immutable', text: 'Stuff about Immutable.',
-    timestamp: {
+    timestamp: Map({
       created: 'EEST 1970-10-12 11:35',
       modified: 'EEST 1980-10-12 12:31'
-    }
+    })
   })
 );
 
@@ -38,7 +38,7 @@ describe('NotesApp', () => {
   let component;
   beforeEach(() => {
     component = renderIntoDocument(
-      <NotesApp notes={notes} editing={editing} />
+      <NotesApp/>
     );
   });
   it('search notes with empty should return all the notes', () => {
@@ -48,6 +48,6 @@ describe('NotesApp', () => {
     expect(component.makeSearch("not gonna find")).to.equal(List.of());
   });
   it('search notes suitably should return one of the notes', () => {
-    expect(component.makeSearch("react")).to.equal(notes[0]);
+    expect(component.makeSearch("react")).to.equal(List.of(notes.get(0)));
   });
 });

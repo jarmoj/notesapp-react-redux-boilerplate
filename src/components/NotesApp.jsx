@@ -1,11 +1,12 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import NotesList from './NotesList'
 import NotesSearch from './NotesSearch'
 import SplitPane from "../../node_modules/react-split-pane/lib/SplitPane";
 import NotesEdit from './NotesEdit'
 import {List, Map} from 'immutable';
 
-const notes_expect = List.of(
+const _notes = List.of(
   Map({
    id: 'a1', title: 'react', text: 'Stuff about React.',
    timestamp: Map({
@@ -32,34 +33,52 @@ const notes_expect = List.of(
 export default class NotesApp extends React.Component {
   constructor() {
     super();
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
-      notes: List.of(),
+      notes: undefined,
       editing: undefined
-    }
+    };
+  }
+  componentDidMount() {
+    this.notesSearch("");
   }
   getNote(id) {
-    return this.props.notes.find(function(note) {
+    if (!id || !this.state.notes)
+      return undefined;
+    return this.state.notes.find(function(note) {
       return note.get('id') == id;
     });
   }
   makeSearch(query) {
-    return [];
+    if (query == "")
+      return _notes;
+    else
+      return List.of();
   }
   notesSearch(query) {
-    const notesGot = makeSearch(query);
-    this.setState({
-      notes: notesGot,
-      editing: notesGot[0].get('id')
-    });
+    const notesGot = this.makeSearch(query);
+    if (notesGot.count() > 0) {
+      this.setState({
+        notes: notesGot,
+        editing: notesGot.get(0).get('id')
+      });
+    }
+    else {
+      this.setState({
+        notes: List.of(),
+        editing: undefined
+      });
+    }
   }
+
   render() {
     return (
       <div className="notes-app">
         <NotesSearch notesSearch={this.notesSearch.bind(this)}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
-            <NotesList notes={this.props.notes} />
-            <NotesEdit note={this.getNote(this.props.editing)} />
+            <NotesList notes={this.state.notes} />
+            <NotesEdit note={this.getNote(this.state.editing)} />
           </SplitPane>
         </div>
       </div>
