@@ -99,7 +99,7 @@ export default class NotesApp extends React.Component {
   render() {
     return (
       <div className="notes-app">
-        <NotesSearch notesSearch={this.notesSearch.bind(this)}/>
+        <NotesSearch notesSearch={this.notesSearch.bind(this)} ref={(c) => this._search = c}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
             <NotesList notes={this.state.notes} onSelect={this.onSelect.bind(this)}/>
