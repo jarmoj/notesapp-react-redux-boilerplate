@@ -10,9 +10,15 @@ export default class NotesSearch extends React.Component {
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-  onQueryChanged(e) {
-    this.setState({value: e.target.value});
-    this.props.notesSearch(e.target.value);
+  onSearchEdit(e) {
+    this.setQuery(e.target.value);
+  }
+  setQuery(query) {
+    this.setState({value: query});
+    this.props.notesSearch(query);
+  }
+  clearSearch() {
+    this.setQuery("");
   }
   render() {
     return (
@@ -22,7 +28,7 @@ export default class NotesSearch extends React.Component {
             autoFocus={true}
             type="text"
             value={this.state.value}
-            onChange={this.onQueryChanged.bind(this)} />
+            onChange={this.onSearchEdit.bind(this)}
             ref={(c) => this._input = c} />
       </div>
       );
