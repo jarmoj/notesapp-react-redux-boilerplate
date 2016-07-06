@@ -23,13 +23,17 @@ describe('NotesListItem', () => {
 
    orderBys.forEach(function (orderBy) {
      const item = notes.get(0);
+     let onSelect = function (id) {
+
+     };
      const component = renderIntoDocument(
        <NotesListItem key={item.get('id')}
                       id={item.get('id')}
                       title={item.get('title')}
                       text={item.get('text')}
                       timestamp={item.get('timestamp')}
-                      orderBy={orderBy} />
+                      orderBy={orderBy}
+                      onSelect={onSelect} />
      );
      const items = scryRenderedDOMComponentsWithTag(component, 'tr');
 
