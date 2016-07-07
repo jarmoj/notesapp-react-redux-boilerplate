@@ -18,7 +18,10 @@ export default class NotesEdit extends React.Component {
     else {
       return (
         <div className="notes-edit-border">
-          <textarea className="notes-edit" value={this.props.note.get('text')} />
+          <textarea
+            className="notes-edit"
+            value={this.props.note.get('text')}
+            ref={(c) => this._textarea = c} />
         </div>
         );
     }

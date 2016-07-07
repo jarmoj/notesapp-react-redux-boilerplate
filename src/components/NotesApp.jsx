@@ -106,7 +106,9 @@ export default class NotesApp extends React.Component {
               notes={this.state.notes}
               onSelect={this.onSelect.bind(this)}
               selected={this.state.editing} />
-            <NotesEdit note={this.getNote(this.state.editing)} />
+            <NotesEdit
+                note={this.getNote(this.state.editing)}
+                ref={(c) => this._edit = c} />
           </SplitPane>
         </div>
       </div>
