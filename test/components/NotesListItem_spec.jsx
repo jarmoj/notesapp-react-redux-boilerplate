@@ -3,19 +3,10 @@ import TestUtils from 'react-addons-test-utils';
 import NotesListItem from '../../src/components/NotesListItem';
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
+import notes from '../test_data';
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag} = TestUtils;
-
-const notes = List.of(
-  Map({
-    id: 'a1', title: 'react', text: 'Stuff about React.',
-    timestamp: {
-      created: 'EEST 1970-10-12 11:33',
-      modified: 'EEST 1980-10-12 12:33'
-    }
-  })
-);
 
 describe('NotesListItem', () => {
  it('renders a list item with its title contents, beginning of text body, and date modified/created depending orderBy', () => {
