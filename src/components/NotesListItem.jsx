@@ -4,24 +4,19 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 export default class NotesListItem extends React.Component {
   constructor(props) {
     super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
-  isSelected() {
-    return this.props.selected ? " selected" : "";
+    //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   render() {
     return (
-      <tr
-        className={"notes-list-row" + this.isSelected()}
-        onClick={() => this.props.onSelect(this.props.id)}>
+      <tr className="notes-list-row">
         <td className="notes-list-item-title">
-          {this.props.title}
+          title
           <span className="notes-list-item-text">
-            {' '} - {this.props.text}
+            {' '} - text
           </span>
         </td>
         <td className="notes-list-item-date">
-          {this.props.timestamp.get(this.props.orderBy)}
+          timestamp
         </td>
         <td className="notes-list-item-destroy">
           <button className="destroy">X</button>

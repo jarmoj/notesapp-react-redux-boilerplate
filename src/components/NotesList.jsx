@@ -6,28 +6,7 @@ import {List, Map} from 'immutable';
 export default class NotesList extends React.Component {
   constructor(props) {
     super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = {
-      notes: props.notes || List.of(),
-      orderBy: props.orderBy || 'modified',
-    };
-  }
-  getNotes() {
-    let that = this;
-    if (this.props.notesFiltered) {
-      let notesFiltered = this.props.notesFiltered.sort(function(noteA, noteB) {
-        return noteA.get('timestamp')[that.state.orderBy] < noteB.get('timestamp')[that.state.orderBy];
-      });
-      return this.props.notes.filter(function(item) {
-        return notesFiltered.indexOf(item) != -1;
-      });
-    }
-    return List.of();
-  }
-  isSelected(item) {
-    if (!this.props.selected)
-      return false;
-    return item.get('id') == this.props.selected
+    //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   render() {
     return (
@@ -41,16 +20,7 @@ export default class NotesList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.getNotes().map((item, index) =>
-              <NotesListItem key={item.get('id')}
-                             id={item.get('id')}
-                             title={item.get('title')}
-                             text={item.get('text')}
-                             timestamp={item.get('timestamp')}
-                             orderBy={this.state.orderBy}
-                             onSelect={this.props.onSelect}
-                             selected={this.isSelected(item)}/>
-              )}
+              <NotesListItem/>
           </tbody>
         </table>
       </div>
