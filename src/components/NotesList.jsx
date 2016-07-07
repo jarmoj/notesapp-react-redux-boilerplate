@@ -40,7 +40,8 @@ export default class NotesList extends React.Component {
                              text={item.get('text')}
                              timestamp={item.get('timestamp')}
                              orderBy={this.state.orderBy}
-                             onSelect={this.props.onSelect} />
+                             onSelect={this.props.onSelect}
+                             selected={item.get('id') == this.props.selected}/>
               )}
           </tbody>
         </table>

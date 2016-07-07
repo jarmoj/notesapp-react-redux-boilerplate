@@ -6,9 +6,14 @@ export default class NotesListItem extends React.Component {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+  isSelected() {
+    return this.props.selected ? " selected" : "";
+  }
   render() {
     return (
-      <tr className="notes-list-row" onClick={() => this.props.onSelect(this.props.id)}>
+      <tr
+        className={"notes-list-row" + this.isSelected()}
+        onClick={() => this.props.onSelect(this.props.id)}>
         <td className="notes-list-item-title">
           {this.props.title}
           <span className="notes-list-item-text">
