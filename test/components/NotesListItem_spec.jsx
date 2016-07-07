@@ -43,4 +43,35 @@ describe('NotesListItem', () => {
      expect(items[0].textContent).to.contain(item.get('timestamp')[orderBy]);
    });
  });
+ it('check that a list item that is selected by select prop gets selected class', () => {
+   const item = notes.get(0);
+   let onSelect = function (id) {
+
+   };
+   const component = renderIntoDocument(
+     <NotesListItem key={item.get('id')}
+                    id={item.get('id')}
+                    title={item.get('title')}
+                    text={item.get('text')}
+                    timestamp={item.get('timestamp')}
+                    orderBy={'modified'}
+                    onSelect={onSelect}
+                    selected={true} />
+   );
+   const component2 = renderIntoDocument(
+     <NotesListItem key={item.get('id')}
+                    id={item.get('id')}
+                    title={item.get('title')}
+                    text={item.get('text')}
+                    timestamp={item.get('timestamp')}
+                    orderBy={'modified'}
+                    onSelect={onSelect}
+                    selected={false} />
+   );
+   const items = scryRenderedDOMComponentsWithTag(component, 'tr');
+   const items2 = scryRenderedDOMComponentsWithTag(component2, 'tr');
+
+   expect(items[0].classList.contains("selected"));
+   expect(items2[0].classList.contains("selected")).to.equal(false);
+ });
 });
