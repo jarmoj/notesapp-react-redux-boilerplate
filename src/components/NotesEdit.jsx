@@ -27,7 +27,7 @@ export default class NotesEdit extends React.Component {
     if (!this.props.note) {
       return (
         <div className="notes-edit-border">
-          <textarea className="notes-edit" disabled="true" value=""/>
+          <textarea className="notes-edit disabled" disabled="true" value=""/>
         </div>
         );
     }

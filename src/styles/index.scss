@@ -145,6 +145,9 @@ th {
   padding-right: $padding-left;
   @include round-corners(0px);
 }
+.disabled {
+  background: #EEEEEE;
+}
 
 .notes-list-border, .notes-edit-border {
   position: absolute;
