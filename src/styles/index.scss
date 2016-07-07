@@ -79,6 +79,7 @@ th {
   border: $border-faint;
   @include notes-font(16x, lighter);
   color: #999999;
+  @include round-corners(0px);
 }
 
 .notes-list-row:nth-child(even) {
