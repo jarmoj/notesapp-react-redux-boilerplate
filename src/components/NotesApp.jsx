@@ -96,6 +96,12 @@ export default class NotesApp extends React.Component {
     if (e.keyCode == 27)
       this.clearSelection();
   }
+  onNoteEdit(id, newText) {
+    let note = this.getNote(id);
+    let index = this.state.notes.indexOf(note);
+    let newNotes = this.state.notes.setIn([index, 'text'], newText);
+    this.setState({ notes: newNotes});
+  }
   render() {
     return (
       <div className="notes-app">
@@ -108,6 +114,7 @@ export default class NotesApp extends React.Component {
               selected={this.state.editing} />
             <NotesEdit
                 note={this.getNote(this.state.editing)}
+                onEdit={this.onNoteEdit.bind(this)}
                 ref={(c) => this._edit = c} />
           </SplitPane>
         </div>

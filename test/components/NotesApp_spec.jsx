@@ -33,8 +33,6 @@ const notes = List.of(
   })
 );
 
-const editing = 'a1';
-
 describe('NotesApp - Searching', () => {
   let component;
   beforeEach(() => {
