@@ -14,8 +14,13 @@ describe('NotesListItem', () => {
 
    orderBys.forEach(function (orderBy) {
      const item = notes.get(0);
+     let wasSelected;
      let onSelect = function (id) {
-
+      wasSelected = id;
+     };
+     let selected;
+     let isSelected = function (item) {
+       selected = item;
      };
      const component = renderIntoDocument(
        <NotesListItem key={item.get('id')}
@@ -24,20 +29,25 @@ describe('NotesListItem', () => {
                       text={item.get('text')}
                       timestamp={item.get('timestamp')}
                       orderBy={orderBy}
-                      onSelect={onSelect} />
+                      onSelect={onSelect}
+                      selected={isSelected(item)} />
      );
-     const items = scryRenderedDOMComponentsWithTag(component, 'tr');
-
-     expect(items.length).to.equal(1);
+     const items = scryRenderedDOMComponentsWithTag(component, 'td');
+     expect(items.length).to.equal(3);
      expect(items[0].textContent).to.contain('react');
      expect(items[0].textContent).to.contain(item.get('text'));
-     expect(items[0].textContent).to.contain(item.get('timestamp')[orderBy]);
+     expect(items[1].textContent).to.contain(item.get('timestamp').get(orderBy));
    });
  });
  it('check that a list item that is selected by select prop gets selected class', () => {
    const item = notes.get(0);
+   let wasSelected;
    let onSelect = function (id) {
-
+    wasSelected = id;
+   };
+   let selected;
+   let isSelected = function (item) {
+     selected = item;
    };
    const component = renderIntoDocument(
      <NotesListItem key={item.get('id')}
@@ -47,7 +57,8 @@ describe('NotesListItem', () => {
                     timestamp={item.get('timestamp')}
                     orderBy={'modified'}
                     onSelect={onSelect}
-                    selected={true} />
+                    selected={true}
+                    selected={isSelected(item)} />
    );
    const component2 = renderIntoDocument(
      <NotesListItem key={item.get('id')}
@@ -57,7 +68,8 @@ describe('NotesListItem', () => {
                     timestamp={item.get('timestamp')}
                     orderBy={'modified'}
                     onSelect={onSelect}
-                    selected={false} />
+                    selected={false}
+                    selected={isSelected(item)} />
    );
    const items = scryRenderedDOMComponentsWithTag(component, 'tr');
    const items2 = scryRenderedDOMComponentsWithTag(component2, 'tr');
