@@ -15,7 +15,7 @@ export default class NotesApp extends React.Component {
     super();
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
-      notes: undefined,
+      notes: _notes,
       editing: undefined
     };
     document.onkeydown = this.onKeyDown.bind(this);
@@ -38,7 +38,7 @@ export default class NotesApp extends React.Component {
   }
   makeSearch(query) {
     if (query == "")
-      return _notes;
+      return this.state.notes;
 
     let query_tokens = this.tokenize(query);
 
