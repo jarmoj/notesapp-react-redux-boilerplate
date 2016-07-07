@@ -10,30 +10,10 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
 describe('NotesList', () => {
-  let wasCalled;
-  let onSelect;
-  let component;
-  let rows;
-  let items;
-  beforeEach(() => {
-    wasCalled = false;
-    onSelect = function (id) {
-      wasCalled = true;
-    };
-    component = renderIntoDocument(
-      <NotesList notes={notes} onSelect={onSelect}/>
-    );
-    rows = scryRenderedDOMComponentsWithTag(component, 'tr');
-    items = scryRenderedDOMComponentsWithTag(component, 'td');
-  });
   it('renders a list with notes in default (modified) order', () => {
-    expect(items.length).to.equal(9);
-    expect(items[0].textContent).to.contain('react');
-    expect(items[3].textContent).to.contain('redux');
-    expect(items[6].textContent).to.contain('immutable');
+    expect(false).to.equal(true);
   });
   it('clicking note in list will call noteClicked handler', () => {
-    Simulate.click(rows[0]);
-    expect(wasCalled);
+    expect(false).to.equal(true);
   });
 });
