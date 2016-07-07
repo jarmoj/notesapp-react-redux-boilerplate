@@ -10,6 +10,10 @@ export default class NotesSearch extends React.Component {
     };
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+  componentWillReceiveProps(props) {
+    if (props.note)
+      this.setState({value: props.note.get('title')});
+  }
   onSearchEdit(e) {
     this.setQuery(e.target.value);
   }
