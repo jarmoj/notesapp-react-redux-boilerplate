@@ -10,6 +10,12 @@ export default class NotesEdit extends React.Component {
       value: props.note ? props.note.get('text') : ""
     };
   }
+  componentWillReceiveProps(props) {
+    if (props.note)
+      this.setState({value: props.note.get('text')});
+    else
+      this.setState({value: ""});
+  }
   onEditText(e) {
     this.setNoteText(e.target.value);
   }
@@ -21,7 +27,7 @@ export default class NotesEdit extends React.Component {
     if (!this.props.note) {
       return (
         <div className="notes-edit-border">
-          <textarea className="notes-edit" disabled="true"/>
+          <textarea className="notes-edit" disabled="true" value=""/>
         </div>
         );
     }
