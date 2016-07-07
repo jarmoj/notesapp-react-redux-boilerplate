@@ -21,6 +21,11 @@ export default class NotesList extends React.Component {
     }
     return List.of();
   }
+  isSelected(item) {
+    if (!this.props.selected)
+      return false;
+    return item.get('id') == this.props.selected
+  }
   render() {
     return (
       <div className="notes-list-border">
@@ -41,7 +46,7 @@ export default class NotesList extends React.Component {
                              timestamp={item.get('timestamp')}
                              orderBy={this.state.orderBy}
                              onSelect={this.props.onSelect}
-                             selected={item.get('id') == this.props.selected}/>
+                             selected={this.isSelected(item)}/>
               )}
           </tbody>
         </table>
