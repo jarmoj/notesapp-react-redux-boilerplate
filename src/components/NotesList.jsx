@@ -14,9 +14,12 @@ export default class NotesList extends React.Component {
   }
   getNotes() {
     let that = this;
-    if (this.props.notes) {
-      return this.props.notes.sort(function(noteA, noteB) {
+    if (this.props.notesFiltered) {
+      let notesFiltered = this.props.notesFiltered.sort(function(noteA, noteB) {
         return noteA.get('timestamp')[that.state.orderBy] < noteB.get('timestamp')[that.state.orderBy];
+      });
+      return this.props.notes.filter(function(item) {
+        return notesFiltered.indexOf(item) != -1;
       });
     }
     return List.of();

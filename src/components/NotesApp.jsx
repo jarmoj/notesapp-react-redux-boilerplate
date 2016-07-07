@@ -16,6 +16,7 @@ export default class NotesApp extends React.Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
       notes: _notes,
+      notesFiltered: _notes,
       editing: undefined
     };
     document.onkeydown = this.onKeyDown.bind(this);
@@ -52,13 +53,13 @@ export default class NotesApp extends React.Component {
     const notesGot = this.makeSearch(query);
     if (notesGot.count() > 0) {
       this.setState({
-        notes: notesGot,
+        notesFiltered: notesGot,
         editing: undefined
       });
     }
     else {
       this.setState({
-        notes: List.of(),
+        notesFiltered: List.of(),
         editing: undefined
       });
     }
@@ -85,6 +86,7 @@ export default class NotesApp extends React.Component {
     return (
       <div className="notes-app">
         <NotesSearch
+          query={this.state.query}
           note={this.getNote(this.state.editing)}
           notesSearch={this.notesSearch.bind(this)}
           ref={(c) => this._search = c}/>
@@ -92,6 +94,7 @@ export default class NotesApp extends React.Component {
           <SplitPane split="horizontal" defaultSize="50%">
             <NotesList
               notes={this.state.notes}
+              notesFiltered={this.state.notesFiltered}
               onSelect={this.onSelect.bind(this)}
               selected={this.state.editing} />
             <NotesEdit
