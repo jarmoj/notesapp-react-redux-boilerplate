@@ -1,18 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {connect} from 'react-redux';
+import * as actionCreators from '../actions/index';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import SplitPane from "../../node_modules/react-split-pane/lib/SplitPane";
 import NotesSearch from '../components/NotesSearch';
 import NotesList from '../components/NotesList';
 import NotesEdit from '../components/NotesEdit';
 import {List, Map} from 'immutable';
-import _start_state from '../../test/test_data';
 
-export default class NotesApp extends React.Component {
+export class NotesApp extends React.Component {
   constructor() {
     super();
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = _start_state;
   }
   render() {
     return (
@@ -28,3 +27,12 @@ export default class NotesApp extends React.Component {
     );
   }
 };
+
+function mapStateToProps(state) {
+  return {
+    notes: state.get('notes'),
+    editing: state.get('editing')
+  }
+}
+
+export const NotesAppContainer = connect(mapStateToProps, actionCreators)(NotesApp);

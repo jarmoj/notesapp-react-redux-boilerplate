@@ -11,7 +11,7 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
 describe('NotesEdit', () => {
-  it('changing the edit will call the onEditText', () => {
+  it('returns the changed text in noteEdited callback when edited', () => {
     expect(false).to.equal(true);
   });
 });
