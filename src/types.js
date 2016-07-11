@@ -1,10 +1,10 @@
-const SET_STATE = 'SET_STATE';
+export const SET_STATE = 'SET_STATE';
 
-const SET_QUERY = 'SET_QUERY';
+export const SET_QUERY = 'SET_QUERY';
 
-const ADD_NOTE = 'ADD_NOTE';
-const SELECT_NOTE = 'SELECT_NOTE';
-const EDIT_NOTE = 'EDIT_NOTE';
-const DELETE_NOTE = 'DELETE_NOTE';
+export const ADD_NOTE = 'ADD_NOTE';
+export const SELECT_NOTE = 'SELECT_NOTE';
+export const EDIT_NOTE = 'EDIT_NOTE';
+export const DELETE_NOTE = 'DELETE_NOTE';
 
-const TOGGLE_ORDER_BY = 'TOGGLE_ORDER_BY';
+export const TOGGLE_ORDER_BY = 'TOGGLE_ORDER_BY';
