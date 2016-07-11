@@ -59,4 +59,7 @@ describe('NotesApp - Key - Escape', () => {
   it('calling onKeyDown with esc event will clear search input', () => {
     expect(false).to.equal(true);
   });
+  it('clicking esc will return order to default modified order', () => {
+    expect(false).to.equal(true);
+  });
 });
