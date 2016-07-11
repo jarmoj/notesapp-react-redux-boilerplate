@@ -30,8 +30,10 @@ export class NotesApp extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    query: state.get('query'),
     notes: state.get('notes'),
-    selected: state.get('selected')
+    selected: state.get('selected'),
+    orderBy: state.get('orderBy')
   }
 }
 
