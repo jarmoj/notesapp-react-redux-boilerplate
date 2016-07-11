@@ -12,6 +12,16 @@ const {renderIntoDocument,
 
 describe('NotesEdit', () => {
   it('returns the changed text in noteEdited callback when edited', () => {
-    expect(false).to.equal(true);
+    let wasCalled = "";
+    let inputStr = "jkhiU/(F/&RU€%€DUF&Guihiughgdj)";
+    let noteEdited = function (text) {
+      wasCalled = text;
+    }
+    const component = renderIntoDocument(
+     <NotesEdit noteEdited={noteEdited} />
+    );
+    Simulate.change(component._input, {target:{value: inputStr}});
+
+    expect(wasCalled).to.equal(inputStr);
   });
 });
