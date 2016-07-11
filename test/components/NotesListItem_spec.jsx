@@ -6,11 +6,22 @@ import {List, Map} from 'immutable';
 import notes from '../test_data';
 
 const {renderIntoDocument,
-       scryRenderedDOMComponentsWithTag} = TestUtils;
+       scryRenderedDOMComponentsWithTag,
+       Simulate} = TestUtils;
 
 describe('NotesListItem - Selection', () => {
   it('clicking row calls rowClicked() handler', () => {
-    expect(false).to.equal(true);
+    let wasCalled = "";
+    const title = "some title title";
+    let rowClicked = function (title) {
+      wasCalled = title;
+    }
+    const component = renderIntoDocument(
+      <NotesListItem title={title} rowClicked={rowClicked} />
+    );
+    Simulate.click(component._row);
+
+    expect(wasCalled).to.equal(title);
   });
 });
 
