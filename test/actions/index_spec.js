@@ -6,70 +6,74 @@ import {expect} from 'chai';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
 import * as types from '../../src/types.js';
+import * as actions from '../../src/actions/index';
+import diff from 'immutablediff';
 
 describe('actions', () => {
   it('should create an action to set the complete state of the app', () => {
     const state = _state;
-    const expectedAction = {
-      type: types.SET_QUERY,
+    const expectedAction = Map({
+      type: types.SET_STATE,
       state
-    };
-    expect(actions.setState(state)).toEqual(expectedAction);
+    });
+    expect(actions.setState(state)).to.equal(expectedAction);
   });
 
   it('should create an action to set the search query', () => {
     const query = 'test query';
-    const expectedAction = {
+    const expectedAction = Map({
       type: types.SET_QUERY,
       query
-    };
-    expect(actions.setQuery(text)).toEqual(expectedAction);
+    });
+    expect(actions.setQuery(query)).to.equal(expectedAction);
   });
 
   it('should create an action to add new note with given title and text', () => {
     const title = 'test title';
     const text = 'test content for note text';
-    const expectedAction = {
+    const expectedAction = Map({
       type: types.ADD_NOTE,
       title,
       text
-    };
-    expect(actions.addNote(title, text)).toEqual(expectedAction);
+    });
+    expect(actions.addNote(title, text)).to.equal(expectedAction);
   });
 
   it('should create an action to select note by title', () => {
     const title = 'test title';
-    const expectedAction = {
+    const expectedAction = Map({
       type: types.SELECT_NOTE,
       title
-    };
-    expect(actions.selectNote(title)).toEqual(expectedAction);
+    });
+    expect(actions.selectNote(title)).to.equal(expectedAction);
   });
 
   it('should create an action to edit the note having title with given text', () => {
-    const title = 'test title';
+    const selected = 'test title';
+    const title = 'test title new';
     const text = 'test content for note text';
-    const expectedAction = {
-      type: types.ADD_NOTE,
+    const expectedAction = Map({
+      type: types.EDIT_NOTE,
+      selected,
       title,
       text
-    };
-    expect(actions.editNode(title, text)).toEqual(expectedAction);
+    });
+    expect(actions.editNote(selected, title, text)).to.equal(expectedAction);
   });
 
   it('should create an action to delete note with given title', () => {
-    const title = 'test title';
-    const expectedAction = {
+    const selected = 'test title';
+    const expectedAction = Map({
       type: types.DELETE_NOTE,
-      title
-    };
-    expect(actions.deleteNote(title)).toEqual(expectedAction);
+      selected
+    });
+    expect(actions.deleteNote(selected)).to.equal(expectedAction);
   });
 
   it('should create an action to toggle list order between modified and created', () => {
-    const expectedAction = {
+    const expectedAction = Map({
       type: types.TOGGLE_ORDER_BY
-    };
-    expect(actions.toggleOrderBy(text)).toEqual(expectedAction);
+    });
+    expect(actions.toggleOrderBy()).to.equal(expectedAction);
   });
 });
