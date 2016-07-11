@@ -31,7 +31,7 @@ export class NotesApp extends React.Component {
 function mapStateToProps(state) {
   return {
     notes: state.get('notes'),
-    editing: state.get('editing')
+    selected: state.get('selected')
   }
 }
 

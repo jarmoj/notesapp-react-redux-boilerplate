@@ -33,7 +33,7 @@ state
     item
     ...
   filter (search)
-  editing
+  selected
 
 ## UI for the app
 
