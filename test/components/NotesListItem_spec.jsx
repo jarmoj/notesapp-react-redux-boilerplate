@@ -65,6 +65,16 @@ describe('NotesListItem - Visual', () => {
     expect(componentCreated._row.textContent).to.contain(timestamp.get('created'));
   });
   it('check that a list item that is selected by select prop gets selected class', () => {
-    expect(false).to.equal(true);
+    const componentNotSelected = renderIntoDocument(
+      <NotesListItem selected={false} />
+    );
+
+    expect(componentNotSelected._row.classList.contains('selected')).to.equal(false);
+
+    const componentSelected = renderIntoDocument(
+      <NotesListItem selected={true} />
+    );
+    expect(componentSelected._row.classList.contains('selected')).to.equal(true);
+
   });
 });
