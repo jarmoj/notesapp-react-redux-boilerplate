@@ -20,7 +20,15 @@ export default class NotesList extends React.Component {
             </tr>
           </thead>
           <tbody>
-              <NotesListItem/>
+            {this.props.notes.map(item =>
+                <NotesListItem
+                  ref={(c) => this._items = (this._items ? this._items.concat([c]) : [c]) }
+                  title={item.get('title')}
+                  text={item.get('text')}
+                  timestamp={item.get('timestamp')}
+                  orderBy={this.props.orderBy}/>
+              )
+            }
           </tbody>
         </table>
       </div>
