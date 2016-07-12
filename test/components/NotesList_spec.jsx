@@ -20,7 +20,17 @@ describe('NotesList', () => {
     expect(component._items[2].props.title).to.equal('immutable');
   });
   it('clicking note in list will call noteClicked handler', () => {
-    expect(false).to.equal(true);
+    let wasCalled = "";
+    const notes = _state.get('notes');
+    let noteClicked = function (title) {
+      wasCalled = title;
+    }
+    const component = renderIntoDocument(
+      <NotesList notes={notes} noteClicked={noteClicked}/>
+    );
+    Simulate.click(component._items[1]._row);
+
+    expect(wasCalled).to.equal('redux');
   });
   it('clicking Title header will sort the list alphabetically ascending /descending order', () => {
     expect(false).to.equal(true);
