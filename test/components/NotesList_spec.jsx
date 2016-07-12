@@ -33,7 +33,16 @@ describe('NotesList', () => {
     expect(wasCalled).to.equal('redux');
   });
   it('clicking Title header will call titleHeaderClicked handler', () => {
-    expect(false).to.equal(true);
+    let wasCalled = false
+    let titleHeaderClicked = function () {
+      wasCalled = true;
+    }
+    const component = renderIntoDocument(
+      <NotesList notes={List.of()} titleHeaderClicked={titleHeaderClicked}/>
+    );
+    Simulate.click(component._titleHeader);
+
+    expect(wasCalled).to.equal(true);
   });
   it('list lists items according to orderBy = title ascending | descending', () => {
     expect(false).to.equal(true);
