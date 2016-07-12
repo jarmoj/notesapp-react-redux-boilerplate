@@ -27,7 +27,18 @@ describe('NotesListItem - Selection', () => {
 
 describe('NotesListItem - Visual', () => {
   it('Every even row gets even-row and odd one odd-row class', () => {
-    expect(false).to.equal(true);
+    const componentEven = renderIntoDocument(
+      <NotesListItem isOddRow={false} />
+    );
+    expect(componentEven._row.classList.contains('even-row')).to.equal(true);
+    expect(componentEven._row.classList.contains('odd-row')).to.equal(false);
+
+    const componentOdd = renderIntoDocument(
+      <NotesListItem isOddRow={true} />
+    );
+
+    expect(componentOdd._row.classList.contains('even-row')).to.equal(false);
+    expect(componentOdd._row.classList.contains('odd-row')).to.equal(true);
   });
   it('renders a list item with its title contents, beginning of text body, and date modified/created depending orderBy', () => {
     expect(false).to.equal(true);
