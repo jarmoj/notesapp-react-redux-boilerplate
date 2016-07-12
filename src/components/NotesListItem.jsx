@@ -9,9 +9,19 @@ export default class NotesListItem extends React.Component {
   onClickCallback(e) {
     this.props.rowClicked(this.props.title);
   }
+  oddOrEvenRow() {
+    if (!('isOddRow' in this.props)) {
+      return "";
+    }
+
+    if (this.props.isOddRow) {
+      return " odd-row";
+    }
+    return " even-row";
+  }
   render() {
     return (
-      <tr className="notes-list-row"
+      <tr className={"notes-list-row" + this.oddOrEvenRow()}
           onClick={this.onClickCallback.bind(this)}
           ref={(c) => this._row = c}>
         <td className="notes-list-item-title">
