@@ -32,19 +32,25 @@ describe('NotesList', () => {
 
     expect(wasCalled).to.equal('redux');
   });
-  it('clicking Title header will sort the list alphabetically ascending /descending order', () => {
+  it('clicking Title header will call titleHeaderClicked handler', () => {
     expect(false).to.equal(true);
   });
-  it('clicking Modified / Created header will change order by timestamp and ascending / descending', () => {
+  it('list lists items according to orderBy = title ascending | descending', () => {
     expect(false).to.equal(true);
   });
-  it('clicking Modified / Created header will change header text and arrow respectively', () => {
+  it('clicking Modified / Created header will call timestampHeaderClicked handler', () => {
     expect(false).to.equal(true);
   });
-  it('clicking down arrow will order the items in ascending / descending', () => {
+  it('list lists items according to orderBy = (modified | created) (ascending | descending)', () => {
     expect(false).to.equal(true);
   });
-  it('clicking down arrow will turn it uparrow and another click back', () => {
+  it('orderby modify | created is printed in the timestamp header text', () => {
+    expect(false).to.equal(true);
+  });
+  it('orderby ascending | descending is reflected in the header arrow', () => {
+    expect(false).to.equal(true);
+  });
+  it('clicking header arrow will call arrowHeaderClicked handler', () => {
     expect(false).to.equal(true);
   });
 });
