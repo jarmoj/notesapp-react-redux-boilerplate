@@ -26,7 +26,8 @@ export default class NotesList extends React.Component {
                   title={item.get('title')}
                   text={item.get('text')}
                   timestamp={item.get('timestamp')}
-                  orderBy={this.props.orderBy}/>
+                  orderBy={this.props.orderBy}
+                  rowClicked={this.props.noteClicked}/>
               )
             }
           </tbody>
