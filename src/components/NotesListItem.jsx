@@ -25,9 +25,19 @@ export default class NotesListItem extends React.Component {
     }
     return "";
   }
+  isSelected() {
+    if (!('selected' in this.props)) {
+      return "";
+    }
+
+    if (this.props.selected) {
+      return " selected";
+    }
+    return "";
+  }
   render() {
     return (
-      <tr className={"notes-list-row" + this.oddOrEvenRow()}
+      <tr className={"notes-list-row" + this.oddOrEvenRow() + this.isSelected()}
           onClick={this.onClickCallback.bind(this)}
           ref={(c) => this._row = c}>
         <td className="notes-list-item-title">
