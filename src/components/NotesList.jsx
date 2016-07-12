@@ -8,13 +8,20 @@ export default class NotesList extends React.Component {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+  onClickCallback() {
+    if ('titleHeaderClicked' in this.props) {
+      this.props.titleHeaderClicked();
+    }
+  }
   render() {
     return (
       <div className="notes-list-border">
         <table className="notes-list-rows">
           <thead>
             <tr>
-              <th className="notes-list-header-title">Title</th>
+              <th className="notes-list-header-title"
+                  ref={c => this._titleHeader = c}
+                  onClick={this.onClickCallback()}>Title</th>
               <th className="notes-list-header-date">Date</th>
               <th className="notes-list-header-destroy">{"\u25BC"}</th>
             </tr>
