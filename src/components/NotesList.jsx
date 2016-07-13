@@ -21,6 +21,11 @@ export class NotesList extends React.Component {
       this.props.timestampHeaderClicked();
     }
   }
+  arrowHeaderOnClickCallback() {
+    if ('arrowHeaderClicked' in this.props) {
+      this.props.arrowHeaderClicked();
+    }
+  }
   orderBy(notes) {
     if (!('orderBy' in this.props)) {
       return this.orderByDefault(notes);
@@ -115,7 +120,8 @@ export class NotesList extends React.Component {
                   ref={c => this._timestampHeader = c}
                   onClick={this.timestampHeaderOnClickCallback()}>{this.timestampHeaderText()}</th>
               <th className="notes-list-header-destroy"
-                  ref={c => this._arrowHeader = c}>{this.arrowHeaderText()}</th>
+                  ref={c => this._arrowHeader = c}
+                  onClick={this.arrowHeaderOnClickCallback()}>{this.arrowHeaderText()}</th>
             </tr>
           </thead>
           <tbody>
