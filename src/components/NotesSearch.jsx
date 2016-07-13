@@ -7,10 +7,15 @@ export default class NotesSearch extends React.Component {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
+  onChangeCallback(e) {
+    this.props.notesSearch(e.target.value);
+  }
   render() {
     return (
       <div className="notes-search-border">
-        <input className="notes-search"/>
+        <input className="notes-search"
+               ref={(c) => this._input = c}
+               onChange={this.onChangeCallback.bind(this)}/>
       </div>
       );
   }
