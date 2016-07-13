@@ -161,6 +161,15 @@ describe('NotesList', () => {
     expect(componentDescending._arrowHeader.textContent).to.contain(DOWN_POINTING);
   });
   it('clicking header arrow will call arrowHeaderClicked handler', () => {
-    expect(false).to.equal(true);
+    let wasCalled = false
+    let arrowHeaderClicked = function () {
+      wasCalled = true;
+    }
+    const component = renderIntoDocument(
+      <NotesList notes={List.of()} arrowHeaderClicked={arrowHeaderClicked}/>
+    );
+    Simulate.click(component._arrowHeader);
+
+    expect(wasCalled).to.equal(true);
   });
 });
