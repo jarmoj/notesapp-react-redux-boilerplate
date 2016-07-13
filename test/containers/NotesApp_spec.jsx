@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import NotesApp from '../../src/containers/NotesApp';
+import {NotesApp, mapStateToProps} from '../../src/containers/NotesApp';
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
-import notes from '../test_data';
+import _state from '../test_data';
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -12,7 +12,10 @@ const {renderIntoDocument,
 
  describe('NotesApp - Default', () => {
    it('by default the notes search is empty', () => {
-     expect(false).to.equal(true);
+     const component = renderIntoDocument(
+       <NotesApp {...mapStateToProps(_state)}/>
+     );
+     expect(component._search._input.value).to.equal("");
    });
    it('by default the notes app has no note selected', () => {
      expect(false).to.equal(true);
