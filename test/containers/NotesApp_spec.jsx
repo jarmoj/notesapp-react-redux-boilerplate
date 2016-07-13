@@ -18,7 +18,14 @@ const {renderIntoDocument,
      expect(component._search._input.value).to.equal("");
    });
    it('by default the notes app has no note selected', () => {
-     expect(false).to.equal(true);
+     const component = renderIntoDocument(
+       <NotesApp {...mapStateToProps(_state)}/>
+     );
+     let agg = false;
+     component._list._items.every(item => {
+       agg = agg || item._row.classList.contains('selected');
+     });
+     expect(agg).to.equal(false);
    });
    it('by default the notes edit is empty and disabled', () => {
      expect(false).to.equal(true);
