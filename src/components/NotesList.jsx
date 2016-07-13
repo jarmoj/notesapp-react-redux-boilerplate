@@ -69,6 +69,21 @@ export default class NotesList extends React.Component {
       return notes.reverse();
     }
   }
+  timestampHeaderText() {
+    if (!('orderBy' in this.props)) {
+      return 'Modified';
+    }
+
+    if (this.props.orderBy.indexOf('modified') != -1) {
+      return 'Modified';
+    }
+    else if (this.props.orderBy.indexOf('created') != -1) {
+      return 'Created';
+    }
+    else {
+      return 'Modified';
+    }
+  }
   render() {
     return (
       <div className="notes-list-border">
@@ -80,7 +95,7 @@ export default class NotesList extends React.Component {
                   onClick={this.titleHeaderOnClickCallback()}>Title</th>
               <th className="notes-list-header-date"
                   ref={c => this._timestampHeader = c}
-                  onClick={this.timestampHeaderOnClickCallback()}>Date</th>
+                  onClick={this.timestampHeaderOnClickCallback()}>{this.timestampHeaderText()}</th>
               <th className="notes-list-header-destroy">{"\u25BC"}</th>
             </tr>
           </thead>
