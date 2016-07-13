@@ -26,6 +26,15 @@ export default class NotesList extends React.Component {
     if (this.props.orderBy.indexOf('title') != -1) {
       return this.orderByTitle(notes);
     }
+    else if (this.props.orderBy.indexOf('modified') != -1) {
+      return this.orderByModified(notes);
+    }
+    else if (this.props.orderBy.indexOf('created') != -1) {
+      return this.orderByCreated(notes);
+    }
+    else {
+      return this.orderByDefault(notes);
+    }
   }
   orderByDefault(notes) {
     return this.orderByModified(notes);
@@ -36,21 +45,28 @@ export default class NotesList extends React.Component {
     });
   }
   orderByModified(notes) {
-    return notes;
+    return notes.sortBy(note => {
+      return note.getIn(['timestamp', 'modified']);
+    })
+  }
+  orderByCreated(notes) {
+    return notes.sortBy(note => {
+      return note.getIn(['timestamp', 'created']);
+    })
   }
   a_de_scending(notes) {
     if (!('orderBy' in this.props)) {
-      return notes;
-    }
-
-    if (this.props.orderBy.indexOf('ascending') != -1) {
-      return notes;
-    }
-    else if (this.props.orderBy.indexOf('descending') != -1) {
       return notes.reverse();
     }
-    else {
+
+    if (this.props.orderBy.indexOf('descending') != -1) {
+      return notes.reverse();
+    }
+    else if (this.props.orderBy.indexOf('ascending') != -1) {
       return notes;
+    }
+    else {
+      return notes.reverse();
     }
   }
   render() {
