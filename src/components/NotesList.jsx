@@ -8,9 +8,14 @@ export default class NotesList extends React.Component {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-  onClickCallback() {
+  titleHeaderOnClickCallback() {
     if ('titleHeaderClicked' in this.props) {
       this.props.titleHeaderClicked();
+    }
+  }
+  timestampHeaderOnClickCallback() {
+    if ('timestampHeaderClicked' in this.props) {
+      this.props.timestampHeaderClicked();
     }
   }
   orderBy(notes) {
@@ -56,8 +61,10 @@ export default class NotesList extends React.Component {
             <tr>
               <th className="notes-list-header-title"
                   ref={c => this._titleHeader = c}
-                  onClick={this.onClickCallback()}>Title</th>
-              <th className="notes-list-header-date">Date</th>
+                  onClick={this.titleHeaderOnClickCallback()}>Title</th>
+              <th className="notes-list-header-date"
+                  ref={c => this._timestampHeader = c}
+                  onClick={this.timestampHeaderOnClickCallback()}>Date</th>
               <th className="notes-list-header-destroy">{"\u25BC"}</th>
             </tr>
           </thead>
