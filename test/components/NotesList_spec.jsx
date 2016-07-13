@@ -64,7 +64,16 @@ describe('NotesList', () => {
     expect(componentTitleDescending._items[2].props.title).to.equal('immutable');
   });
   it('clicking Modified / Created header will call timestampHeaderClicked handler', () => {
-    expect(false).to.equal(true);
+    let wasCalled = false
+    let timestampHeaderClicked = function () {
+      wasCalled = true;
+    }
+    const component = renderIntoDocument(
+      <NotesList notes={List.of()} timestampHeaderClicked={timestampHeaderClicked}/>
+    );
+    Simulate.click(component._timestampHeader);
+
+    expect(wasCalled).to.equal(true);
   });
   it('list lists items according to orderBy = (modified | created) (ascending | descending)', () => {
     expect(false).to.equal(true);
