@@ -4,7 +4,7 @@ import * as actionCreators from '../actions/index';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import SplitPane from "../../node_modules/react-split-pane/lib/SplitPane";
 import NotesSearch from '../components/NotesSearch';
-import NotesList from '../components/NotesList';
+import {NotesList} from '../components/NotesList';
 import NotesEdit from '../components/NotesEdit';
 import {List, Map} from 'immutable';
 
@@ -16,10 +16,11 @@ export class NotesApp extends React.Component {
   render() {
     return (
       <div className="notes-app">
-        <NotesSearch/>
+        <NotesSearch
+          ref={c => this._search = c}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
-            <NotesList/>
+            <NotesList {...this.props}/>
             <NotesEdit/>
           </SplitPane>
         </div>
@@ -28,7 +29,7 @@ export class NotesApp extends React.Component {
   }
 };
 
-function mapStateToProps(state) {
+export function mapStateToProps(state) {
   return {
     query: state.get('query'),
     notes: state.get('notes'),
