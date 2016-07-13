@@ -135,7 +135,17 @@ describe('NotesList', () => {
     expect(componentCreatedDescending._items[2].props.title).to.equal('react');
   });
   it('orderby modify | created is printed in the timestamp header text', () => {
-    expect(false).to.equal(true);
+    const componentModified = renderIntoDocument(
+      <NotesList notes={List.of()} orderBy="modified ascending"/>
+    );
+
+    expect(componentModified._timestampHeader.textContent).to.contain('Modified');
+
+    const componentCreated = renderIntoDocument(
+      <NotesList notes={List.of()} orderBy="created ascending"/>
+    );
+
+    expect(componentCreated._timestampHeader.textContent).to.contain('Created');
   });
   it('orderby ascending | descending is reflected in the header arrow', () => {
     expect(false).to.equal(true);
