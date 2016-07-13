@@ -3,7 +3,10 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import NotesListItem from './NotesListItem';
 import {List, Map} from 'immutable';
 
-export default class NotesList extends React.Component {
+export const UP_POINTING = "\u25B3";
+export const DOWN_POINTING = "\u25BD";
+
+export class NotesList extends React.Component {
   constructor(props) {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
@@ -84,6 +87,21 @@ export default class NotesList extends React.Component {
       return 'Modified';
     }
   }
+  arrowHeaderText() {
+    if (!('orderBy' in this.props)) {
+      return 'Modified';
+    }
+
+    if (this.props.orderBy.indexOf('descending') != -1) {
+      return DOWN_POINTING;
+    }
+    else if (this.props.orderBy.indexOf('ascending') != -1) {
+      return UP_POINTING;
+    }
+    else {
+      return DOWN_POINTING;
+    }
+  }
   render() {
     return (
       <div className="notes-list-border">
@@ -96,7 +114,8 @@ export default class NotesList extends React.Component {
               <th className="notes-list-header-date"
                   ref={c => this._timestampHeader = c}
                   onClick={this.timestampHeaderOnClickCallback()}>{this.timestampHeaderText()}</th>
-              <th className="notes-list-header-destroy">{"\u25BC"}</th>
+              <th className="notes-list-header-destroy"
+                  ref={c => this._arrowHeader = c}>{this.arrowHeaderText()}</th>
             </tr>
           </thead>
           <tbody>
