@@ -10,7 +10,7 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
 describe('NotesList', () => {
-  it('by default renders a list with notes in modified order', () => {
+  it('by default renders a list with notes in modified descending order', () => {
     const notes = _state.get('notes');
     const component = renderIntoDocument(
       <NotesList notes={notes} />
