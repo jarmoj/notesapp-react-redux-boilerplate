@@ -60,5 +60,5 @@ export default Map({
             })
           ),
   selected: null,
-  orderBy: 'modified ascending'
+  orderBy: 'modified descending'
 });
