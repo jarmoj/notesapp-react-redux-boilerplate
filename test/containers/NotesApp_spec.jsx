@@ -28,7 +28,11 @@ const {renderIntoDocument,
      expect(agg).to.equal(false);
    });
    it('by default the notes edit is empty and disabled', () => {
-     expect(false).to.equal(true);
+     const component = renderIntoDocument(
+       <NotesApp {...mapStateToProps(_state)}/>
+     );
+     expect(component._edit._textarea.value).to.equal("");
+     expect(component._edit._textarea.classList.contains('disabled')).to.equal(true);
    });
  });
 

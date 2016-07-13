@@ -23,7 +23,9 @@ export class NotesApp extends React.Component {
             <NotesList
               {...this.props}
               ref={c => this._list = c}/>
-            <NotesEdit/>
+            <NotesEdit
+              {...this.props}
+              ref={c => this._edit = c}/>
           </SplitPane>
         </div>
       </div>
