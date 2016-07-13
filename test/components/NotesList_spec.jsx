@@ -45,7 +45,23 @@ describe('NotesList', () => {
     expect(wasCalled).to.equal(true);
   });
   it('list lists items according to orderBy = title ascending | descending', () => {
-    expect(false).to.equal(true);
+    const notes = _state.get('notes');
+
+    const componentTitleAscending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="title ascending"/>
+    );
+
+    expect(componentTitleAscending._items[0].props.title).to.equal('immutable');
+    expect(componentTitleAscending._items[1].props.title).to.equal('react');
+    expect(componentTitleAscending._items[2].props.title).to.equal('redux');
+
+    const componentTitleDescending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="title descending"/>
+    );
+
+    expect(componentTitleDescending._items[0].props.title).to.equal('redux');
+    expect(componentTitleDescending._items[1].props.title).to.equal('react');
+    expect(componentTitleDescending._items[2].props.title).to.equal('immutable');
   });
   it('clicking Modified / Created header will call timestampHeaderClicked handler', () => {
     expect(false).to.equal(true);
