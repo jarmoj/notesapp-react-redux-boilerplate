@@ -1,6 +1,6 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import NotesList from '../../src/components/NotesList';
+import {NotesList, UP_POINTING, DOWN_POINTING} from '../../src/components/NotesList';
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
@@ -148,7 +148,17 @@ describe('NotesList', () => {
     expect(componentCreated._timestampHeader.textContent).to.contain('Created');
   });
   it('orderby ascending | descending is reflected in the header arrow', () => {
-    expect(false).to.equal(true);
+    const componentAscending = renderIntoDocument(
+      <NotesList notes={List.of()} orderBy="modified ascending"/>
+    );
+
+    expect(componentAscending._arrowHeader.textContent).to.contain(UP_POINTING);
+
+    const componentDescending = renderIntoDocument(
+      <NotesList notes={List.of()} orderBy="modified descending"/>
+    );
+
+    expect(componentDescending._arrowHeader.textContent).to.contain(DOWN_POINTING);
   });
   it('clicking header arrow will call arrowHeaderClicked handler', () => {
     expect(false).to.equal(true);
