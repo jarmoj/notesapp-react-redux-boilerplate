@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import reducer from './reducers/index';
 import { NotesAppContainer } from './containers/NotesApp';
 import _state from '../test/test_data';
+import * as types from './types';
 
 const createStoreDevTools = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
@@ -14,7 +15,7 @@ const createStoreDevTools = compose(
 const store = createStoreDevTools(reducer);
 
 store.dispatch({
-  type: 'SET_STATE',
+  type: types.SET_STATE,
   _state
 });
 
