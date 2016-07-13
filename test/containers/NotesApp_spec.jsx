@@ -52,7 +52,11 @@ describe('NotesApp - Search', () => {
     expect(component.searchNotes(query)).to.equal(List.of());
   });
   it('search notes with a singular match returns one of the notes', () => {
-    expect(false).to.equal(true);
+    const query="react";
+    const component = renderIntoDocument(
+      <NotesApp {...mapStateToProps(_state)}/>
+    );
+    expect(component.searchNotes(query).count()).to.equal(1);
   });
   it('search notes with proper common prefix returns those notes', () => {
     expect(false).to.equal(true);
