@@ -44,6 +44,30 @@ describe('NotesList', () => {
 
     expect(wasCalled).to.equal(true);
   });
+  it('orderByTitle returns list of notes ordered by title ascending', () => {
+    const notes = _state.get('notes');
+
+    const component = renderIntoDocument(
+      <NotesList notes={notes}/>
+    );
+
+    const notesTitleAscending = component.orderByTitle(notes);
+    expect(notesTitleAscending.get(0).get('title')).to.equal('immutable');
+    expect(notesTitleAscending.get(1).get('title')).to.equal('react');
+    expect(notesTitleAscending.get(2).get('title')).to.equal('redux');
+  });
+  it('orderByModified returns list of notes ordered by modified ascending', () => {
+    const notes = _state.get('notes');
+
+    const component = renderIntoDocument(
+      <NotesList notes={notes}/>
+    );
+
+    const notesModifiedAscending = component.orderByModified(notes);
+    expect(notesModifiedAscending.get(0).get('title')).to.equal('immutable');
+    expect(notesModifiedAscending.get(1).get('title')).to.equal('redux');
+    expect(notesModifiedAscending.get(2).get('title')).to.equal('react');
+  });
   it('list lists items according to orderBy = title ascending | descending', () => {
     const notes = _state.get('notes');
 
