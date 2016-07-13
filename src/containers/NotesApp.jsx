@@ -20,7 +20,9 @@ export class NotesApp extends React.Component {
           ref={c => this._search = c}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
-            <NotesList {...this.props}/>
+            <NotesList
+              {...this.props}
+              ref={c => this._list = c}/>
             <NotesEdit/>
           </SplitPane>
         </div>
