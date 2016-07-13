@@ -99,8 +99,40 @@ describe('NotesList', () => {
 
     expect(wasCalled).to.equal(true);
   });
-  it('list lists items according to orderBy = (modified | created) (ascending | descending)', () => {
-    expect(false).to.equal(true);
+  it('list list items according to orderBy = (modified | created) (ascending | descending)', () => {
+    const notes = _state.get('notes');
+
+    const componentModifiedAscending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="modified ascending"/>
+    );
+
+    expect(componentModifiedAscending._items[0].props.title).to.equal('immutable');
+    expect(componentModifiedAscending._items[1].props.title).to.equal('redux');
+    expect(componentModifiedAscending._items[2].props.title).to.equal('react');
+
+    const componentModifiedDescending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="modified descending"/>
+    );
+
+    expect(componentModifiedDescending._items[0].props.title).to.equal('react');
+    expect(componentModifiedDescending._items[1].props.title).to.equal('redux');
+    expect(componentModifiedDescending._items[2].props.title).to.equal('immutable');
+
+    const componentCreatedAscending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="created ascending"/>
+    );
+
+    expect(componentCreatedAscending._items[0].props.title).to.equal('react');
+    expect(componentCreatedAscending._items[1].props.title).to.equal('redux');
+    expect(componentCreatedAscending._items[2].props.title).to.equal('immutable');
+
+    const componentCreatedDescending = renderIntoDocument(
+      <NotesList notes={notes} orderBy="created descending"/>
+    );
+
+    expect(componentCreatedDescending._items[0].props.title).to.equal('immutable');
+    expect(componentCreatedDescending._items[1].props.title).to.equal('redux');
+    expect(componentCreatedDescending._items[2].props.title).to.equal('react');
   });
   it('orderby modify | created is printed in the timestamp header text', () => {
     expect(false).to.equal(true);
