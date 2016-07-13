@@ -45,7 +45,11 @@ describe('NotesApp - Search', () => {
     expect(component.searchNotes(query)).to.equal(_state.get('notes'));
   });
   it('search notes with nothing matching returns none of the notes', () => {
-    expect(false).to.equal(true);
+    const query="fdsfd7yf88732y784";
+    const component = renderIntoDocument(
+      <NotesApp {...mapStateToProps(_state)}/>
+    );
+    expect(component.searchNotes(query)).to.equal(List.of());
   });
   it('search notes with a singular match returns one of the notes', () => {
     expect(false).to.equal(true);
