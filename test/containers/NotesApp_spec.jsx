@@ -38,7 +38,11 @@ const {renderIntoDocument,
 
 describe('NotesApp - Search', () => {
   it('search notes with empty returns all the notes', () => {
-    expect(false).to.equal(true);
+    const query="";
+    const component = renderIntoDocument(
+      <NotesApp {...mapStateToProps(_state)}/>
+    );
+    expect(component.searchNotes(query)).to.equal(_state.get('notes'));
   });
   it('search notes with nothing matching returns none of the notes', () => {
     expect(false).to.equal(true);
