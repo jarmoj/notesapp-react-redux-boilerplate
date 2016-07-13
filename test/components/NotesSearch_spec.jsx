@@ -11,6 +11,16 @@ const {renderIntoDocument,
 
 describe('NotesSearch', () => {
   it('returns the query string in notesSearch when edited', () => {
-    expect(false).to.equal(true);
+    let wasCalled = "";
+    let inputStr = "jkhiU/(F/&RU€%€DUF&Guihiughgdj)";
+    let notesSearch = function (query) {
+      wasCalled = query;
+    }
+    const component = renderIntoDocument(
+     <NotesSearch notesSearch={notesSearch} />
+    );
+    Simulate.change(component._input, {target:{value: inputStr}});
+
+    expect(wasCalled).to.equal(inputStr);
   });
 });
