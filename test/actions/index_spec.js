@@ -8,6 +8,7 @@ import _state from '../test_data';
 import * as types from '../../src/types.js';
 import * as actions from '../../src/actions/index';
 import diff from 'immutablediff';
+import * as tk from 'timekeeper';
 
 describe('actions', () => {
   it('should create an action to set the complete state of the app', () => {
@@ -29,14 +30,18 @@ describe('actions', () => {
   });
 
   it('should create an action to add new note with given title and text', () => {
+    const timestamp = (new Date()).toISOString();
+    tk.freeze(timestamp);
     const title = 'test title';
     const text = 'test content for note text';
     const expectedAction = Map({
       type: types.ADD_NOTE,
       title,
-      text
+      text,
+      timestamp
     });
     expect(actions.addNote(title, text)).to.equal(expectedAction);
+    tk.reset();
   });
 
   it('should create an action to select note by title', () => {
@@ -49,6 +54,8 @@ describe('actions', () => {
   });
 
   it('should create an action to edit the note having title with given text', () => {
+    const timestamp = (new Date()).toISOString();
+    tk.freeze(timestamp);
     const selected = 'test title';
     const title = 'test title new';
     const text = 'test content for note text';
@@ -56,9 +63,11 @@ describe('actions', () => {
       type: types.EDIT_NOTE,
       selected,
       title,
-      text
+      text,
+      timestamp
     });
     expect(actions.editNote(selected, title, text)).to.equal(expectedAction);
+    tk.reset();
   });
 
   it('should create an action to delete note with given title', () => {

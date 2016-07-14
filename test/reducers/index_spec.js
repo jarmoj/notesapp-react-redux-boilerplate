@@ -31,6 +31,7 @@ describe('reducer', () => {
   });
 
   it('handles ADD_NOTE by adding note to notes of the state', () => {
+    const timestamp = (new Date()).toISOString();
     const initialState = _state;
     const initialNotes = _state.get('notes');
     const title = 'test title string';
@@ -38,7 +39,8 @@ describe('reducer', () => {
     const action = {
       type: types.ADD_NOTE,
       title,
-      text
+      text,
+      timestamp
     }
     const nextState = reducer(initialState, action);
     const nextNotes = nextState.get('notes');
@@ -73,6 +75,7 @@ describe('reducer', () => {
   });
 
   it('handles EDIT_NOTE by changing the selected note contents', () => {
+    const timestamp = (new Date()).toISOString();
     const initialState = _state;
     const initialNotes = _state.get('notes');
     const selected = 'redux';
@@ -82,7 +85,8 @@ describe('reducer', () => {
       type: types.EDIT_NOTE,
       selected,
       title,
-      text
+      text,
+      timestamp
     }
     const initialNote = initialNotes.find(note => note.get('title') == selected);
 

@@ -16,10 +16,12 @@ export function setQuery(query) {
 }
 
 export function addNote(title, text) {
+  const timestamp = (new Date()).toISOString();
   return Map({
     type: types.ADD_NOTE,
     title,
-    text
+    text,
+    timestamp
   });
 }
 
@@ -31,11 +33,13 @@ export function selectNote(title) {
 }
 
 export function editNote(selected, title, text) {
+  const timestamp = (new Date()).toISOString();
   return Map({
     type: types.EDIT_NOTE,
     selected,
     title,
-    text
+    text,
+    timestamp
   });
 }
 
