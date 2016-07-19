@@ -17,7 +17,7 @@ describe('actions', () => {
       type: types.SET_STATE,
       state
     };
-    expect(actions.setState(state)).to.equal(expectedAction);
+    expect(actions.setState(state)).to.deep.equal(expectedAction);
   });
 
   it('should create an action to set the search query', () => {
@@ -26,7 +26,7 @@ describe('actions', () => {
       type: types.SET_QUERY,
       query
     };
-    expect(actions.setQuery(query)).to.equal(expectedAction);
+    expect(actions.setQuery(query)).to.deep.equal(expectedAction);
   });
 
   it('should create an action to add new note with given title and text', () => {
@@ -40,7 +40,7 @@ describe('actions', () => {
       text,
       timestamp
     };
-    expect(actions.addNote(title, text)).to.equal(expectedAction);
+    expect(actions.addNote(title, text)).to.deep.equal(expectedAction);
     tk.reset();
   });
 
@@ -50,7 +50,7 @@ describe('actions', () => {
       type: types.SELECT_NOTE,
       title
     };
-    expect(actions.selectNote(title)).to.equal(expectedAction);
+    expect(actions.selectNote(title)).to.deep.equal(expectedAction);
   });
 
   it('should create an action to edit the note having title with given text', () => {
@@ -66,7 +66,7 @@ describe('actions', () => {
       text,
       timestamp
     };
-    expect(actions.editNote(selected, title, text)).to.equal(expectedAction);
+    expect(actions.editNote(selected, title, text)).to.deep.equal(expectedAction);
     tk.reset();
   });
 
@@ -76,13 +76,13 @@ describe('actions', () => {
       type: types.DELETE_NOTE,
       selected
     };
-    expect(actions.deleteNote(selected)).to.equal(expectedAction);
+    expect(actions.deleteNote(selected)).to.deep.equal(expectedAction);
   });
 
   it('should create an action to toggle list order between modified and created', () => {
     const expectedAction = {
       type: types.TOGGLE_ORDER_BY
     };
-    expect(actions.toggleOrderBy()).to.equal(expectedAction);
+    expect(actions.toggleOrderBy()).to.deep.equal(expectedAction);
   });
 });
