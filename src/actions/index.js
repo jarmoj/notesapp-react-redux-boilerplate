@@ -2,56 +2,56 @@ import * as types from '../../src/types.js';
 import {Map} from 'immutable';
 
 export function setState(state) {
-  return Map({
+  return {
     type: types.SET_STATE,
     state
-  });
+  };
 }
 
 export function setQuery(query) {
-  return Map({
+  return {
     type: types.SET_QUERY,
     query
-  });
+  };
 }
 
 export function addNote(title, text) {
   const timestamp = (new Date()).toISOString();
-  return Map({
+  return {
     type: types.ADD_NOTE,
     title,
     text,
     timestamp
-  });
+  };
 }
 
 export function selectNote(title) {
-  return Map({
+  return {
     type: types.SELECT_NOTE,
     title
-  });
+  };
 }
 
 export function editNote(selected, title, text) {
   const timestamp = (new Date()).toISOString();
-  return Map({
+  return {
     type: types.EDIT_NOTE,
     selected,
     title,
     text,
     timestamp
-  });
+  };
 }
 
 export function deleteNote(selected) {
-  return Map({
+  return {
     type: types.DELETE_NOTE,
     selected
-  });
+  };
 }
 
 export function toggleOrderBy() {
-  return Map({
+  return {
     type: types.TOGGLE_ORDER_BY
-  });
+  };
 }
