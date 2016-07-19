@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {List, Map} from 'immutable';
 import { setQuery } from '../actions/index';
@@ -28,9 +27,3 @@ export class NotesSearch extends React.Component {
       );
   }
 };
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setQuery }, dispatch);
-}
-
-export const NotesSearchContainer = connect(null, mapDispatchToProps)(NotesSearch);
