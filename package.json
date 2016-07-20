@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "axios": "^0.13.1",
     "chai-immutable": "^1.6.0",
     "immutable": "^3.8.1",
     "react": "^15.1.0",
