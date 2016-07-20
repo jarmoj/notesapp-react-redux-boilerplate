@@ -27,10 +27,17 @@ describe('actions', () => {
 
   it('should create an action to set query and dispatch a new search', () => {
     const query = 'test query';
-    const expectedAction = {
-      type: types.SET_QUERY,
-      query
-    };
+    const notes = [];
+    const expectedActions = [
+      {
+        type: types.SET_QUERY,
+        query
+      },
+      {
+        type: types.SET_NOTES,
+        notes
+      }
+    ];
 
     const getState = {};
     const store = mockStore(getState);
@@ -38,7 +45,7 @@ describe('actions', () => {
     const actionsGot = store.getActions();
     console.log(actionsGot);
 
-    expect(actionsGot).to.deep.equal([expectedAction]);
+    expect(actionsGot).to.deep.equal(expectedActions);
   });
 
   it('should create an action to add new note with given title and text', () => {

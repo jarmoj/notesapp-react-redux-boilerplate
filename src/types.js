@@ -2,6 +2,7 @@ export const SET_STATE = 'SET_STATE';
 
 export const SEARCH = 'SEARCH';
 export const SET_QUERY = 'SET_QUERY';
+export const SET_NOTES = 'SET_NOTES';
 
 export const ADD_NOTE = 'ADD_NOTE';
 export const SELECT_NOTE = 'SELECT_NOTE';

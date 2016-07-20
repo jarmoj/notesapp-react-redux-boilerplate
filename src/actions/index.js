@@ -1,8 +1,28 @@
-import * as types from '../../src/types.js';
+import * as types from '../types';
 import {Map} from 'immutable';
+import axios from 'axios';
+import urlencode from 'urlencode';
+
+const URL=`http://localhost:3456/search/$(QUERY)`;
+
+export function restSearchNotes(query) {
+  console.log("restSearchNotes()");
+  const encoded = urlencode(query);
+  const url = `$(URL)&$(encoded)`;
+  //return axios.get(url);
+  return {
+    then: (dispatch) => {
+      console.log("then");
+      dispatch({
+        data: []
+      })
+    }
+  };
+}
 
 export function searchNotes(query) {
-  // branch between socket.io vs REST API  
+  console.log("searchNotes()");
+  return restSearchNotes(query);
 }
 
 export function setState(state) {
@@ -19,11 +39,27 @@ export function setQuery(query) {
   };
 }
 
+export function setNotes(notes) {
+  return {
+    type: types.SET_NOTES,
+    notes
+  };
+}
+
 export function search(query) {
-  return searchNotes(query).then(
-    () => dispatch(setQuery(query)),
-    notes => dispatch(setNotes(notes))
-  );
+  console.log("search('" + query + "')");
+  return (dispatch) => {
+    console.log("search().dispatch");
+    return searchNotes(query).then((response) => {
+      console.log("search().dispatch.then");
+      //const notes = response.data;
+      const notes = [];
+      return [
+        dispatch(setQuery(query)),
+        dispatch(setNotes(notes))
+      ];
+    });
+  }
 }
 
 export function addNote(title, text) {
