@@ -13,28 +13,6 @@ export class NotesApp extends React.Component {
     super();
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-  searchNotes(query) {
-    if (query == "") {
-      return this.props.notes;
-    }
-    else {
-      return this.props.notes.filter(note => {
-        return this.itemMatchesQuery(query, note.get('title'))
-            || this.itemMatchesQuery(query, note.get('text'));
-      });
-    }
-  }
-  itemMatchesQuery(query, item) {
-    const queryTokens = this.tokenize(query);
-    return queryTokens.every(token => {
-      return item.indexOf(token) != -1;
-    });
-  }
-  tokenize(s) {
-    return List.of(s.split(" ")).filter(token => {
-      return token.length > 0;
-    });
-  }
   render() {
     return (
       <div className="notes-app">

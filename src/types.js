@@ -1,5 +1,6 @@
 export const SET_STATE = 'SET_STATE';
 
+export const SEARCH = 'SEARCH';
 export const SET_QUERY = 'SET_QUERY';
 
 export const ADD_NOTE = 'ADD_NOTE';

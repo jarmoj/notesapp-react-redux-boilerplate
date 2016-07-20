@@ -1,6 +1,10 @@
 import * as types from '../../src/types.js';
 import {Map} from 'immutable';
 
+export function searchNotes(query) {
+  // branch between socket.io vs REST API  
+}
+
 export function setState(state) {
   return {
     type: types.SET_STATE,
@@ -13,6 +17,13 @@ export function setQuery(query) {
     type: types.SET_QUERY,
     query
   };
+}
+
+export function search(query) {
+  return searchNotes(query).then(
+    () => dispatch(setQuery(query)),
+    notes => dispatch(setNotes(notes))
+  );
 }
 
 export function addNote(title, text) {

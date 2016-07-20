@@ -9,6 +9,11 @@ import * as types from '../../src/types.js';
 import * as actions from '../../src/actions/index';
 import diff from 'immutablediff';
 import * as tk from 'timekeeper';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
 
 describe('actions', () => {
   it('should create an action to set the complete state of the app', () => {
@@ -20,13 +25,20 @@ describe('actions', () => {
     expect(actions.setState(state)).to.deep.equal(expectedAction);
   });
 
-  it('should create an action to set the search query', () => {
+  it('should create an action to set query and dispatch a new search', () => {
     const query = 'test query';
     const expectedAction = {
       type: types.SET_QUERY,
       query
     };
-    expect(actions.setQuery(query)).to.deep.equal(expectedAction);
+
+    const getState = {};
+    const store = mockStore(getState);
+    store.dispatch(actions.search(query));
+    const actionsGot = store.getActions();
+    console.log(actionsGot);
+
+    expect(actionsGot).to.deep.equal([expectedAction]);
   });
 
   it('should create an action to add new note with given title and text', () => {

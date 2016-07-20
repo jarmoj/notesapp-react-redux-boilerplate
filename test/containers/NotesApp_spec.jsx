@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import TestUtils from 'react-addons-test-utils';
-import {NotesApp, mapStateToProps} from '../../src/containers/NotesApp';
+import {NotesAppContainer, NotesApp, mapStateToProps} from '../../src/containers/NotesApp';
 import {expect} from 'chai';
+import reducer from '../../src/reducers/index';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
+import * as types from '../../src/types';
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -13,7 +17,7 @@ const {renderIntoDocument,
  describe('NotesApp - Default', () => {
    it('by default the notes search is empty', () => {
      const component = renderIntoDocument(
-       <NotesApp {...mapStateToProps(_state)}/>
+       <NotesApp {...mapStateToProps(_state)} />
      );
      expect(component._search._input.value).to.equal("");
    });
@@ -69,7 +73,10 @@ describe('NotesApp - Search', () => {
 
 describe('NotesApp - Selection', () => {
   it('selectNote changes the search query into the note\'s title', () => {
-    expect(false).to.equal(true);
+    const component = renderIntoDocument(
+      <NotesApp {...mapStateToProps(_state)} />
+    );
+    expect(component._search._input.value).to.equal("");
   });
   it('selectNote changes the currently selected note in list', () => {
     expect(false).to.equal(true);

@@ -9,9 +9,16 @@ import { NotesAppContainer } from './containers/NotesApp';
 import _state from '../test/test_data';
 import * as types from './types';
 
+createThunkStore(rootReducer) {
+  return createStore(
+    rootReducer,
+    applyMiddleware(thunk)
+  );
+}
+
 const createStoreDevTools = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
-)(createStore);
+)(createThunkStore);
 const store = createStoreDevTools(reducer);
 
 store.dispatch({
