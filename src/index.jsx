@@ -8,8 +8,9 @@ import reducer from './reducers/index';
 import { NotesAppContainer } from './containers/NotesApp';
 import _state from '../test/test_data';
 import * as types from './types';
+import thunk from 'redux-thunk';
 
-createThunkStore(rootReducer) {
+function createThunkStore(rootReducer) {
   return createStore(
     rootReducer,
     applyMiddleware(thunk)
