@@ -1,22 +1,12 @@
-"""Test NotesApp backend for its rest api.
-
-/notes
-    GET                     - returns all notes
-    PUT                     - update/create new note in notes
-/notes/titles
-    GET                     - returns titles of all notes
-/note/:title
-    GET                     - return note that has title :title
-    DELETE                  - delete note with title :title
-/search?q=:query
-    GET                     - search notes with query and return the notes
-/version
-    GET                     - return database version information
-"""
-import unittest
+"""Test NotesApp backend for its rest api."""
 import requests
+import unittest
+import subprocess
+import time
 
-URL = "http://localhost:3456"
+
+PORT = 3456
+URL = "http://localhost:" + str(PORT)
 
 
 def get(path):
@@ -42,6 +32,15 @@ class TestNotes(unittest.TestCase):
         note = notes[0]
         for part in ['title', 'text']:
             self.assertIn(part, note)
+
+    def test_notes_titles(self):
+        """Test /notes/titles ."""
+        r = get("/notes/titles")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('note_titles', r.json())
+        titles = r.json()['note_titles']
+        self.assertEqual(len(titles), 3)
 
 
 class TestVersion(unittest.TestCase):
@@ -76,7 +75,48 @@ def check_using_test_db():
         raise e
 
 
-if __name__ == '__main__':
-    check_using_test_db()
+server_process = None
 
-    unittest.main()
+
+def start_server():
+    """Start NotesApp backend."""
+    global server_process
+    server_process = subprocess.Popen(["python", "notes_app_server/server.py",
+                                       "--use-test-db"])
+
+
+def wait_server():
+    """Wait until server responding."""
+    ready = False
+    while not ready:
+        time.sleep(1)
+        try:
+            requests.get(URL + "/version")
+            ready = True
+        except requests.exceptions.ConnectionError:
+            pass
+
+
+def stop_server():
+    """Stop NotesApp backend."""
+    global server_process
+    time.sleep(1)
+    subprocess.check_output(["kill", "-s", "SIGINT", str(server_process.pid)])
+
+
+def run_tests():
+    """Run tests and then stop server."""
+    check_using_test_db()
+    unittest.main(exit=False)
+
+
+def main():
+    """Run the whole thing."""
+    start_server()
+    wait_server()
+    run_tests()
+    stop_server()
+
+
+if __name__ == '__main__':
+    main()

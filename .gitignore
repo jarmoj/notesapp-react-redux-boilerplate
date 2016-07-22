@@ -1,2 +1,6 @@
 node_modules
 dist
+.tox
+__pycache__
+.cache
+*.egg-info
