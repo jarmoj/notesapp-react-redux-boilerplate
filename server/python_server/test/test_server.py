@@ -59,6 +59,59 @@ class TestVersion(unittest.TestCase):
         self.assertIn('is_test_db', r.json())
 
 
+class TestSearch(unittest.TestCase):
+    """Test /search?q=(.*) .
+
+    /search?q=(.*)
+    """
+
+    def test_search_empty_return_all(self):
+        """Test /search?q= ."""
+        r = get("/search?q=")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('notes', r.json())
+        notes = r.json()['notes']
+        self.assertEqual(len(notes), 3)
+        note = notes[0]
+        for part in ['title', 'text']:
+            self.assertIn(part, note)
+
+    def test_search_wrong_return_none(self):
+        """Test /search?q=nothing ."""
+        r = get("/search?q=nothing")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('notes', r.json())
+        notes = r.json()['notes']
+        self.assertEqual(len(notes), 0)
+
+    def test_search_to_get_one(self):
+        """Test /search?q=react ."""
+        r = get("/search?q=react")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('notes', r.json())
+        notes = r.json()['notes']
+        self.assertEqual(len(notes), 1)
+        note = notes[0]
+        for part in ['title', 'text']:
+            self.assertIn(part, note)
+        self.assertEqual(note["title"], "react")
+
+    def test_search_prefix_to_get_two(self):
+        """Test /search?q=re ."""
+        r = get("/search?q=re")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('notes', r.json())
+        notes = r.json()['notes']
+        self.assertEqual(len(notes), 2)
+        note = notes[0]
+        for part in ['title', 'text']:
+            self.assertIn(part, note)
+
+
 class NotTestDb(Exception):
     """Exception raised if not using test database."""
 

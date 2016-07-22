@@ -32,6 +32,29 @@ db = {
 }
 
 
+def tokenize(s):
+    """Split string into tokens."""
+    return [p for p in s.split(" ") if p]
+
+
+def search_notes(query):
+    """Search notes by query."""
+    def match_token(note, tokens):
+        """Test if note contains any of the tokens."""
+        for token in query_tokens:
+            for part in ["title", "text"]:
+                if token in note[part]:
+                    return True
+        return False
+
+    notes = []
+    query_tokens = tokenize(query)
+    for note in db["notes"]:
+        if match_token(note, query_tokens):
+            notes.append(note)
+    return notes
+
+
 class VersionRootHandler(tornado.web.RequestHandler):
     """Handle /version ."""
 
@@ -67,10 +90,30 @@ class NotesTitlesHandler(tornado.web.RequestHandler):
         self.write(response)
 
 
+class NotesSearchHandler(tornado.web.RequestHandler):
+    """Handle /search?q=(.*) ."""
+
+    def get(self):
+        """Handle get and return all notes matching search query."""
+        response = {
+            'notes': []
+        }
+        if self.get_argument('q') == "":
+            response = {
+                'notes': db["notes"]
+            }
+        else:
+            response = {
+                'notes': search_notes(self.get_argument('q'))
+            }
+        self.write(response)
+
+
 application = tornado.web.Application([
     (r"/version", VersionRootHandler),
     (r"/notes", NotesRootHandler),
     (r"/notes/titles", NotesTitlesHandler),
+    (r"/search", NotesSearchHandler),
 ])
 
 
