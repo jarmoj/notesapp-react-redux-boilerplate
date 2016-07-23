@@ -1,5 +1,5 @@
 import * as types from '../types';
-import {Map} from 'immutable';
+import {Map, fromJS} from 'immutable';
 import axios from 'axios';
 import urlencode from 'urlencode';
 
@@ -47,9 +47,11 @@ export function search(query) {
       console.log("search().dispatch.then");
       const notes = response.data;
       console.log(notes);
+      const immutableNotes = fromJS(notes.notes);
+
       return [
         dispatch(setQuery(query)),
-        dispatch(setNotes(notes))
+        dispatch(setNotes(immutableNotes))
       ];
     });
   }
