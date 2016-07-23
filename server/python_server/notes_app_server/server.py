@@ -3,6 +3,8 @@ import tornado.escape
 import tornado.ioloop
 import tornado.web
 
+from tornado_cors import CorsMixin
+
 import logging
 import json
 import os
@@ -55,7 +57,13 @@ def search_notes(query):
     return notes
 
 
-class VersionRootHandler(tornado.web.RequestHandler):
+class CorsBaseHandler(CorsMixin, tornado.web.RequestHandler):
+    """Set up CORS and allow separate origin for the client."""
+
+    CORS_ORIGIN = 'http://localhost:8080'
+
+
+class VersionRootHandler(CorsBaseHandler):
     """Handle /version ."""
 
     def get(self):
@@ -68,7 +76,7 @@ class VersionRootHandler(tornado.web.RequestHandler):
         self.write(response)
 
 
-class NotesRootHandler(tornado.web.RequestHandler):
+class NotesRootHandler(CorsBaseHandler):
     """Handle /notes ."""
 
     def get(self):
@@ -79,7 +87,7 @@ class NotesRootHandler(tornado.web.RequestHandler):
         self.write(response)
 
 
-class NotesTitlesHandler(tornado.web.RequestHandler):
+class NotesTitlesHandler(CorsBaseHandler):
     """Handle /notes/titles ."""
 
     def get(self):
@@ -90,7 +98,7 @@ class NotesTitlesHandler(tornado.web.RequestHandler):
         self.write(response)
 
 
-class NotesSearchHandler(tornado.web.RequestHandler):
+class NotesSearchHandler(CorsBaseHandler):
     """Handle /search?q=(.*) ."""
 
     def get(self):
