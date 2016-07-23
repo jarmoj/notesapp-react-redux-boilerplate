@@ -19,8 +19,12 @@ const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const mockAxios = new MockAdapter(axios);
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
+mockAxios.onGet(`${actions.URL_BASE}/search?q=`).reply(200, {
   notes: _state.get("notes").toJS()
+});
+
+mockAxios.onGet(`${actions.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
+  notes: []
 });
 
 describe('actions', () => {
@@ -33,8 +37,30 @@ describe('actions', () => {
     expect(actions.setState(state)).to.deep.equal(expectedAction);
   });
 
-  it('should create an action to set query and dispatch a new search', () => {
+  it('should give action to set query and set notes to empty with difficult query', () => {
     const query = 'test query';
+    const notes = List.of();
+    const expectedActions = [
+      {
+        type: types.SET_QUERY,
+        query
+      },
+      {
+        type: types.SET_NOTES,
+        notes
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    store.dispatch(actions.search(query)).then(() => {
+      const actionsGot = store.getActions();
+      expect(actionsGot).to.deep.equal(expectedActions);
+    });
+  });
+
+  it('should give action to set query and set notes to all with empty query', () => {
+    const query = '';
     const notes = _state.get("notes");
     const expectedActions = [
       {
