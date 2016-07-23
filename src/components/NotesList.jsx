@@ -133,6 +133,7 @@ export class NotesList extends React.Component {
           <tbody>
             {this.a_de_scending(this.orderBy(this.props.notes)).map(item =>
                 <NotesListItem
+                  key={item.get('title')}
                   ref={(c) => this._items = (this._items ? this._items.concat([c]) : [c]) }
                   title={item.get('title')}
                   text={item.get('text')}

@@ -10,22 +10,39 @@ import _state from '../test/test_data';
 import * as types from './types';
 import thunk from 'redux-thunk';
 
-function createThunkStore(rootReducer) {
+function createToolsStore(rootReducer) {
   return createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    _state,
+    compose(
+      applyMiddleware(thunk),
+      window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
   );
 }
 
-const createStoreDevTools = compose(
-  window.devToolsExtension ? window.devToolsExtension() : f => f
-)(createThunkStore);
-const store = createStoreDevTools(reducer);
+// const createStoreDevTools = compose(
+//   window.devToolsExtension ? window.devToolsExtension() : f => f
+// )(createThunkStore);
+const store = createToolsStore(reducer);
 
-store.dispatch({
-  type: types.SET_STATE,
-  _state
-});
+// function createThunkStore(rootReducer) {
+//   return createStore(
+//     rootReducer,
+//     applyMiddleware(thunk)
+//   );
+// }
+//
+// const createStoreDevTools = compose(
+//   window.devToolsExtension ? window.devToolsExtension() : f => f
+// )(createThunkStore);
+// const store = createStoreDevTools(reducer);
+
+
+// store.dispatch({
+//   type: types.SET_STATE,
+//   _state
+// });
 
 if (typeof window !== 'undefined') {
   require('./styles/index.scss');

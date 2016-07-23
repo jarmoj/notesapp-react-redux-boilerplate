@@ -3,21 +3,14 @@ import {Map} from 'immutable';
 import axios from 'axios';
 import urlencode from 'urlencode';
 
-const URL=`http://localhost:3456/search/$(QUERY)`;
+const URL_BASE='http://localhost:3456';
+const URL=`${URL_BASE}/search?q=`;
 
 export function restSearchNotes(query) {
   console.log("restSearchNotes()");
   const encoded = urlencode(query);
-  const url = `$(URL)&$(encoded)`;
-  //return axios.get(url);
-  return {
-    then: (dispatch) => {
-      console.log("then");
-      dispatch({
-        data: []
-      })
-    }
-  };
+  const url = `${URL}${encoded}`;
+  return axios.get(url);
 }
 
 export function searchNotes(query) {
@@ -52,8 +45,8 @@ export function search(query) {
     console.log("search().dispatch");
     return searchNotes(query).then((response) => {
       console.log("search().dispatch.then");
-      //const notes = response.data;
-      const notes = [];
+      const notes = response.data;
+      console.log(notes);
       return [
         dispatch(setQuery(query)),
         dispatch(setNotes(notes))

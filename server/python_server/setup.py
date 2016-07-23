@@ -19,5 +19,6 @@ setup(name="NotesApp python backend",
       install_requires=[
         "requests",
         "tornado>=4.3",
+        "tornado-cors>=0.6.0",
         "pytest",
       ],)
