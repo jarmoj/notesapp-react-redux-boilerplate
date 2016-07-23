@@ -13,6 +13,10 @@ function setQuery(state, query) {
   return state.set('query', query);
 }
 
+function setNotes(state, notes) {
+  return state.set('notes', notes);
+}
+
 function addNote(state, title, text, timestamp) {
   const newNote = Map({
     title: title,
@@ -58,6 +62,8 @@ export default function(state = Map(), action) {
       return setState(state, action.state);
     case types.SET_QUERY:
       return setQuery(state, action.query);
+    case types.SET_NOTES:
+      return setNotes(state, action.notes);
     case types.ADD_NOTE:
       return addNote(state, action.title, action.text, action.timestamp);
     case types.SELECT_NOTE:
