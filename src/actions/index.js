@@ -41,7 +41,7 @@ export function setNotes(notes) {
 
 export function search(query) {
   console.log("search('" + query + "')");
-  return (dispatch) => {
+  return dispatch => {
     console.log("search().dispatch");
     return searchNotes(query).then((response) => {
       console.log("search().dispatch.then");
