@@ -4,11 +4,38 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import TestUtils from 'react-addons-test-utils';
 import {NotesAppContainer, NotesApp, mapStateToProps} from '../../src/containers/NotesApp';
+import {NotesListItem} from '../../src/components/NotesListItem';
 import {expect} from 'chai';
 import reducer from '../../src/reducers/index';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
 import * as types from '../../src/types';
+import * as actions from '../../src/actions/index';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import urlencode from 'urlencode';
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+const mockAxios = new MockAdapter(axios);
+
+mockAxios.onGet(`${actions.URL_BASE}/search?q=`).reply(200, {
+  notes: _state.get("notes").toJS()
+});
+
+mockAxios.onGet(`${actions.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
+  notes: []
+});
+
+mockAxios.onGet(`${actions.URL_BASE}/search?q=react`).reply(200, {
+  notes: [_state.get("notes").get(0).toJS()]
+});
+
+mockAxios.onGet(`${actions.URL_BASE}/search?q=re`).reply(200, {
+  notes: [_state.get("notes").get(0).toJS(), _state.get("notes").get(1).toJS()]
+});
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -43,31 +70,59 @@ const {renderIntoDocument,
 describe('NotesApp - Search', () => {
   it('search notes with empty returns all the notes', () => {
     const query="";
+    const getState = _state;
+    const store = mockStore(getState);
     const component = renderIntoDocument(
-      <NotesApp {...mapStateToProps(_state)}/>
+      <Provider store={store}>
+        <NotesAppContainer/>
+      </Provider>
     );
-    expect(component.searchNotes(query)).to.equal(_state.get('notes'));
+    store.dispatch(actions.search(query)).then(() => {
+      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
+      expect(items.length).to.equal(3);
+    });
   });
   it('search notes with nothing matching returns none of the notes', () => {
     const query="fdsfd7yf88732y784";
+    const getState = _state;
+    const store = mockStore(getState);
     const component = renderIntoDocument(
-      <NotesApp {...mapStateToProps(_state)}/>
+      <Provider store={store}>
+        <NotesAppContainer/>
+      </Provider>
     );
-    expect(component.searchNotes(query)).to.equal(List.of());
+    store.dispatch(actions.search(query)).then(() => {
+      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
+      expect(items.length).to.equal(0);
+    });
   });
   it('search notes with a singular match returns one of the notes', () => {
     const query="react";
+    const getState = _state;
+    const store = mockStore(getState);
     const component = renderIntoDocument(
-      <NotesApp {...mapStateToProps(_state)}/>
+      <Provider store={store}>
+        <NotesAppContainer/>
+      </Provider>
     );
-    expect(component.searchNotes(query).count()).to.equal(1);
+    store.dispatch(actions.search(query)).then(() => {
+      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
+      expect(items.length).to.equal(1);
+    });
   });
   it('search notes with proper common prefix returns those notes', () => {
     const query="re";
+    const getState = _state;
+    const store = mockStore(getState);
     const component = renderIntoDocument(
-      <NotesApp {...mapStateToProps(_state)}/>
+      <Provider store={store}>
+        <NotesAppContainer/>
+      </Provider>
     );
-    expect(component.searchNotes(query).count()).to.equal(2);
+    store.dispatch(actions.search(query)).then(() => {
+      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
+      expect(items.length).to.equal(2);
+    });
   });
 });
 
