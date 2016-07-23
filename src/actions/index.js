@@ -3,13 +3,13 @@ import {Map, fromJS} from 'immutable';
 import axios from 'axios';
 import urlencode from 'urlencode';
 
-const URL_BASE='http://localhost:3456';
-const URL=`${URL_BASE}/search?q=`;
+export const URL_BASE='http://localhost:3456';
+export const SEARCH_URL=`${URL_BASE}/search?q=`;
 
 export function restSearchNotes(query) {
   console.log("restSearchNotes()");
   const encoded = urlencode(query);
-  const url = `${URL}${encoded}`;
+  const url = `${SEARCH_URL}${encoded}`;
   return axios.get(url);
 }
 
