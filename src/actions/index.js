@@ -7,14 +7,12 @@ export const URL_BASE='http://localhost:3456';
 export const SEARCH_URL=`${URL_BASE}/search?q=`;
 
 export function restSearchNotes(query) {
-  console.log("restSearchNotes()");
   const encoded = urlencode(query);
   const url = `${SEARCH_URL}${encoded}`;
   return axios.get(url);
 }
 
 export function searchNotes(query) {
-  console.log("searchNotes()");
   return restSearchNotes(query);
 }
 
@@ -40,13 +38,9 @@ export function setNotes(notes) {
 }
 
 export function search(query) {
-  console.log("search('" + query + "')");
   return dispatch => {
-    console.log("search().dispatch");
     return searchNotes(query).then((response) => {
-      console.log("search().dispatch.then");
       const notes = response.data;
-      console.log(notes);
       const immutableNotes = fromJS(notes.notes);
 
       return [
