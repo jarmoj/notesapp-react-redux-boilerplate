@@ -18,7 +18,7 @@ export class NotesApp extends React.Component {
     return (
       <div className="notes-app">
         <NotesSearch
-          setQuery={this.props.search}
+          search={this.props.search}
           ref={c => this._search = c}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
