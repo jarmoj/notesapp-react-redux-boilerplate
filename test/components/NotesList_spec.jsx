@@ -19,14 +19,14 @@ describe('NotesList', () => {
     expect(component._items[1].props.title).to.equal('redux');
     expect(component._items[2].props.title).to.equal('immutable');
   });
-  it('clicking note in list will call noteClicked handler', () => {
+  it('clicking note in list will call selectNote handler', () => {
     let wasCalled = "";
     const notes = _state.get('notes');
-    let noteClicked = function (title) {
+    let selectNote = function (title) {
       wasCalled = title;
     }
     const component = renderIntoDocument(
-      <NotesList notes={notes} noteClicked={noteClicked}/>
+      <NotesList notes={notes} selectNote={selectNote}/>
     );
     Simulate.click(component._items[1]._row);
 
