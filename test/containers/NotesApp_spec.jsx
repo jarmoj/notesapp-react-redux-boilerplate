@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import TestUtils from 'react-addons-test-utils';
+import { mount, shallow } from 'enzyme';
 import {NotesAppContainer, NotesApp, mapStateToProps} from '../../src/containers/NotesApp';
 import {NotesListItem} from '../../src/components/NotesListItem';
 import {expect} from 'chai';
@@ -10,7 +11,7 @@ import reducer from '../../src/reducers/index';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
 import * as types from '../../src/types';
-import * as actions from '../../src/actions/index';
+import * as actionCreators from '../../src/actions/index';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import axios from 'axios';
@@ -21,24 +22,30 @@ const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const mockAxios = new MockAdapter(axios);
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=`).reply(200, {
+mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=`).reply(200, {
   notes: _state.get("notes").toJS()
 });
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
+mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
   notes: []
 });
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=react`).reply(200, {
+mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=react`).reply(200, {
   notes: [_state.get("notes").get(0).toJS()]
 });
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=re`).reply(200, {
+mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=re`).reply(200, {
   notes: [_state.get("notes").get(0).toJS(), _state.get("notes").get(1).toJS()]
+});
+
+mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=fdsfd7yf88732y784`).reply(200, {
+  notes: []
 });
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
+       scryRenderedDOMComponentsWithClass,
+       scryRenderedComponentsWithType,
        Simulate} = TestUtils;
 
  describe('NotesApp - Default', () => {
@@ -68,88 +75,122 @@ const {renderIntoDocument,
  });
 
 describe('NotesApp - Search', () => {
-  it('search notes with empty returns all the notes', () => {
-    const query="";
+  const test_query = (query, expect_items_length) => {
     const getState = _state;
     const store = mockStore(getState);
-    const component = renderIntoDocument(
-      <Provider store={store}>
-        <NotesAppContainer/>
-      </Provider>
-    );
-    store.dispatch(actions.search(query)).then(() => {
-      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
-      expect(items.length).to.equal(3);
+    return store.dispatch(actionCreators.search(query)).then(() => {
+      const actions = store.getActions();
+      const nextState = reducer(reducer(_state, actions[0]), actions[1]);
+      const nextStore = mockStore(nextState);
+
+      const component = mount(
+        <Provider store={nextStore}>
+          <NotesAppContainer/>
+        </Provider>
+      );
+      const items = component.find("NotesListItem");
+      expect(items.length).to.equal(expect_items_length);
     });
+  };
+  it('search notes with empty returns all the notes', () => {
+    return test_query("", 3);
   });
   it('search notes with nothing matching returns none of the notes', () => {
-    const query="fdsfd7yf88732y784";
-    const getState = _state;
-    const store = mockStore(getState);
-    const component = renderIntoDocument(
-      <Provider store={store}>
-        <NotesAppContainer/>
-      </Provider>
-    );
-    store.dispatch(actions.search(query)).then(() => {
-      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
-      expect(items.length).to.equal(0);
-    });
+    return test_query("fdsfd7yf88732y784", 0);
   });
   it('search notes with a singular match returns one of the notes', () => {
-    const query="react";
-    const getState = _state;
-    const store = mockStore(getState);
-    const component = renderIntoDocument(
-      <Provider store={store}>
-        <NotesAppContainer/>
-      </Provider>
-    );
-    store.dispatch(actions.search(query)).then(() => {
-      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
-      expect(items.length).to.equal(1);
-    });
+    return test_query("react", 1);
   });
   it('search notes with proper common prefix returns those notes', () => {
-    const query="re";
-    const getState = _state;
-    const store = mockStore(getState);
-    const component = renderIntoDocument(
-      <Provider store={store}>
-        <NotesAppContainer/>
-      </Provider>
-    );
-    store.dispatch(actions.search(query)).then(() => {
-      const items = scryRenderedDOMComponentsWithType(component, NotesListItem);
-      expect(items.length).to.equal(2);
-    });
+    return test_query("re", 2);
   });
 });
 
 describe('NotesApp - Selection', () => {
   it('selectNote changes the search query into the note\'s title', () => {
-    const component = renderIntoDocument(
-      <NotesApp {...mapStateToProps(_state)} />
+    const selected = 'redux';
+    const getState = _state;
+    const store = mockStore(getState);
+    store.dispatch(actionCreators.selectNote(selected));
+    const actions = store.getActions();
+    const nextState = reducer(reducer(_state, actions[0]), actions[1]);
+    const nextStore = mockStore(nextState);
+
+    const component = mount(
+      <Provider store={nextStore}>
+        <NotesAppContainer/>
+      </Provider>
     );
-    expect(component._search._input.value).to.equal("");
+    const items = component.find("NotesListItem");
+    const input = component.find("NotesSearch");
+    expect(items.at(1).props().title).to.equal(input.get(0)._input.value);
   });
+
   it('selectNote changes the currently selected note in list', () => {
-    expect(false).to.equal(true);
-  });
-  it('clearSelection handler changes the currently selected note', () => {
-    expect(false).to.equal(true);
+    const selected = 'redux';
+    const getState = _state;
+    const store = mockStore(getState);
+    store.dispatch(actionCreators.selectNote(selected));
+    const actions = store.getActions();
+    const nextState = reducer(reducer(_state, actions[0]), actions[1]);
+    const nextStore = mockStore(nextState);
+
+    const component = mount(
+      <Provider store={nextStore}>
+        <NotesAppContainer/>
+      </Provider>
+    );
+    const items = component.find("NotesListItem");
+    expect(items.at(1).props().selected).to.equal(true);
   });
 });
 
 describe('NotesApp - Key - Escape', () => {
-  it('pressing esc will call escapePressed()', () => {
-    expect(false).to.equal(true);
+  it('pressing esc will call clearSelection()', () => {
+    let wasCalled = false;
+    const clearSelection = () => {
+      wasCalled = true;
+    }
+    const store = mockStore(_state);
+
+    const component = mount(
+        <NotesApp clearSelection={clearSelection}/>
+    );
+    const app = component.find("NotesApp").get(0);
+    app.escapePressed();
+    expect(wasCalled).to.equal(true);
   });
-  it('calling onKeyDown with esc event will deselect current selection', () => {
-    expect(false).to.equal(true);
+  it('calling calling clearSelection() will deselect current selection', () => {
+    const store = mockStore(_state.set("query", "something"));
+    return store.dispatch(actionCreators.clearSelection()).then(() => {
+      const actions = store.getActions();
+      const nextState = reducer(reducer(reducer(_state, actions[0]), actions[1]), actions[2]);
+      const nextStore = mockStore(nextState);
+
+      const component = mount(
+        <Provider store={nextStore}>
+          <NotesAppContainer/>
+        </Provider>
+      );
+      const search = component.find("NotesSearch");
+      expect(search.props().selected).to.equal(null);
+    });
   });
   it('calling onKeyDown with esc event will clear search input', () => {
-    expect(false).to.equal(true);
+    const store = mockStore(_state.set("query", "something"));
+    return store.dispatch(actionCreators.clearSelection()).then(() => {
+      const actions = store.getActions();
+      const nextState = reducer(reducer(reducer(_state, actions[0]), actions[1]), actions[2]);
+      const nextStore = mockStore(nextState);
+
+      const component = mount(
+        <Provider store={nextStore}>
+          <NotesAppContainer/>
+        </Provider>
+      );
+      const search = component.find("NotesSearch");
+      expect(search.props().query).to.equal("");
+    });
   });
   it('clicking esc will return order to default modified order', () => {
     expect(false).to.equal(true);
