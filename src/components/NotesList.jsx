@@ -139,7 +139,7 @@ export class NotesList extends React.Component {
                   text={item.get('text')}
                   timestamp={item.get('timestamp')}
                   orderBy={this.props.orderBy}
-                  rowClicked={this.props.noteClicked}/>
+                  rowClicked={this.props.selectNote}
               )
             }
           </tbody>
