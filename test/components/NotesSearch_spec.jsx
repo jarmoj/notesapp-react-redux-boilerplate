@@ -10,14 +10,14 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
 describe('NotesSearch', () => {
-  it('returns the query string in setQuery when edited', () => {
+  it('returns the query string in search() when edited', () => {
     let wasCalled = "";
     let inputStr = "jkhiU/(F/&RU€%€DUF&Guihiughgdj)";
-    let setQuery = function (query) {
+    let search = function (query) {
       wasCalled = query;
     }
     const component = renderIntoDocument(
-     <NotesSearch setQuery={setQuery} />
+     <NotesSearch search={search} />
     );
     Simulate.change(component._input, {target:{value: inputStr}});
 
