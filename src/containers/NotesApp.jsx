@@ -1,4 +1,5 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as actionCreators from '../actions/index';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
@@ -43,4 +44,20 @@ export function mapStateToProps(state) {
   }
 }
 
-export const NotesAppContainer = connect(mapStateToProps, actionCreators)(NotesApp);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    searchNotes: bindActionCreators(actionCreators.searchNotes, dispatch),
+    setState: bindActionCreators(actionCreators.setState, dispatch),
+    setQuery: bindActionCreators(actionCreators.setQuery, dispatch),
+    setNotes: bindActionCreators(actionCreators.setNotes, dispatch),
+    search: bindActionCreators(actionCreators.search, dispatch),
+    addNote: bindActionCreators(actionCreators.addNote, dispatch),
+    selectNote: bindActionCreators(actionCreators.selectNote, dispatch),
+    clearSelection: bindActionCreators(actionCreators.clearSelection, dispatch),
+    editNote: bindActionCreators(actionCreators.editNote, dispatch),
+    deleteNote: bindActionCreators(actionCreators.deleteNote, dispatch),
+    toggleOrderBy: bindActionCreators(actionCreators.toggleOrderBy, dispatch)
+  }
+};
+
+export const NotesAppContainer = connect(mapStateToProps, mapDispatchToProps)(NotesApp);
