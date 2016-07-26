@@ -53,7 +53,7 @@ describe('actions', () => {
 
     const getState = _state;
     const store = mockStore(getState);
-    store.dispatch(actions.search(query)).then(() => {
+    return store.dispatch(actions.search(query)).then(() => {
       const actionsGot = store.getActions();
       expect(actionsGot).to.deep.equal(expectedActions);
     });
@@ -75,7 +75,7 @@ describe('actions', () => {
 
     const getState = _state;
     const store = mockStore(getState);
-    store.dispatch(actions.search(query)).then(() => {
+    return store.dispatch(actions.search(query)).then(() => {
       const actionsGot = store.getActions();
       expect(actionsGot).to.deep.equal(expectedActions);
     });
