@@ -9,20 +9,28 @@ export class NotesSearch extends React.Component {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
-      query: ''
+      value: props.query
     };
   }
+  componentWillReceiveProps(newProps) {
+    this.setState({ value: newProps.query });
+  }
   onChangeCallback(e) {
-    this.setState({ query: e.target.value });
-    this.props.setQuery(e.target.value);
+    this.setState({ value: e.target.value });
+    this.props.search(e.target.value);
+  }
+  focus() {
+    this._input.focus();
   }
   render() {
     return (
       <div className="notes-search-border">
-        <input className="notes-search"
-               ref={(c) => this._input = c}
-               value={this.state.query}
-               onChange={this.onChangeCallback.bind(this)}/>
+        <input
+          type="text"
+          className="notes-search"
+          ref={(c) => this._input = c}
+          value={this.state.value}
+          onChange={this.onChangeCallback.bind(this)}/>
       </div>
       );
   }
