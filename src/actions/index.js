@@ -43,10 +43,8 @@ export function search(query) {
       const notes = response.data;
       const immutableNotes = fromJS(notes.notes);
 
-      return [
-        dispatch(setQuery(query)),
-        dispatch(setNotes(immutableNotes))
-      ];
+      dispatch(setQuery(query));
+      dispatch(setNotes(immutableNotes));
     });
   }
 }
