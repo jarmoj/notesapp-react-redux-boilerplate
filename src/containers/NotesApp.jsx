@@ -13,6 +13,20 @@ export class NotesApp extends React.Component {
   constructor() {
     super();
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.setUpKeyboardHandling();
+  }
+  setUpKeyboardHandling() {
+    window.onkeydown = (e) => {
+      switch(e.keyCode) {
+        case 27:
+          this.escapePressed();
+          break;
+      }
+    }
+  }
+  escapePressed() {
+    this.props.clearSelection();
+    this._search.focus();
   }
   render() {
     return (
