@@ -60,10 +60,29 @@ export function addNote(title, text) {
 }
 
 export function selectNote(title) {
-  return {
-    type: types.SELECT_NOTE,
-    title
-  };
+  return dispatch => {
+    dispatch(setQuery(title));
+    dispatch({
+      type: types.SELECT_NOTE,
+      title
+    });
+  }
+}
+
+export function clearSelection() {
+  return dispatch => {
+    return searchNotes('').then((response) => {
+      const notes = response.data;
+      const immutableNotes = fromJS(notes.notes);
+
+      dispatch({
+        type: types.SELECT_NOTE,
+        title: null
+      });
+      dispatch(setQuery(''));
+      dispatch(setNotes(immutableNotes));
+    });
+  }
 }
 
 export function editNote(selected, title, text) {

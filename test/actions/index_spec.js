@@ -97,12 +97,49 @@ describe('actions', () => {
   });
 
   it('should create an action to select note by title', () => {
-    const title = 'test title';
-    const expectedAction = {
-      type: types.SELECT_NOTE,
-      title
-    };
-    expect(actions.selectNote(title)).to.deep.equal(expectedAction);
+    const title = 'react';
+    const notes = List.of(_state.get("notes").get(0));
+    const expectedActions = [
+      {
+        type: types.SET_QUERY,
+        query: title
+      },
+      {
+        type: types.SELECT_NOTE,
+        title
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    store.dispatch(actions.selectNote(title));
+    const actionsGot = store.getActions();
+    expect(actionsGot).to.deep.equal(expectedActions);
+  });
+
+  it('clearSelection should give action to empty query and set notes to all and selected to null', () => {
+    const notes = List.of();
+    const expectedActions = [
+      {
+        type: types.SELECT_NOTE,
+        title: null
+      },
+      {
+        type: types.SET_QUERY,
+        query: ''
+      },
+      {
+        type: types.SET_NOTES,
+        notes: _state.get("notes")
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    return store.dispatch(actions.clearSelection()).then(() => {
+      const actionsGot = store.getActions();
+      expect(actionsGot).to.deep.equal(expectedActions);
+    });
   });
 
   it('should create an action to edit the note having title with given text', () => {
