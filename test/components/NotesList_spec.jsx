@@ -4,6 +4,7 @@ import {NotesList, UP_POINTING, DOWN_POINTING} from '../../src/components/NotesL
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
 import _state from '../test_data';
+import { mount, shallow } from 'enzyme';
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -171,5 +172,12 @@ describe('NotesList', () => {
     Simulate.click(component._arrowHeader);
 
     expect(wasCalled).to.equal(true);
+  });
+  it('list is scrollable (in class)', () => {
+    const component = shallow(
+      <NotesList/>
+    );
+    const scrollable = component.find(".scrollable");
+    expect(scrollable).to.not.equal(undefined);
   });
 });

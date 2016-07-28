@@ -21,6 +21,10 @@ html, body {
   height: 100%;
 }
 
+body, html {
+  overflow: hidden;
+}
+
 input, ul, li, textarea, div {
   margin: 0 0 0 0;
   padding: 0 0 0 0;
@@ -45,6 +49,10 @@ input, ul, li, textarea, div {
 
 input:focus, select:focus, textarea:focus, button:focus {
   outline: none;
+}
+
+.scrollable {
+  overflow: auto;
 }
 
 .notes-search {
@@ -73,6 +81,9 @@ input:focus, select:focus, textarea:focus, button:focus {
   width: 100%;
   padding: 0;
   border-collapse: collapse;
+}
+
+.notes-list-rows-view {
 }
 
 th {
@@ -167,6 +178,11 @@ th {
 
 .notes-search-border, .notes-edit-border, .notes-list-border {
   @include round-corners($border-strong);
+}
+
+.notes-list-border {
+  display:flex;
+  flex-direction: column;
 }
 
 .notes-search-border {
