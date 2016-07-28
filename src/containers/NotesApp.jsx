@@ -34,6 +34,22 @@ export class NotesApp extends React.Component {
         this.props.toggleAcendingDescending();
     }
   }
+  orderByTimestamp() {
+    if (this.props.orderByCreated === undefined) {
+      return;
+    }
+
+    if (this.props.orderByModified === undefined) {
+      return;
+    }
+
+    if (this.props.orderBy.split(" ")[0] == "modified") {
+      this.props.orderByCreated();
+    }
+    else {
+      this.props.orderByModified();
+    }
+  }
   render() {
     return (
       <div className="notes-app">
@@ -45,7 +61,12 @@ export class NotesApp extends React.Component {
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
             <NotesList
-              {...this.props}
+              notes={this.props.notes}
+              orderBy={this.props.orderBy}
+              selected={this.props.selected}
+              titleHeaderClicked={this.props.orderByTitle}
+              timestampHeaderClicked={this.orderByTimestamp.bind(this)}
+              arrowHeaderClicked={this.props.toggleAcendingDescending}
               ref={c => this._list = c}/>
             <NotesEdit
               {...this.props}

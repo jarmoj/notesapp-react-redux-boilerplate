@@ -12,17 +12,17 @@ export class NotesList extends React.Component {
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
   titleHeaderOnClickCallback() {
-    if ('titleHeaderClicked' in this.props) {
+    if (this.props.titleHeaderClicked !== undefined) {
       this.props.titleHeaderClicked();
     }
   }
   timestampHeaderOnClickCallback() {
-    if ('timestampHeaderClicked' in this.props) {
+    if (this.props.timestampHeaderClicked !== undefined) {
       this.props.timestampHeaderClicked();
     }
   }
   arrowHeaderOnClickCallback() {
-    if ('arrowHeaderClicked' in this.props) {
+    if (this.props.arrowHeaderClicked !== undefined) {
       this.props.arrowHeaderClicked();
     }
   }
@@ -88,10 +88,12 @@ export class NotesList extends React.Component {
       return 'Modified';
     }
 
-    if (this.props.orderBy.indexOf('modified') != -1) {
+    const parts = this.props.orderBy.split(" ");
+
+    if (parts[0] == "modified") {
       return 'Modified';
     }
-    else if (this.props.orderBy.indexOf('created') != -1) {
+    else if (parts[0] == "created") {
       return 'Created';
     }
     else {
@@ -121,13 +123,13 @@ export class NotesList extends React.Component {
             <tr>
               <th className="notes-list-header-title"
                   ref={c => this._titleHeader = c}
-                  onClick={this.titleHeaderOnClickCallback()}>Title</th>
+                  onClick={this.titleHeaderOnClickCallback.bind(this)}>Title</th>
               <th className="notes-list-header-date"
                   ref={c => this._timestampHeader = c}
-                  onClick={this.timestampHeaderOnClickCallback()}>{this.timestampHeaderText()}</th>
+                  onClick={this.timestampHeaderOnClickCallback.bind(this)}>{this.timestampHeaderText()}</th>
               <th className="notes-list-header-destroy"
                   ref={c => this._arrowHeader = c}
-                  onClick={this.arrowHeaderOnClickCallback()}>{this.arrowHeaderText()}</th>
+                  onClick={this.arrowHeaderOnClickCallback.bind(this)}>{this.arrowHeaderText()}</th>
             </tr>
           </thead>
         </table>

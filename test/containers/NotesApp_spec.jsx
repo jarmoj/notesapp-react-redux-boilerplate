@@ -51,7 +51,7 @@ const {renderIntoDocument,
  describe('NotesApp - Default', () => {
    it('by default the notes search is empty', () => {
      const component = renderIntoDocument(
-       <NotesApp {...mapStateToProps(_state)} />
+       <NotesApp {...mapStateToProps(_state)}/>
      );
      expect(component._search._input.value).to.equal("");
    });
