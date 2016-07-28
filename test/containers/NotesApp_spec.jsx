@@ -151,14 +151,40 @@ describe('NotesApp - Key - Escape', () => {
     const clearSelection = () => {
       wasCalled = true;
     }
-    const store = mockStore(_state);
-
     const component = mount(
-        <NotesApp clearSelection={clearSelection}/>
+        <NotesApp clearSelection={clearSelection} orderBy=""/>
     );
     const app = component.find("NotesApp").get(0);
     app.escapePressed();
     expect(wasCalled).to.equal(true);
+  });
+  it('pressing esc will call toggleAcendingDescending() to default to descending', () => {
+    let wasCalled = false;
+    const toggleAcendingDescending = () => {
+      wasCalled = true;
+    }
+
+    const componentTrueCase = mount(
+        <NotesApp
+          toggleAcendingDescending={toggleAcendingDescending}
+          clearSelection={() => false}
+          orderBy="title ascending"/>
+    );
+    const appTrueCase = componentTrueCase.find("NotesApp").get(0);
+    appTrueCase.escapePressed();
+    expect(wasCalled).to.equal(true);
+
+    wasCalled = false;
+    const componentFalseCase = mount(
+        <NotesApp
+          toggleAcendingDescending={toggleAcendingDescending}
+          clearSelection={() => false}
+          orderBy="title descending"/>
+    );
+    const appFalseCase = componentFalseCase.find("NotesApp").get(0);
+    appFalseCase.escapePressed();
+    expect(wasCalled).to.equal(false);
+
   });
   it('calling calling clearSelection() will deselect current selection', () => {
     const store = mockStore(_state.set("query", "something"));
@@ -191,8 +217,5 @@ describe('NotesApp - Key - Escape', () => {
       const search = component.find("NotesSearch");
       expect(search.props().query).to.equal("");
     });
-  });
-  it('clicking esc will return order to default modified order', () => {
-    expect(false).to.equal(true);
   });
 });

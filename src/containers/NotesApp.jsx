@@ -27,6 +27,12 @@ export class NotesApp extends React.Component {
   escapePressed() {
     this.props.clearSelection();
     this._search.focus();
+    this.setAscendingDescendingToDefault();
+  }
+  setAscendingDescendingToDefault() {
+    if (this.props.orderBy.split(" ")[1] == "ascending") {
+        this.props.toggleAcendingDescending();
+    }
   }
   render() {
     return (
@@ -72,7 +78,10 @@ const mapDispatchToProps = (dispatch) => {
     clearSelection: bindActionCreators(actionCreators.clearSelection, dispatch),
     editNote: bindActionCreators(actionCreators.editNote, dispatch),
     deleteNote: bindActionCreators(actionCreators.deleteNote, dispatch),
-    toggleOrderBy: bindActionCreators(actionCreators.toggleOrderBy, dispatch)
+    orderByTitle: bindActionCreators(actionCreators.orderByTitle, dispatch),
+    orderByModified: bindActionCreators(actionCreators.orderByModified, dispatch),
+    orderByCreated: bindActionCreators(actionCreators.orderByCreated, dispatch),
+    toggleAcendingDescending: bindActionCreators(actionCreators.toggleAcendingDescending, dispatch)
   }
 };
 

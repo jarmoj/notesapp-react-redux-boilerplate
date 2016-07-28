@@ -103,8 +103,26 @@ export function deleteNote(selected) {
   };
 }
 
-export function toggleOrderBy() {
+export function orderByTitle() {
   return {
-    type: types.TOGGLE_ORDER_BY
+    type: types.ORDER_BY_TITLE
+  };
+}
+
+export function orderByModified() {
+  return {
+    type: types.ORDER_BY_MODIFIED
+  };
+}
+
+export function orderByCreated() {
+  return {
+    type: types.ORDER_BY_CREATED
+  };
+}
+
+export function toggleAcendingDescending() {
+  return {
+    type: types.TOGGLE_ASCENDING_DESCENDING
   };
 }

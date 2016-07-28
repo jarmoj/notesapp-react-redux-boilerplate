@@ -168,10 +168,31 @@ describe('actions', () => {
     expect(actions.deleteNote(selected)).to.deep.equal(expectedAction);
   });
 
-  it('should create an action to toggle list order between modified and created', () => {
+  it('should create an action to set list order by to title', () => {
     const expectedAction = {
-      type: types.TOGGLE_ORDER_BY
+      type: types.ORDER_BY_TITLE
     };
-    expect(actions.toggleOrderBy()).to.deep.equal(expectedAction);
+    expect(actions.orderByTitle()).to.deep.equal(expectedAction);
+  });
+
+  it('should create an action to set list order by to modified', () => {
+    const expectedAction = {
+      type: types.ORDER_BY_MODIFIED
+    };
+    expect(actions.orderByModified()).to.deep.equal(expectedAction);
+  });
+
+  it('should create an action to set list order by to created', () => {
+    const expectedAction = {
+      type: types.ORDER_BY_CREATED
+    };
+    expect(actions.orderByCreated()).to.deep.equal(expectedAction);
+  });
+
+  it('should create an action to toggle list order between ascending / descending', () => {
+    const expectedAction = {
+      type: types.TOGGLE_ASCENDING_DESCENDING
+    };
+    expect(actions.toggleAcendingDescending()).to.deep.equal(expectedAction);
   });
 });

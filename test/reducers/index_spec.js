@@ -123,21 +123,57 @@ describe('reducer', () => {
     expect(deletedIndex).to.equal(-1);
   });
 
-  types.TOGGLE_ORDER_BY
-  it('handles TOGGLE_ORDER_BY by toggling the order_by in state', () => {
+  it('handles ORDER_BY_TITLE by setting list order be by title', () => {
     const initialState = _state;
     const action = {
-      type: types.TOGGLE_ORDER_BY,
+      type: types.ORDER_BY_TITLE,
     }
-    expect(initialState.get('orderBy')).to.contain('modified');
+    expect(initialState.get('orderBy')).to.not.contain("title");
+
+    const nextState = reducer(initialState, action);
+
+    expect(nextState.get('orderBy')).to.contain('title');
+  });
+
+  it('handles ORDER_BY_MODIFIED by setting list order be by modified', () => {
+    const initialState = _state;
+    const action0 = {
+      type: types.ORDER_BY_TITLE,
+    }
+    const action = {
+      type: types.ORDER_BY_MODIFIED,
+    }
+    const nextState0 = reducer(initialState, action0);
+
+    expect(nextState0.get('orderBy')).to.not.contain("modified");
+
+    const nextState = reducer(nextState0, action);
+
+    expect(nextState.get('orderBy')).to.contain('modified');
+  });
+
+  it('handles ORDER_BY_CREATED by setting list order be by created', () => {
+    const initialState = _state;
+    const action = {
+      type: types.ORDER_BY_CREATED,
+    }
+    expect(initialState.get('orderBy')).to.not.contain("created");
 
     const nextState = reducer(initialState, action);
 
     expect(nextState.get('orderBy')).to.contain('created');
+  });
 
-    const nextState2 = reducer(nextState, action);
+  it('handles TOGGLE_ASCENDING_DESCENDING by toggling the list to be orderder between ascending / descending', () => {
+    const initialState = _state;
+    const action = {
+      type: types.TOGGLE_ASCENDING_DESCENDING,
+    }
+    expect(initialState.get('orderBy')).to.contain('descending');
 
-    expect(nextState2.get('orderBy')).to.contain('modified');
+    const nextState = reducer(initialState, action);
+
+    expect(nextState.get('orderBy')).to.contain('ascending');
   });
 
 });

@@ -48,12 +48,32 @@ function deleteNote(state, selected) {
   return state.update('notes', notes => notes.delete(index));
 }
 
-function toggleOrderBy(state) {
-  const was = state.get('orderBy');
-  if (state.get('orderBy').indexOf('modified') != -1) {
-    return state.set('orderBy', was.replace('modified', 'created'));
+function orderByX(state, x) {
+  const parts = state.get('orderBy').split(" ");
+  if (parts[1] == "ascending") {
+    return state.set('orderBy', x + " ascending");
   }
-  return state.set('orderBy', was.replace('created', 'modified'));
+  return state.set('orderBy', x + " descending");
+}
+
+function orderByTitle(state) {
+  return orderByX(state, "title");
+}
+
+function orderByModified(state) {
+  return orderByX(state, "modified");
+}
+
+function orderByCreated(state) {
+  return orderByX(state, "created");
+}
+
+function toggleAcendingDescending(state) {
+  const parts = state.get('orderBy').split(" ");
+  if (parts[1] == "ascending") {
+    return state.set('orderBy', parts[0] + " descending");
+  }
+  return state.set('orderBy', parts[0] + " ascending");
 }
 
 export default function(state = Map(), action) {
@@ -72,8 +92,14 @@ export default function(state = Map(), action) {
       return editNote(state, action.selected, action.title, action.text, action.timestamp);
     case types.DELETE_NOTE:
       return deleteNote(state, action.selected);
-    case types.TOGGLE_ORDER_BY:
-      return toggleOrderBy(state);
+    case types.ORDER_BY_TITLE:
+      return orderByTitle(state);
+    case types.ORDER_BY_MODIFIED:
+      return orderByModified(state);
+    case types.ORDER_BY_CREATED:
+      return orderByCreated(state);
+    case types.TOGGLE_ASCENDING_DESCENDING:
+      return toggleAcendingDescending(state);
   }
   return state;
 }
