@@ -36,18 +36,24 @@ db = {
 
 def tokenize(s):
     """Split string into tokens."""
-    return [p for p in s.split(" ") if p]
+    return [p.lower() for p in s.split(" ") if p]
 
 
 def search_notes(query):
     """Search notes by query."""
     def match_token(note, tokens):
-        """Test if note contains any of the tokens."""
-        for token in query_tokens:
-            for part in ["title", "text"]:
-                if token in note[part]:
-                    return True
-        return False
+        """Test if note contains any of the tokens.
+
+        A very simple implementation still. Return False if any of the tokens
+        is missing, True if any match.
+        """
+        tokens_found = []
+        for token in tokens:
+            s = note["title"] + " " + note["text"]
+            if token not in s.lower():
+                return False
+            tokens_found.append(token)
+        return len(tokens_found) == len(tokens)
 
     notes = []
     query_tokens = tokenize(query)
