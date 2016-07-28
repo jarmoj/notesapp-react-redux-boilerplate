@@ -6,8 +6,11 @@ export default class NotesListItem extends React.Component {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
-  onClickCallback(e) {
+  onClickRowCallback(e) {
     this.props.rowClicked(this.props.title);
+  }
+  onClickDeleteCallback(e) {
+    this.props.deleteClicked(this.props.title);
   }
   oddOrEvenRow() {
     if (!('isOddRow' in this.props)) {
@@ -38,7 +41,7 @@ export default class NotesListItem extends React.Component {
   render() {
     return (
       <tr className={"notes-list-row" + this.oddOrEvenRow() + this.isSelected()}
-          onClick={this.onClickCallback.bind(this)}
+          onClick={this.onClickRowCallback.bind(this)}
           ref={(c) => this._row = c}>
         <td className="notes-list-item-title">
           {this.props.title}
@@ -50,7 +53,9 @@ export default class NotesListItem extends React.Component {
           {this.timestamp()}
         </td>
         <td className="notes-list-item-destroy">
-          <button className="destroy">X</button>
+          <button
+            className="destroy"
+            onClick={this.onClickDeleteCallback.bind(this)}>X</button>
         </td>
       </tr>
     )

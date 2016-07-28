@@ -67,6 +67,8 @@ export class NotesApp extends React.Component {
               titleHeaderClicked={this.props.orderByTitle}
               timestampHeaderClicked={this.orderByTimestamp.bind(this)}
               arrowHeaderClicked={this.props.toggleAcendingDescending}
+              selectNote={this.props.selectNote}
+              deleteNote={this.props.deleteNote}
               ref={c => this._list = c}/>
             <NotesEdit
               {...this.props}

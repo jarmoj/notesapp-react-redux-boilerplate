@@ -145,6 +145,7 @@ export class NotesList extends React.Component {
                     timestamp={item.get('timestamp')}
                     orderBy={this.props.orderBy}
                     rowClicked={this.props.selectNote}
+                    deleteClicked={this.props.deleteNote}
                     selected={this.props.selected == item.get('title')}/>
                 )
               }
