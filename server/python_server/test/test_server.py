@@ -3,6 +3,7 @@ import requests
 import unittest
 import subprocess
 import time
+import json
 
 
 PORT = 3456
@@ -14,6 +15,16 @@ def get(path):
     return requests.get(URL + path)
 
 
+def put(path, it):
+    """Perform Put request."""
+    return requests.put(URL + path, json=it)
+
+
+def delete(path):
+    """Perform Delete request."""
+    return requests.delete(URL + path)
+
+
 class TestNotes(unittest.TestCase):
     """Test /notes/* .
 
@@ -21,7 +32,15 @@ class TestNotes(unittest.TestCase):
     /notes/titles
     """
 
-    def test_notes_root(self):
+    def setUp(self):
+        """Set up test on server side."""
+        get("/test/begin")
+
+    def tearDown(self):
+        """Tear down test on server side."""
+        get("/test/end")
+
+    def test_notes_root_get(self):
         """Test /notes ."""
         r = get("/notes")
         self.assertEqual(r.status_code, 200)
@@ -41,6 +60,62 @@ class TestNotes(unittest.TestCase):
         self.assertIn('note_titles', r.json())
         titles = r.json()['note_titles']
         self.assertEqual(len(titles), 3)
+
+    def test_notes_root_put(self):
+        """Test /notes ."""
+        r = put("/notes", {
+                            'title': 'add a note',
+                            'text': 'with some novel content',
+                            'timestamp': {
+                                'created': 'EEST 1985-10-12 09:22',
+                                'modified': 'EEST 1985-10-12 09:22'
+                                }
+                            })
+        self.assertEqual(r.status_code in [200, 201], True)
+
+        r = get("/notes")
+        self.assertIn('notes', r.json())
+        notes = r.json()['notes']
+        self.assertEqual(len(notes), 4)
+        note = notes[0]
+        for part in ['title', 'text']:
+            self.assertIn(part, note)
+
+
+class TestNote(unittest.TestCase):
+    """Test /note/* .
+
+    /note/:title
+      GET                     - return note that has title :title
+      DELETE                  - delete note with title :title
+    """
+
+    def setUp(self):
+        """Set up test on server side."""
+        get("/test/begin")
+
+    def tearDown(self):
+        """Tear down test on server side."""
+        get("/test/end")
+
+    def test_note_get_find(self):
+        """Return note with given title - success."""
+        r = get("/note/react")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('application/json', r.headers['content-type'])
+        self.assertIn('title', r.json())
+        self.assertEqual(r.json()["title"], "react")
+
+    def test_note_get_find_not(self):
+        """Return note with given title - failure."""
+        r = get("/note/nothere")
+        self.assertEqual(r.status_code, 404)
+
+    def test_note_delete(self):
+        """Delete note with given title."""
+        r = delete("/note/react")
+        self.assertEqual(r.status_code in [200, 204], True)
+
 
 
 class TestVersion(unittest.TestCase):
@@ -64,6 +139,14 @@ class TestSearch(unittest.TestCase):
 
     /search?q=(.*)
     """
+
+    def setUp(self):
+        """Set up test on server side."""
+        get("/test/begin")
+
+    def tearDown(self):
+        """Tear down test on server side."""
+        get("/test/end")
 
     def test_search_empty_return_all(self):
         """Test /search?q= ."""

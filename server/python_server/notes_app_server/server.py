@@ -2,6 +2,7 @@
 import tornado.escape
 import tornado.ioloop
 import tornado.web
+import tornado.escape
 
 from tornado_cors import CorsMixin
 
@@ -37,6 +38,51 @@ db = {
 def tokenize(s):
     """Split string into tokens."""
     return [p.lower() for p in s.split(" ") if p]
+
+
+class NoteAlreadyExists(Exception):
+    """Raised if trying to add a new note with title that is already taken."""
+
+    def __init__(self, title):
+        """Show exception with the note title."""
+        super(NoteAlreadyExists, self).__init__(title)
+
+
+class NoSuchNoteExists(Exception):
+    """Raised if trying to delete a note that doesn't exist."""
+
+    def __init__(self, title):
+        """Show exception with the note title."""
+        super(NoSuchNoteExists, self).__init__(title)
+
+
+def add_note(note):
+    """Add note to notes."""
+    if find_note(note["title"]):
+        raise NoteAlreadyExists(note["title"])
+    db["notes"].append(note)
+
+
+def delete_note(title):
+    """Delete note from notes."""
+    found = find_note(title)
+    if not found:
+        raise NoSuchNoteExists(title)
+    del db["notes"][found[0]]
+
+
+def update_note(title, note):
+    """Update an existing note with a given title, possibly retitling it."""
+    delete_note(title)
+    add_note(note)
+
+
+def find_note(title):
+    """Return (index, note) of note that has title or False if no such note."""
+    for i, note in enumerate(db["notes"]):
+        if note["title"] == title:
+            return i, note
+    return False
 
 
 def search_notes(query):
@@ -92,6 +138,46 @@ class NotesRootHandler(CorsBaseHandler):
         }
         self.write(response)
 
+    def put(self, *args, **kwargs):
+        """Handle put and create / update give note."""
+        note = json.loads(self.request.body.decode('utf-8'))
+        found = find_note(note["title"])
+        if not found:
+            add_note(note)
+        else:
+            update_note(note)
+
+
+class NoteHandler(CorsBaseHandler):
+    """Handle /note/(.*) .
+
+    /note/:title
+        GET
+        DELETE
+    """
+
+    def get(self, title):
+        """Handle get and return note with given title from database."""
+        found = find_note(title)
+
+        if not found:
+            self.clear()
+            self.set_status(404)
+            self.finish("Note '{}'' not found!".format(title))
+            return
+
+        response = found[1]
+        self.write(response)
+
+    def delete(self, title):
+        """Handle delete and delete note with given title from database."""
+        try:
+            delete_note(title)
+        except NoSuchNoteExists:
+            self.clear()
+            self.set_status(404)
+            self.finish("Note '{}' does not even exist.".format(title))
+
 
 class NotesTitlesHandler(CorsBaseHandler):
     """Handle /notes/titles ."""
@@ -123,18 +209,44 @@ class NotesSearchHandler(CorsBaseHandler):
         self.write(response)
 
 
-application = tornado.web.Application([
-    (r"/version", VersionRootHandler),
-    (r"/notes", NotesRootHandler),
-    (r"/notes/titles", NotesTitlesHandler),
-    (r"/search", NotesSearchHandler),
-])
+class TestBeginHandler(CorsBaseHandler):
+    """Handle /test/begin ."""
+
+    def get(self):
+        """Setup test to have expected state."""
+        read_db()
+
+
+class TestEndHandler(CorsBaseHandler):
+    """Handle /test/begin ."""
+
+    def get(self):
+        """Setup test to have end with expected state afterwards."""
+        read_db()
 
 
 def is_using_test_db():
     """Check if started with use test db flag."""
     return "--use-test-db" in sys.argv
 
+
+routes = [
+    (r"/version", VersionRootHandler),
+    (r"/notes", NotesRootHandler),
+    (r"/notes/titles", NotesTitlesHandler),
+    (r"/note/(.*)", NoteHandler),
+    (r"/search", NotesSearchHandler),
+]
+
+test_routes = [
+    (r"/test/begin", TestBeginHandler),
+    (r"/test/end", TestEndHandler)
+]
+
+if is_using_test_db():
+    routes.extend(test_routes)
+
+application = tornado.web.Application(routes)
 
 def read_db():
     """'Read in' database for use."""
