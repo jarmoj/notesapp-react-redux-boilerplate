@@ -150,12 +150,18 @@ class NotesRootHandler(CorsBaseHandler):
     def put(self, *args, **kwargs):
         """Handle put and create / update give note."""
         note = json.loads(self.request.body.decode('utf-8'))
-        found = find_note(note["title"])
+        title = note["title"]
+        found = find_note(title)
         if not found:
             add_note(note)
+            self.clear()
+            self.set_status(200)
+            self.finish("Note '{}' added.".format(title))
         else:
-            update_note(note)
-
+            update_note(title, note)
+            self.clear()
+            self.set_status(204)
+            self.finish("Note '{}' updated.".format(title))
 
 class NoteHandler(CorsBaseHandler):
     """Handle /note/(.*) .
