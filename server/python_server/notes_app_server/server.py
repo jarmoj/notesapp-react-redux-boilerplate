@@ -113,7 +113,16 @@ class CorsBaseHandler(CorsMixin, tornado.web.RequestHandler):
     """Set up CORS and allow separate origin for the client."""
 
     CORS_ORIGIN = 'http://localhost:8080'
-
+    CORS_METHODS = 'GET, PUT'
+    CORS_HEADERS = (
+        'Access-Control-Allow-Headers, '
+        'Origin, '
+        'Accept, '
+        'X-Requested-With, '
+        'Content-Type, '
+        'Access-Control-Request-Method, '
+        'Access-Control-Request-Headers'
+        )
 
 class VersionRootHandler(CorsBaseHandler):
     """Handle /version ."""
