@@ -113,7 +113,7 @@ class CorsBaseHandler(CorsMixin, tornado.web.RequestHandler):
     """Set up CORS and allow separate origin for the client."""
 
     CORS_ORIGIN = 'http://localhost:8080'
-    CORS_METHODS = 'GET, PUT'
+    CORS_METHODS = 'GET, PUT, DELETE'
     CORS_HEADERS = (
         'Access-Control-Allow-Headers, '
         'Origin, '
@@ -123,6 +123,7 @@ class CorsBaseHandler(CorsMixin, tornado.web.RequestHandler):
         'Access-Control-Request-Method, '
         'Access-Control-Request-Headers'
         )
+
 
 class VersionRootHandler(CorsBaseHandler):
     """Handle /version ."""
@@ -150,18 +151,33 @@ class NotesRootHandler(CorsBaseHandler):
     def put(self, *args, **kwargs):
         """Handle put and create / update give note."""
         note = json.loads(self.request.body.decode('utf-8'))
-        title = note["title"]
-        found = find_note(title)
+        title_update = note["title"]
+
+        if isinstance(title_update, dict):
+            find_title = title_update["old"]
+            new_title = title_update["new"]
+        else:
+            find_title = title_update
+            new_title = title_update
+
+        _note = {
+            'title': new_title,
+            'text': note["text"],
+            'timestamp': note["timestamp"]
+        }
+
+        found = find_note(find_title)
         if not found:
-            add_note(note)
+            add_note(_note)
             self.clear()
             self.set_status(200)
-            self.finish("Note '{}' added.".format(title))
+            self.finish("Note '{}' added.".format(find_title))
         else:
-            update_note(title, note)
+            update_note(find_title, _note)
             self.clear()
             self.set_status(204)
-            self.finish("Note '{}' updated.".format(title))
+            self.finish("Note '{}' updated.".format(new_title))
+
 
 class NoteHandler(CorsBaseHandler):
     """Handle /note/(.*) .
@@ -262,6 +278,7 @@ if is_using_test_db():
     routes.extend(test_routes)
 
 application = tornado.web.Application(routes)
+
 
 def read_db():
     """'Read in' database for use."""
