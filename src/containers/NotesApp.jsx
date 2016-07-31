@@ -8,12 +8,16 @@ import {NotesSearch} from '../components/NotesSearch';
 import {NotesList} from '../components/NotesList';
 import NotesEdit from '../components/NotesEdit';
 import {List, Map} from 'immutable';
+import _ from 'lodash';
 
 export class NotesApp extends React.Component {
   constructor() {
     super();
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.setUpKeyboardHandling();
+  }
+  componentWillMount() {
+    this.noteEdited = _.debounce(this.noteEdited, 1000);
   }
   setUpKeyboardHandling() {
     window.onkeydown = (e) => {
@@ -25,6 +29,7 @@ export class NotesApp extends React.Component {
     }
   }
   escapePressed() {
+    this.noteEdited.flush();
     this.props.clearSelection();
     this._search.focus();
     this.setAscendingDescendingToDefault();
@@ -50,6 +55,17 @@ export class NotesApp extends React.Component {
       this.props.orderByModified();
     }
   }
+  returnPressed() {
+    this.props.addNote(this.props.query, "");
+    if (this._edit) {
+      this._edit.focus();
+    }
+  }
+  noteEdited(text) {
+    if (this.props.selected) {
+      this.props.editNote(this.props.selected, this.props.selected, text);
+    }
+  }
   render() {
     return (
       <div className="notes-app">
@@ -57,7 +73,8 @@ export class NotesApp extends React.Component {
           query={this.props.query}
           search={this.props.search}
           selected={this.props.selected}
-          ref={c => this._search = c}/>
+          ref={c => this._search = c}
+          returnPressed={this.returnPressed.bind(this)}/>
         <div className="contain-absolute">
           <SplitPane split="horizontal" defaultSize="50%">
             <NotesList
@@ -71,7 +88,9 @@ export class NotesApp extends React.Component {
               deleteNote={this.props.deleteNote}
               ref={c => this._list = c}/>
             <NotesEdit
-              {...this.props}
+              notes={this.props.notes}
+              selected={this.props.selected}
+              noteEdited={this.noteEdited.bind(this)}
               ref={c => this._edit = c}/>
           </SplitPane>
         </div>
