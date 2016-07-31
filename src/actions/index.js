@@ -5,6 +5,7 @@ import urlencode from 'urlencode';
 
 export const URL_BASE='http://localhost:3456';
 export const SEARCH_URL=`${URL_BASE}/search?q=`;
+export const ADD_URL=`${URL_BASE}/notes`;
 
 export function restSearchNotes(query) {
   const encoded = urlencode(query);
@@ -12,8 +13,25 @@ export function restSearchNotes(query) {
   return axios.get(url);
 }
 
+export function restAddNote(title, text, timestamp) {
+  const url = ADD_URL;
+  const note = {
+    title,
+    text,
+    timestamp: {
+      modified: timestamp,
+      created: timestamp
+    }
+  };
+  return axios.put(url, note);
+}
+
 export function searchNotes(query) {
   return restSearchNotes(query);
+}
+
+export function addNoteToNotes(title, text, timestamp) {
+  return restAddNote(title, text, timestamp);
 }
 
 export function setState(state) {
@@ -51,12 +69,22 @@ export function search(query) {
 
 export function addNote(title, text) {
   const timestamp = (new Date()).toISOString();
-  return {
-    type: types.ADD_NOTE,
-    title,
-    text,
-    timestamp
-  };
+  return dispatch => {
+    return addNoteToNotes(title, text, timestamp).then((response) => {
+      dispatch({
+        type: types.ADD_NOTE,
+        title,
+        text,
+        timestamp
+      });
+      dispatch({
+        type: types.SELECT_NOTE,
+        title
+      });
+    }).catch((response) => {
+      console.log("hmm" + response);
+    });
+  }
 }
 
 export function selectNote(title) {

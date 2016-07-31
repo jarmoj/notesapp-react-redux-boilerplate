@@ -83,18 +83,33 @@ describe('actions', () => {
   });
 
   it('should create an action to add new note with given title and text', () => {
+    mockAxios.reset();
+    mockAxios.onPut('http://localhost:3456/notes').reply(200);
+
     const timestamp = (new Date()).toISOString();
     tk.freeze(timestamp);
     const title = 'test title';
     const text = 'test content for note text';
-    const expectedAction = {
-      type: types.ADD_NOTE,
-      title,
-      text,
-      timestamp
-    };
-    expect(actions.addNote(title, text)).to.deep.equal(expectedAction);
-    tk.reset();
+    const expectedActions = [
+      {
+        type: types.ADD_NOTE,
+        title,
+        text,
+        timestamp
+      },
+      {
+        type: types.SELECT_NOTE,
+        title
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    return store.dispatch(actions.addNote(title, text)).then(() => {
+      const actionsGot = store.getActions();
+      tk.reset();
+      expect(actionsGot).to.deep.equal(expectedActions);
+    });
   });
 
   it('should create an action to select note by title', () => {
