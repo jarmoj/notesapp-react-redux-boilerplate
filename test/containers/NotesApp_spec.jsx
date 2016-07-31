@@ -12,35 +12,14 @@ import {List, Map} from 'immutable';
 import _state from '../test_data';
 import * as types from '../../src/types';
 import * as actionCreators from '../../src/actions/index';
+import urlencode from 'urlencode';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import urlencode from 'urlencode';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
-const mockAxios = new MockAdapter(axios);
 
-mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=`).reply(200, {
-  notes: _state.get("notes").toJS()
-});
-
-mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
-  notes: []
-});
-
-mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=react`).reply(200, {
-  notes: [_state.get("notes").get(0).toJS()]
-});
-
-mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=re`).reply(200, {
-  notes: [_state.get("notes").get(0).toJS(), _state.get("notes").get(1).toJS()]
-});
-
-mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=fdsfd7yf88732y784`).reply(200, {
-  notes: []
-});
+mockAxios = global.mockAxios;
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -93,15 +72,35 @@ describe('NotesApp - Search', () => {
     });
   };
   it('search notes with empty returns all the notes', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=`).reply(200, {
+      notes: _state.get("notes").toJS()
+    });
+
     return test_query("", 3);
   });
   it('search notes with nothing matching returns none of the notes', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=fdsfd7yf88732y784`).reply(200, {
+      notes: []
+    });
+
     return test_query("fdsfd7yf88732y784", 0);
   });
   it('search notes with a singular match returns one of the notes', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=react`).reply(200, {
+      notes: [_state.get("notes").get(0).toJS()]
+    });
+
     return test_query("react", 1);
   });
   it('search notes with proper common prefix returns those notes', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=re`).reply(200, {
+      notes: [_state.get("notes").get(0).toJS(), _state.get("notes").get(1).toJS()]
+    });
+
     return test_query("re", 2);
   });
 });
@@ -146,7 +145,12 @@ describe('NotesApp - Selection', () => {
 });
 
 describe('NotesApp - Key - Escape', () => {
-  it('pressing esc will call clearSelection()', () => {
+  it('calling escapePressed() will call clearSelection()', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actionCreators.SEARCH_URL}`).reply(200, {
+      notes: _state.get("notes").toJS()
+    });
+
     let wasCalled = false;
     const clearSelection = () => {
       wasCalled = true;

@@ -9,23 +9,14 @@ import * as types from '../../src/types.js';
 import * as actions from '../../src/actions/index';
 import diff from 'immutablediff';
 import * as tk from 'timekeeper';
+import urlencode from 'urlencode';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import urlencode from 'urlencode';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
-const mockAxios = new MockAdapter(axios);
 
-mockAxios.onGet(`${actions.URL_BASE}/search?q=`).reply(200, {
-  notes: _state.get("notes").toJS()
-});
-
-mockAxios.onGet(`${actions.URL_BASE}/search?q=` + urlencode("test query")).reply(200, {
-  notes: []
-});
+mockAxios = global.mockAxios;
 
 describe('actions', () => {
   it('should create an action to set the complete state of the app', () => {
@@ -38,6 +29,11 @@ describe('actions', () => {
   });
 
   it('should give action to set query and set notes to empty with difficult query', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actions.SEARCH_URL}` + urlencode("test query")).reply(200, {
+      notes: []
+    });
+
     const query = 'test query';
     const notes = List.of();
     const expectedActions = [
@@ -60,6 +56,11 @@ describe('actions', () => {
   });
 
   it('should give action to set query and set notes to all with empty query', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
+      notes: _state.get("notes").toJS()
+    });
+
     const query = '';
     const notes = _state.get("notes");
     const expectedActions = [
@@ -118,6 +119,11 @@ describe('actions', () => {
   });
 
   it('clearSelection should give action to empty query and set notes to all and selected to null', () => {
+    mockAxios.reset();
+    mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
+      notes: _state.get("notes").toJS()
+    });
+
     const notes = List.of();
     const expectedActions = [
       {
