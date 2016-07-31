@@ -48,6 +48,7 @@
     "chai-immutable": "^1.6.0",
     "immutable": "^3.8.1",
     "json-loader": "^0.5.4",
+    "lodash": "^4.14.1",
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-dom": "^15.1.0",
