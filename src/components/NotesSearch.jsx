@@ -22,6 +22,11 @@ export class NotesSearch extends React.Component {
   focus() {
     this._input.focus();
   }
+  onKeyUpCallback(e) {
+    if (e.keyCode == 13) {
+      this.props.returnPressed();
+    }
+  }
   render() {
     return (
       <div className="notes-search-border">
@@ -30,7 +35,8 @@ export class NotesSearch extends React.Component {
           className="notes-search"
           ref={(c) => this._input = c}
           value={this.state.value}
-          onChange={this.onChangeCallback.bind(this)}/>
+          onChange={this.onChangeCallback.bind(this)}
+          onKeyUp={this.onKeyUpCallback.bind(this)}/>
       </div>
       );
   }

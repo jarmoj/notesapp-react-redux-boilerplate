@@ -4,6 +4,8 @@ import TestUtils from 'react-addons-test-utils';
 import {NotesSearch} from '../../src/components/NotesSearch';
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
+import { mount, shallow } from 'enzyme';
+
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -22,5 +24,17 @@ describe('NotesSearch', () => {
     Simulate.change(component._input, {target:{value: inputStr}});
 
     expect(wasCalled).to.equal(inputStr);
+  });
+  it('pressing return will call returnPressed()', () => {
+    let wasCalled = false;
+    const callback = (e) => {
+      wasCalled = true;
+    }
+    const component = mount(
+        <NotesSearch returnPressed={callback}/>
+    );
+    const search = component.find("input");
+    search.simulate("keyUp", { keyCode: 13, which: 13, key: "Enter" });
+    expect(wasCalled).to.equal(true);
   });
 });
