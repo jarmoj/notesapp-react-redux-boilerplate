@@ -6,6 +6,7 @@ import urlencode from 'urlencode';
 export const URL_BASE='http://localhost:3456';
 export const SEARCH_URL=`${URL_BASE}/search?q=`;
 export const ADD_URL=`${URL_BASE}/notes`;
+export const DELETE_URL=`${URL_BASE}/note`;
 
 export function restSearchNotes(query) {
   const encoded = urlencode(query);
@@ -13,7 +14,7 @@ export function restSearchNotes(query) {
   return axios.get(url);
 }
 
-export function restAddNote(title, text, timestamp) {
+export function restAddUpdateNote(title, text, timestamp) {
   const url = ADD_URL;
   const note = {
     title,
@@ -26,12 +27,25 @@ export function restAddNote(title, text, timestamp) {
   return axios.put(url, note);
 }
 
+export function restDeleteNote(title) {
+  const url = `${DELETE_URL}/${title}`;
+  return axios.delete(url);
+}
+
 export function searchNotes(query) {
   return restSearchNotes(query);
 }
 
 export function addNoteToNotes(title, text, timestamp) {
-  return restAddNote(title, text, timestamp);
+  return restAddUpdateNote(title, text, timestamp);
+}
+
+export function updateNoteToNotes(title, text, timestamp) {
+  return restAddUpdateNote(title, text, timestamp);
+}
+
+export function deleteNoteInNotes(title) {
+  return restDeleteNote(title);
 }
 
 export function setState(state) {
@@ -115,20 +129,41 @@ export function clearSelection() {
 
 export function editNote(selected, title, text) {
   const timestamp = (new Date()).toISOString();
-  return {
-    type: types.EDIT_NOTE,
-    selected,
-    title,
-    text,
-    timestamp
-  };
+  return dispatch => {
+    const title_update = { old: selected, new: title };
+    return updateNoteToNotes(title_update, text, timestamp).then((response) => {
+      dispatch({
+        type: types.EDIT_NOTE,
+        selected,
+        title,
+        text,
+        timestamp
+      });
+      dispatch({
+        type: types.SELECT_NOTE,
+        title
+      });
+    }).catch((response) => {
+      console.log("hmm" + response);
+    });
+  }
 }
 
 export function deleteNote(selected) {
-  return {
-    type: types.DELETE_NOTE,
-    selected
-  };
+  return dispatch => {
+    return deleteNoteInNotes(selected).then((response) => {
+      dispatch({
+        type: types.DELETE_NOTE,
+        selected
+      });
+      dispatch({
+        type: types.SELECT_NOTE,
+        title: null
+      });
+    }).catch((response) => {
+      console.log("hmm" + response);
+    });
+  }
 }
 
 export function orderByTitle() {

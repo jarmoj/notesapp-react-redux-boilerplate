@@ -164,29 +164,56 @@ describe('actions', () => {
   });
 
   it('should create an action to edit the note having title with given text', () => {
+    mockAxios.reset();
+    mockAxios.onPut('http://localhost:3456/notes').reply(200);
+
     const timestamp = (new Date()).toISOString();
     tk.freeze(timestamp);
     const selected = 'test title';
     const title = 'test title new';
     const text = 'test content for note text';
-    const expectedAction = {
-      type: types.EDIT_NOTE,
-      selected,
-      title,
-      text,
-      timestamp
-    };
-    expect(actions.editNote(selected, title, text)).to.deep.equal(expectedAction);
-    tk.reset();
+    const expectedActions = [
+      {
+        type: types.EDIT_NOTE,
+        selected,
+        title,
+        text,
+        timestamp
+      },
+      {
+        type: types.SELECT_NOTE,
+        title
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    return store.dispatch(actions.editNote(selected, title, text)).then(() => {
+      const actionsGot = store.getActions();
+      tk.reset();
+      expect(actionsGot).to.deep.equal(expectedActions);
+    });
   });
 
   it('should create an action to delete note with given title', () => {
     const selected = 'test title';
-    const expectedAction = {
-      type: types.DELETE_NOTE,
-      selected
-    };
-    expect(actions.deleteNote(selected)).to.deep.equal(expectedAction);
+    const encoded = urlencode(selected);
+    mockAxios.reset();
+    mockAxios.onDelete('http://localhost:3456/note/' + encoded).reply(200);
+
+    const expectedActions = [
+      {
+        type: types.DELETE_NOTE,
+        selected
+      }
+    ];
+
+    const getState = _state;
+    const store = mockStore(getState);
+    return store.dispatch(actions.deleteNote(selected)).then(() => {
+      const actionsGot = store.getActions();
+      expect(actionsGot).to.deep.equal(expectedActions);
+    });
   });
 
   it('should create an action to set list order by to title', () => {
