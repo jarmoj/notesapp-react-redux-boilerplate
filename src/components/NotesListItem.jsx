@@ -23,8 +23,9 @@ export default class NotesListItem extends React.Component {
     return " even-row";
   }
   timestamp() {
-    if ('timestamp' in this.props && 'orderBy' in this.props) {
-        return this.props.timestamp.get(this.props.orderBy)
+    if (this.props.timestamp && this.props.orderBy) {
+      const parts = this.props.orderBy.split(" ");
+      return this.props.timestamp.get(parts[0]);
     }
     return "";
   }
