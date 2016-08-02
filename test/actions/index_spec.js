@@ -164,8 +164,9 @@ describe('actions', () => {
   });
 
   it('should create an action to edit the note having title with given text', () => {
+    const url = `${actions.ADD_URL}`;
     mockAxios.reset();
-    mockAxios.onPut('http://localhost:3456/notes').reply(200);
+    mockAxios.onPut(url).reply(200);
 
     const timestamp = (new Date()).toISOString();
     tk.freeze(timestamp);
@@ -198,13 +199,18 @@ describe('actions', () => {
   it('should create an action to delete note with given title', () => {
     const selected = 'test title';
     const encoded = urlencode(selected);
+    const url = `${actions.DELETE_URL}/${encoded}`;
     mockAxios.reset();
-    mockAxios.onDelete('http://localhost:3456/note/' + encoded).reply(200);
+    mockAxios.onDelete(url).reply(200);
 
     const expectedActions = [
       {
         type: types.DELETE_NOTE,
         selected
+      },
+      {
+        type: types.SELECT_NOTE,
+        title: null
       }
     ];
 

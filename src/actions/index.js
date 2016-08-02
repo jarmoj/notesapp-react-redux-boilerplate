@@ -28,7 +28,8 @@ export function restAddUpdateNote(title, text, timestamp) {
 }
 
 export function restDeleteNote(title) {
-  const url = `${DELETE_URL}/${title}`;
+  const encoded = urlencode(title);
+  const url = `${DELETE_URL}/${encoded}`;
   return axios.delete(url);
 }
 
@@ -160,8 +161,6 @@ export function deleteNote(selected) {
         type: types.SELECT_NOTE,
         title: null
       });
-    }).catch((response) => {
-      console.log("hmm" + response);
     });
   }
 }
