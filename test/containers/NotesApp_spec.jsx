@@ -35,12 +35,14 @@ const {renderIntoDocument,
      const search = component.find("input").get(0);
      expect(search == global.document.activeElement).to.equal(true);
    });
+
    it('by default the notes search is empty', () => {
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
      );
      expect(component._search._input.value).to.equal("");
    });
+
    it('by default the notes app has no note selected', () => {
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
@@ -51,6 +53,7 @@ const {renderIntoDocument,
      });
      expect(agg).to.equal(false);
    });
+
    it('by default the notes edit is empty and disabled', () => {
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
@@ -58,6 +61,7 @@ const {renderIntoDocument,
      expect(component._edit._textarea.value).to.equal("");
      expect(component._edit._textarea.classList.contains('disabled')).to.equal(true);
    });
+
  });
 
 describe('NotesApp - Search', () => {
@@ -78,6 +82,7 @@ describe('NotesApp - Search', () => {
       expect(items.length).to.equal(expect_items_length);
     });
   };
+
   it('search notes with empty returns all the notes', () => {
     mockAxios.reset();
     mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=`).reply(200, {
@@ -86,6 +91,7 @@ describe('NotesApp - Search', () => {
 
     return test_query("", 3);
   });
+
   it('search notes with nothing matching returns none of the notes', () => {
     mockAxios.reset();
     mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=fdsfd7yf88732y784`).reply(200, {
@@ -94,6 +100,7 @@ describe('NotesApp - Search', () => {
 
     return test_query("fdsfd7yf88732y784", 0);
   });
+
   it('search notes with a singular match returns one of the notes', () => {
     mockAxios.reset();
     mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=react`).reply(200, {
@@ -102,6 +109,7 @@ describe('NotesApp - Search', () => {
 
     return test_query("react", 1);
   });
+
   it('search notes with proper common prefix returns those notes', () => {
     mockAxios.reset();
     mockAxios.onGet(`${actionCreators.URL_BASE}/search?q=re`).reply(200, {
@@ -110,9 +118,11 @@ describe('NotesApp - Search', () => {
 
     return test_query("re", 2);
   });
+
 });
 
 describe('NotesApp - Selection', () => {
+
   it('selectNote changes the search query into the note\'s title', () => {
     const selected = 'redux';
     const getState = _state;
@@ -149,9 +159,11 @@ describe('NotesApp - Selection', () => {
     const items = component.find("NotesListItem");
     expect(items.at(1).props().selected).to.equal(true);
   });
+
 });
 
 describe('NotesApp - Key - Escape', () => {
+
   it('calling escapePressed() will call clearSelection()', () => {
     mockAxios.reset();
     mockAxios.onGet(`${actionCreators.SEARCH_URL}`).reply(200, {
@@ -169,6 +181,7 @@ describe('NotesApp - Key - Escape', () => {
     app.escapePressed();
     expect(wasCalled).to.equal(true);
   });
+
   it('pressing esc will call toggleAcendingDescending() to default to descending', () => {
     let wasCalled = false;
     const toggleAcendingDescending = () => {
@@ -195,8 +208,8 @@ describe('NotesApp - Key - Escape', () => {
     const appFalseCase = componentFalseCase.find("NotesApp").get(0);
     appFalseCase.escapePressed();
     expect(wasCalled).to.equal(false);
-
   });
+
   it('calling calling clearSelection() will deselect current selection', () => {
     const store = mockStore(_state.set("query", "something"));
     return store.dispatch(actionCreators.clearSelection()).then(() => {
@@ -213,6 +226,7 @@ describe('NotesApp - Key - Escape', () => {
       expect(search.props().selected).to.equal(null);
     });
   });
+
   it('calling onKeyDown with esc event will clear search input', () => {
     const store = mockStore(_state.set("query", "something"));
     return store.dispatch(actionCreators.clearSelection()).then(() => {
@@ -229,4 +243,32 @@ describe('NotesApp - Key - Escape', () => {
       expect(search.props().query).to.equal("");
     });
   });
+
+});
+
+describe('NotesApp - Focus', () => {
+
+  it('the focus moves to edit field when new note is created / exists', () => {
+    expect(false).to.equal(true);
+  });
+
+  it('clicking list will keep focus in search', () => {
+  });
+
+});
+
+describe('NotesApp - TODO', () => {
+
+  it('TODO: webpack compile to dist with minimize and obfuscate', () => {
+    expect(false).to.equal(true);
+  });
+
+  it('TODO: add travis conf', () => {
+    expect(false).to.equal(true);
+  });
+
+  it('TODO: deploy to heroku automatically', () => {
+    expect(false).to.equal(true);
+  });
+
 });
