@@ -180,4 +180,8 @@ describe('NotesList', () => {
     const scrollable = component.find(".scrollable");
     expect(scrollable).to.not.equal(undefined);
   });
+
+  it('list is scrollable (in class)', () => {
+    expect(true).to.equal(false);
+  });
 });

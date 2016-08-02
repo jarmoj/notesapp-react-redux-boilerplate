@@ -77,4 +77,10 @@ describe('NotesListItem - Visual', () => {
     expect(componentSelected._row.classList.contains('selected')).to.equal(true);
 
   });
+  it('has a pretty date format for the timestamp', () => {
+    expect(false).to.equal(true);
+  });
+  it('timestamps are compared properly', () => {
+    expect(false).to.equal(true);
+  });
 });
