@@ -28,6 +28,13 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
  describe('NotesApp - Default', () => {
+   it('in the beginning focus goes first to search', () => {
+     const component = mount(
+       <NotesApp {...mapStateToProps(_state)}/>
+     );
+     const search = component.find("input").get(0);
+     expect(search == global.document.activeElement).to.equal(true);
+   });
    it('by default the notes search is empty', () => {
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
