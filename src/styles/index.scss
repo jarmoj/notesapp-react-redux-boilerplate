@@ -112,7 +112,7 @@ th {
  .notes-list-header-title, .notes-list-header-text, .notes-list-item-title,
  .notes-list-item-text {
     text-align: left;
-    width: 80%
+    width: 75%
 }
 
 .notes-list-item-text {
@@ -122,6 +122,11 @@ th {
 
 .notes-list-header-date, .notes-list-item-date {
    text-align: center;
+   width: 20%;
+}
+
+.notes-list-header-destroy {
+   width: 5%;
 }
 
 .notes-list-header-destroy, .notes-list-item-destroy {
@@ -132,16 +137,19 @@ th {
 	background-color: $notes-list-highlight-color;
   button {
     display: inline-block;
+    visibility: visible;
   }
 }
 
 .notes-list-item-destroy {
   button {
-    display: none;
+    display: inline-block;
+    visibility: hidden;
     background:none;
     border:none;
     margin:0;
-    padding:0;
+    padding-left: 40;
+    padding-right: 40;
   }
 }
 
