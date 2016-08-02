@@ -19,6 +19,9 @@ export class NotesApp extends React.Component {
   componentWillMount() {
     this.noteEdited = _.debounce(this.noteEdited, 1000);
   }
+  componentDidMount() {
+    this._search.focus();
+  }
   setUpKeyboardHandling() {
     window.onkeydown = (e) => {
       switch(e.keyCode) {
