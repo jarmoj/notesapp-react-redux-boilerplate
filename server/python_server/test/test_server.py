@@ -195,6 +195,22 @@ class TestSearch(unittest.TestCase):
             self.assertIn(part, note)
 
 
+class TestTodo(unittest.TestCase):
+    """Test todoList ."""
+
+    def setUp(self):
+        """Set up test on server side."""
+        get("/test/begin")
+
+    def tearDown(self):
+        """Tear down test on server side."""
+        get("/test/end")
+
+    def test_persist_to_disk(self):
+        """Add persisting on disk."""
+        pass
+
+
 class NotTestDb(Exception):
     """Exception raised if not using test database."""
 
