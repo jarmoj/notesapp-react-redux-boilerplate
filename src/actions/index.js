@@ -78,6 +78,21 @@ export function search(query) {
 
       dispatch(setQuery(query));
       dispatch(setNotes(immutableNotes));
+      if (immutableNotes.count() == 0 || query == "") {
+        dispatch({
+          type: types.SELECT_NOTE,
+          title: null
+        });
+      }
+      else {
+        const notesSorted = immutableNotes.sortBy(note => {
+          return note.get('title');
+        });
+        dispatch({
+          type: types.SELECT_NOTE,
+          title: notesSorted.get(0).get("title")
+        });
+      }
     });
   }
 }
