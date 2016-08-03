@@ -24,4 +24,8 @@ describe('NotesEdit', () => {
 
     expect(wasCalled).to.equal(inputStr);
   });
+
+  it('if none selected or no note returned with selected the textarea is disabled', () => {
+  });
+
 });
