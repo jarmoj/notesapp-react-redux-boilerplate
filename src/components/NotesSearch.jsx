@@ -29,7 +29,6 @@ export class NotesSearch extends React.Component {
     });
   }
   onChangeCallback(e) {
-    const old_query = this.state.query;
     const query = e.target.value;
     this.setState({
       value: query,
