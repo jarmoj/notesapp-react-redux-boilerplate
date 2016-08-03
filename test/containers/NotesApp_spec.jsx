@@ -293,4 +293,12 @@ describe('NotesApp - TODO', () => {
     expect(false).to.equal(true);
   });
 
+  it('TODO: add routes', () => {
+    expect(false).to.equal(true);
+  });
+
+  it('TODO: add polling for changes in notes on server', () => {
+    expect(false).to.equal(true);
+  });
+
 });
