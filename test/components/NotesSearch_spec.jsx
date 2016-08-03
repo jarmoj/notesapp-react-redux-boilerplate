@@ -12,6 +12,7 @@ const {renderIntoDocument,
        Simulate} = TestUtils;
 
 describe('NotesSearch', () => {
+
   it('returns the query string in search() when edited', () => {
     let wasCalled = "";
     let inputStr = "jkhiU/(F/&RU€%€DUF&Guihiughgdj)";
@@ -25,6 +26,7 @@ describe('NotesSearch', () => {
 
     expect(wasCalled).to.equal(inputStr);
   });
+
   it('pressing return will call returnPressed()', () => {
     let wasCalled = false;
     const callback = (e) => {
@@ -37,4 +39,9 @@ describe('NotesSearch', () => {
     search.simulate("keyUp", { keyCode: 13, which: 13, key: "Enter" });
     expect(wasCalled).to.equal(true);
   });
+
+  it('autocompletes a selected with highligh if selected starts with the query part', () => {
+    expect(true).to.equal(false);
+  });
+
 });
