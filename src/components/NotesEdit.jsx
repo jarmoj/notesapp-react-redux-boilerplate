@@ -6,30 +6,41 @@ export default class NotesEdit extends React.Component {
   constructor(props) {
     super(props);
     //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = this.stateValueFromProps(props);
+    this.state = {
+      value: "",
+      enabled: false
+    };
   }
   componentWillReceiveProps(props) {
     this.setState(this.stateValueFromProps(props));
   }
-  stateValueFromProps(props) {
-    if (props.selected === undefined || !props.selected) {
-      return { value: "" };
-    }
-
+  findSelectedNote(props) {
     const noteIndex = props.notes.findIndex(note => note.get("title") == props.selected);
     const note = props.notes.get(noteIndex);
-    return { value: note.get("text") };
+    return note;
+  }
+  stateValueFromProps(props) {
+    const note = this.findSelectedNote(props);
+    if (!props.selected || !note) {
+      return {
+        value: ""
+      };
+    }
+    return {
+      value: note.get("text")
+    };
   }
   onChangeCallback(e) {
     this.setState({ value: e.target.value });
     this.props.noteEdited(e.target.value);
   }
   isDisabled() {
-    if (this.props.selected === undefined || !this.props.selected) {
+    if (this.props.selected || this.state.enabled) {
+      return '';
+    }
+    else {
       return ' disabled';
     }
-
-    return '';
   }
   focus() {
     this._textarea.focus();
