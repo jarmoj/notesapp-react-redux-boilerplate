@@ -1,15 +1,15 @@
 {
   "name": "boilerplate",
-  "version": "1.0.0",
-  "description": "boilerplate",
+  "version": "0.8.0",
+  "description": "React redux notes app inspired by Notational Velocity, nvALT, Simplenote, etc.",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --require ./test/setup.js 'test/**/*.@(js|jsx)'",
     "test:watch": "npm run test -- --watch --watch-extensions jsx"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Jarmo Jomppanen <tdatda@gmail.com> http://github.com/jarmoj)",
+  "license": "MIT",
   "devDependencies": {
     "axios-mock-adapter": "^1.6.0",
     "babel-core": "^6.10.4",
@@ -17,6 +17,7 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "chai": "^3.5.0",
+    "chai-immutable": "^1.6.0",
     "css-loader": "^0.23.1",
     "enzyme": "^2.4.1",
     "html-webpack-plugin": "^2.21.0",
@@ -45,7 +46,6 @@
   },
   "dependencies": {
     "axios": "^0.13.1",
-    "chai-immutable": "^1.6.0",
     "dateformat": "^1.0.12",
     "immutable": "^3.8.1",
     "json-loader": "^0.5.4",
