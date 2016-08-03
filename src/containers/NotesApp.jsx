@@ -59,7 +59,12 @@ export class NotesApp extends React.Component {
     }
   }
   returnPressed() {
-    this.props.addNote(this.props.query, "");
+    if (this.props.selected != this.props.query) {
+      this.props.addNote(this.props.query, "");
+    }
+    else {
+      this.props.selectNote(this.props.query);
+    }
     if (this._edit) {
       this._edit.focus();
     }
