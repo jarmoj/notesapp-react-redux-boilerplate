@@ -25,7 +25,8 @@ export default class NotesListItem extends React.Component {
   timestamp() {
     if (this.props.timestamp && this.props.orderBy) {
       const parts = this.props.orderBy.split(" ");
-      return this.props.timestamp.get(parts[0]);
+      const which = parts[0] == 'title' ? 'modified' : parts[0];
+      return this.props.timestamp.get(which);
     }
     return "";
   }
