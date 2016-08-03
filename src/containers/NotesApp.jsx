@@ -111,11 +111,17 @@ export class NotesApp extends React.Component {
   }
 };
 
+function validateSelected(selected, notes) {
+  const noteIndex = notes.findIndex(note => note.get("title") == selected);
+  return noteIndex != -1 ? selected : null;
+}
+
 export function mapStateToProps(state) {
+  const selected = validateSelected(state.get("selected"), state.get("notes"));
   return {
     query: state.get('query'),
     notes: state.get('notes'),
-    selected: state.get('selected'),
+    selected: selected,
     orderBy: state.get('orderBy')
   }
 }
