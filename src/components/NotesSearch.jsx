@@ -19,20 +19,6 @@ export class NotesSearch extends React.Component {
     this.search_slow = _.debounce(this.search, 500);
     this.search = this.search_fast;
   }
-  queryFromProps(props) {
-    let query = props.query;
-    if (query != "" && props.selected && props.selected.startsWith(query)) {
-      query = props.selected;
-    }
-    return query;
-  }
-  tailFromProps(props) {
-    let tail = "";
-    if (props.selected && props.selected.startsWith(query)) {
-      tail = props.selected;
-    }
-    return tail;
-  }
   componentWillReceiveProps(newProps) {
     const query = newProps.query;
     const selected = newProps.selected ? newProps.selected : query;
