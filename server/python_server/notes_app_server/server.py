@@ -73,8 +73,11 @@ def delete_note(title):
 
 def update_note(title, note):
     """Update an existing note with a given title, possibly retitling it."""
-    delete_note(title)
-    add_note(note)
+    found = find_note(title)
+    if not found:
+        raise NoSuchNoteExists(title)
+    note["timestamp"]["created"] = found[1]["timestamp"]["created"]
+    db["notes"][found[0]] = note
 
 
 def find_note(title):
