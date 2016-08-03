@@ -22,7 +22,7 @@ export class NotesSearch extends React.Component {
   componentWillReceiveProps(newProps) {
     const query = newProps.query;
     const selected = newProps.selected ? newProps.selected : query;
-    const value = selected;
+    const value = selected.startsWith(query) ? selected : query;
     this.setState({
       value: value,
       query: query
