@@ -1,5 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import dateFormat from 'dateformat';
 
 export default class NotesListItem extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class NotesListItem extends React.Component {
     if (this.props.timestamp && this.props.orderBy) {
       const parts = this.props.orderBy.split(" ");
       const which = parts[0] == 'title' ? 'modified' : parts[0];
-      return this.props.timestamp.get(which);
+      return dateFormat(this.props.timestamp.get(which));
     }
     return "";
   }

@@ -46,6 +46,7 @@
   "dependencies": {
     "axios": "^0.13.1",
     "chai-immutable": "^1.6.0",
+    "dateformat": "^1.0.12",
     "immutable": "^3.8.1",
     "json-loader": "^0.5.4",
     "lodash": "^4.14.1",
