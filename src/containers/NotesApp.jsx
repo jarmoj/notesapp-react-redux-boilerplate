@@ -69,12 +69,16 @@ export class NotesApp extends React.Component {
       this.props.editNote(this.props.selected, this.props.selected, text);
     }
   }
+  search(query) {
+    this.props.search(query);
+  }
   render() {
     return (
       <div className="notes-app">
         <NotesSearch
           query={this.props.query}
-          search={this.props.search}
+          search={this.search.bind(this)}
+          notes={this.props.notes}
           selected={this.props.selected}
           ref={c => this._search = c}
           returnPressed={this.returnPressed.bind(this)}/>
