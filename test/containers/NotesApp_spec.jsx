@@ -119,6 +119,28 @@ describe('NotesApp - Search', () => {
     return test_query("re", 2);
   });
 
+  it('search notes with matches will select first one and highlight part not yet written', () => {
+    const query = "re";
+    const getState = _state;
+    const store = mockStore(getState);
+    return store.dispatch(actionCreators.search(query)).then(() => {
+      const actions = store.getActions();
+      const nextState = reducer(reducer(_state, actions[0]), actions[1]);
+      const nextStore = mockStore(nextState);
+
+      const component = mount(
+        <Provider store={nextStore}>
+          <NotesAppContainer/>
+        </Provider>
+      );
+      const items = component.find("NotesListItem");
+      const search = component.find("input").get(0);
+      expect(items.at(0).props().selected).to.equal(true);
+      expect(search.caret().start).to.equal(2);
+      expect(search.caret().end).to.equal(5);
+    });
+  });
+
 });
 
 describe('NotesApp - Selection', () => {
