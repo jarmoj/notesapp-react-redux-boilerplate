@@ -45,12 +45,6 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
-  },
   "dependencies": {
     "axios": "^0.13.1",
     "dateformat": "^1.0.12",
