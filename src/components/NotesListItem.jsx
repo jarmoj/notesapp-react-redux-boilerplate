@@ -1,51 +1,63 @@
 import React from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin'
+// import PureRenderMixin from 'react-addons-pure-render-mixin'
 import dateFormat from 'dateformat';
 
 export default class NotesListItem extends React.Component {
+
+  static get propTypes() {
+    return {
+      title: React.PropTypes.string.isRequired,
+      text: React.PropTypes.string.isRequired,
+      timestamp: React.PropTypes.object.isRequired,
+      orderBy: React.PropTypes.string.isRequired,
+      isSelected: React.PropTypes.bool.isRequired,
+      rowClicked: React.PropTypes.func.isRequired,
+      deleteClicked: React.PropTypes.func.isRequired,
+    };
+  }
+
   constructor(props) {
     super(props);
-    //this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    // this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+    this.onClickRowCallback = this.onClickRowCallback.bind(this);
+    this.onClickDeleteCallback = this.onClickDeleteCallback.bind(this);
   }
-  onClickRowCallback(e) {
+
+  onClickRowCallback() {
     this.props.rowClicked(this.props.title);
   }
-  onClickDeleteCallback(e) {
+
+  onClickDeleteCallback() {
     this.props.deleteClicked(this.props.title);
   }
-  oddOrEvenRow() {
-    if (!('isOddRow' in this.props)) {
-      return "";
-    }
 
-    if (this.props.isOddRow) {
-      return " odd-row";
-    }
-    return " even-row";
-  }
   timestamp() {
     if (this.props.timestamp && this.props.orderBy) {
-      const parts = this.props.orderBy.split(" ");
-      const which = parts[0] == 'title' ? 'modified' : parts[0];
+      const parts = this.props.orderBy.split(' ');
+      const which = parts[0] === 'title' ? 'modified' : parts[0];
       return dateFormat(this.props.timestamp.get(which));
     }
-    return "";
+    return '';
   }
+
   isSelected() {
-    if (!('selected' in this.props)) {
-      return "";
+    if (!this.props.isSelected) {
+      return '';
     }
 
-    if (this.props.selected) {
-      return " selected";
+    if (this.props.isSelected) {
+      return ' selected';
     }
-    return "";
+    return '';
   }
+
   render() {
     return (
-      <tr className={"notes-list-row" + this.oddOrEvenRow() + this.isSelected()}
-          onClick={this.onClickRowCallback.bind(this)}
-          ref={(c) => this._row = c}>
+      <tr
+        className={'notes-list-row' + this.isSelected()} // eslint-disable-line
+        onClick={this.onClickRowCallback}
+        ref={c => this._row = c} // eslint-disable-line
+      >
         <td className="notes-list-item-title">
           {this.props.title}
           <span className="notes-list-item-text">
@@ -58,9 +70,10 @@ export default class NotesListItem extends React.Component {
         <td className="notes-list-item-destroy">
           <button
             className="destroy"
-            onClick={this.onClickDeleteCallback.bind(this)}>X</button>
+            onClick={this.onClickDeleteCallback}
+          >X</button>
         </td>
       </tr>
-    )
+    );
   }
-};
+}

@@ -4,6 +4,7 @@ import NotesListItem from '../../src/components/NotesListItem';
 import {expect} from 'chai';
 import {List, Map} from 'immutable';
 import notes from '../test_data';
+import dateFormat from 'dateformat';
 
 const {renderIntoDocument,
        scryRenderedDOMComponentsWithTag,
@@ -28,13 +29,13 @@ describe('NotesListItem - Selection', () => {
 describe('NotesListItem - Visual', () => {
   it('Every even row gets even-row and odd one odd-row class', () => {
     const componentEven = renderIntoDocument(
-      <NotesListItem isOddRow={false} />
+      <NotesListItem />
     );
     expect(componentEven._row.classList.contains('even-row')).to.equal(true);
     expect(componentEven._row.classList.contains('odd-row')).to.equal(false);
 
     const componentOdd = renderIntoDocument(
-      <NotesListItem isOddRow={true} />
+      <NotesListItem />
     );
 
     expect(componentOdd._row.classList.contains('even-row')).to.equal(false);
@@ -44,8 +45,8 @@ describe('NotesListItem - Visual', () => {
     const title = "some title title";
     const text = "something for the text body";
     const timestamp = Map({
-      created: 'EEST 1970-10-12 11:33',
-      modified: 'EEST 1980-10-12 12:33'
+      created: '1970-10-12T11:33:00.000Z',
+      modified: '1980-10-12T12:33:00.000Z'
     });
 
     const componentModified = renderIntoDocument(
@@ -54,7 +55,7 @@ describe('NotesListItem - Visual', () => {
 
     expect(componentModified._row.textContent).to.contain(title);
     expect(componentModified._row.textContent).to.contain(text);
-    expect(componentModified._row.textContent).to.contain(timestamp.get('modified'));
+    expect(componentModified._row.textContent).to.contain(dateFormat(timestamp.get('modified')));
 
     const componentCreated = renderIntoDocument(
       <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="created" />
@@ -62,7 +63,7 @@ describe('NotesListItem - Visual', () => {
 
     expect(componentCreated._row.textContent).to.contain(title);
     expect(componentCreated._row.textContent).to.contain(text);
-    expect(componentCreated._row.textContent).to.contain(timestamp.get('created'));
+    expect(componentCreated._row.textContent).to.contain(dateFormat(timestamp.get('created')));
   });
   it('check that a list item that is selected by select prop gets selected class', () => {
     const componentNotSelected = renderIntoDocument(
@@ -78,7 +79,28 @@ describe('NotesListItem - Visual', () => {
 
   });
   it('has a pretty date format for the timestamp', () => {
-    expect(false).to.equal(true);
+    const title = "some title title";
+    const text = "something for the text body";
+    const timestamp = Map({
+      created: '1970-10-12T11:33:00.000Z',
+      modified: '1980-10-12T12:33:00.000Z'
+    });
+
+    const componentModified = renderIntoDocument(
+      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="modified" />
+    );
+
+    expect(componentModified._row.textContent).to.contain(title);
+    expect(componentModified._row.textContent).to.contain(text);
+    expect(componentModified._row.textContent).to.contain(dateFormat(timestamp.get('modified')));
+
+    const componentCreated = renderIntoDocument(
+      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="created" />
+    );
+
+    expect(componentCreated._row.textContent).to.contain(title);
+    expect(componentCreated._row.textContent).to.contain(text);
+    expect(componentCreated._row.textContent).to.contain(dateFormat(timestamp.get('created')));
   });
   it('timestamps are compared properly', () => {
     expect(false).to.equal(true);

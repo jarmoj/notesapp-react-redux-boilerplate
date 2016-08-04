@@ -22,7 +22,7 @@ describe('NotesSearch', () => {
     const component = renderIntoDocument(
      <NotesSearch search={search} />
     );
-    Simulate.change(component._input, {target:{value: inputStr}});
+    Simulate.change(component.input, {target:{value: inputStr}});
 
     expect(wasCalled).to.equal(inputStr);
   });

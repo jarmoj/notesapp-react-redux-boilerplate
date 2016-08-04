@@ -40,7 +40,7 @@ const {renderIntoDocument,
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
      );
-     expect(component._search._input.value).to.equal("");
+     expect(component._search.input.value).to.equal("");
    });
 
    it('by default the notes app has no note selected', () => {
@@ -58,8 +58,8 @@ const {renderIntoDocument,
      const component = renderIntoDocument(
        <NotesApp {...mapStateToProps(_state)}/>
      );
-     expect(component._edit._textarea.value).to.equal("");
-     expect(component._edit._textarea.classList.contains('disabled')).to.equal(true);
+     expect(component.edit.textarea.value).to.equal("");
+     expect(component.edit.textarea.classList.contains('disabled')).to.equal(true);
    });
 
  });
@@ -161,7 +161,7 @@ describe('NotesApp - Selection', () => {
     );
     const items = component.find("NotesListItem");
     const input = component.find("NotesSearch");
-    expect(items.at(1).props().title).to.equal(input.get(0)._input.value);
+    expect(items.at(1).props().title).to.equal(input.get(0).input.value);
   });
 
   it('selectNote changes the currently selected note in list', () => {

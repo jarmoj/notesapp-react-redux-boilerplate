@@ -20,7 +20,7 @@ describe('NotesEdit', () => {
     const component = renderIntoDocument(
      <NotesEdit noteEdited={noteEdited} />
     );
-    Simulate.change(component._textarea, {target:{value: inputStr}});
+    Simulate.change(component.textarea, {target:{value: inputStr}});
 
     expect(wasCalled).to.equal(inputStr);
   });

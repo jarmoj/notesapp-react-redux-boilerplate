@@ -54,6 +54,7 @@
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-immutable-proptypes": "^2.0.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "react-split-pane": "^0.1.42",

@@ -1,9 +1,35 @@
-# React Redux - NotesMVC
+# Notes App - React - Redux
 
-Like TodoMVC but for taking and searching notes like in Notational Velocity or
-nvALT.
+This is a Notes App that got its inspiration from Notational Velocity, nvALT,
+Simplenote, and other such note taking tools. I used the project as a climbing
+tree to latest web stack and especially to React and Redux.
 
-Following the tutorial(s) somewhat:
+## Some of the used technology so far
+
+- Babel
+- Webpack
+
+- React
+- Redux
+- ImmutableJS
+- Axios
+
+- Css-loader
+- Sass-loader
+- Style-loader
+
+- Mocha
+- Chai
+- Enzyme
+- Jsdom
+
+- Python backend
+
+
+
+## Used References
+
+At first I started Following the following tutorial(s) somewhat:
 
 "Getting Started with React, Redux and Immutable: a Test-Driven Tutorial
 (Part 1)" - Nicolas Goutay :
@@ -16,6 +42,11 @@ Who in turn followed :
 Immutable" - Tero Parviainen :
 
 http://teropa.info/blog/2015/09/10/full-stack-redux-tutorial.html
+
+At some point I felt confident about my setup and the development diverged from
+those examples.
+
+
 
 ## Building a State Tree
 

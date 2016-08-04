@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import { List, Map } from 'immutable';
 
 // export default {
 //   query: '',
@@ -31,34 +31,34 @@ import {List, Map} from 'immutable';
 //   selected: undefined,
 // };
 
-export default Map({
+export default new Map({
   query: '',
   notes: List.of(
-            Map({
+            new Map({
               title: 'react',
               text: 'Stuff about React.',
-              timestamp: Map({
+              timestamp: new Map({
                 created: '1970-10-12T11:33:00.000Z',
-                modified: '1980-10-12T12:33:00.000Z'
-              })
+                modified: '1980-10-12T12:33:00.000Z',
+              }),
             }),
-            Map({
+            new Map({
               title: 'redux',
               text: 'Stuff about Redux.',
-              timestamp: Map({
+              timestamp: new Map({
                 created: '1970-10-12T11:34:00.000Z',
-                modified: '1980-10-12T12:32:00.000Z'
-              })
+                modified: '1980-10-12T12:32:00.000Z',
+              }),
             }),
-            Map({
+            new Map({
               title: 'immutable',
               text: 'Stuff about Immutable.',
-              timestamp: Map({
+              timestamp: new Map({
                 created: '1970-10-12T11:35:00.000Z',
-                modified: '1980-10-12T12:31:00.000Z'
-              })
+                modified: '1980-10-12T12:31:00.000Z',
+              }),
             })
           ),
   selected: null,
-  orderBy: 'title ascending'
+  orderBy: 'title ascending',
 });

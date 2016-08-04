@@ -1,8 +1,8 @@
+import { Map } from 'immutable';
 import * as types from '../../src/types.js';
-import {Map, List} from 'immutable';
 
 function findItemIndex(state, title) {
-  return state.get('notes').findIndex(note => note.get('title') == title);
+  return state.get('notes').findIndex(note => note.get('title') === title);
 }
 
 function setState(state, newState) {
@@ -18,13 +18,13 @@ function setNotes(state, notes) {
 }
 
 function addNote(state, title, text, timestamp) {
-  const newNote = Map({
-    title: title,
-    text: text,
-    timestamp: Map({
+  const newNote = new Map({
+    title,
+    text,
+    timestamp: new Map({
       created: timestamp,
-      modified: timestamp
-    })
+      modified: timestamp,
+    }),
   });
   return state.update('notes', notes => notes.push(newNote));
 }
@@ -49,34 +49,34 @@ function deleteNote(state, selected) {
 }
 
 function orderByX(state, x) {
-  const parts = state.get('orderBy').split(" ");
-  if (parts[1] == "ascending") {
-    return state.set('orderBy', x + " ascending");
+  const parts = state.get('orderBy').split(' ');
+  if (parts[1] === 'ascending') {
+    return state.set('orderBy', `${x} ascending`);
   }
-  return state.set('orderBy', x + " descending");
+  return state.set('orderBy', `${x} descending`);
 }
 
 function orderByTitle(state) {
-  return orderByX(state, "title");
+  return orderByX(state, 'title');
 }
 
 function orderByModified(state) {
-  return orderByX(state, "modified");
+  return orderByX(state, 'modified');
 }
 
 function orderByCreated(state) {
-  return orderByX(state, "created");
+  return orderByX(state, 'created');
 }
 
 function toggleAcendingDescending(state) {
-  const parts = state.get('orderBy').split(" ");
-  if (parts[1] == "ascending") {
-    return state.set('orderBy', parts[0] + " descending");
+  const parts = state.get('orderBy').split(' ');
+  if (parts[1] === 'ascending') {
+    return state.set('orderBy', `${parts[0]} descending`);
   }
-  return state.set('orderBy', parts[0] + " ascending");
+  return state.set('orderBy', `${parts[0]} ascending`);
 }
 
-export default function(state = Map(), action) {
+export default function (state = new Map(), action) {
   switch (action.type) {
     case types.SET_STATE:
       return setState(state, action.state);
@@ -100,6 +100,8 @@ export default function(state = Map(), action) {
       return orderByCreated(state);
     case types.TOGGLE_ASCENDING_DESCENDING:
       return toggleAcendingDescending(state);
+    default:
+      break;
   }
   return state;
 }

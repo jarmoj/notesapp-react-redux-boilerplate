@@ -44,6 +44,10 @@ describe('actions', () => {
       {
         type: types.SET_NOTES,
         notes
+      },
+      {
+        type: types.SELECT_NOTE,
+        title: null
       }
     ];
 
@@ -71,6 +75,10 @@ describe('actions', () => {
       {
         type: types.SET_NOTES,
         notes
+      },
+      {
+        type: types.SELECT_NOTE,
+        title: null
       }
     ];
 
