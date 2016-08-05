@@ -56,7 +56,7 @@ export default class NotesListItem extends React.Component {
       <tr
         className={'notes-list-row' + this.isSelected()} // eslint-disable-line
         onClick={this.onClickRowCallback}
-        ref={c => this._row = c} // eslint-disable-line
+        ref={c => this.row = c} // eslint-disable-line
       >
         <td className="notes-list-item-title">
           {this.props.title}

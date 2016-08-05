@@ -1,47 +1,54 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import {NotesSearch} from '../../src/components/NotesSearch';
-import {expect} from 'chai';
-import {List, Map} from 'immutable';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
+import NotesSearch from '../../src/components/NotesSearch';
 
 
-const {renderIntoDocument,
-       scryRenderedDOMComponentsWithTag,
-       Simulate} = TestUtils;
+const { renderIntoDocument,
+        Simulate } = TestUtils;
 
 describe('NotesSearch', () => {
-
   it('returns the query string in search() when edited', () => {
-    let wasCalled = "";
-    let inputStr = "jkhiU/(F/&RU€%€DUF&Guihiughgdj)";
-    let search = function (query) {
-      wasCalled = query;
+    let wasCalled = '';
+    const inputStr = 'jkhiU/(F/&RU€%€DUF&Guihiughgdj)';
+    function search(text) {
+      wasCalled = text;
     }
     const component = renderIntoDocument(
-     <NotesSearch search={search} />
+      <NotesSearch
+        search={search}
+        query=""
+        selected=""
+        returnPressed={() => null}
+      />
     );
-    Simulate.change(component.input, {target:{value: inputStr}});
+    Simulate.change(component.input, { target: { value: inputStr } });
+    component.search.flush();
 
     expect(wasCalled).to.equal(inputStr);
   });
 
   it('pressing return will call returnPressed()', () => {
     let wasCalled = false;
-    const callback = (e) => {
+    function callback() {
       wasCalled = true;
     }
     const component = mount(
-        <NotesSearch returnPressed={callback}/>
+      <NotesSearch
+        returnPressed={callback}
+        search={() => null}
+        query=""
+        selected=""
+      />
     );
-    const search = component.find("input");
-    search.simulate("keyUp", { keyCode: 13, which: 13, key: "Enter" });
+    const search = component.find('input');
+    search.simulate('keyUp', { keyCode: 13, which: 13, key: 'Enter' });
     expect(wasCalled).to.equal(true);
   });
 
-  it('autocompletes a selected with highligh if selected starts with the query part', () => {
+  it('TODO: test autocompletes a selected with highlight if selected starts with the query part', () => {
     expect(true).to.equal(false);
   });
-
 });

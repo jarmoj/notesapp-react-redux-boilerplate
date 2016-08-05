@@ -8,13 +8,13 @@ module.exports = {
     './src/index.jsx',
   ],
   module: {
-    preLoaders: [
-      {
-        test: /\.jsx$|\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
-      },
-    ],
+    // preLoaders: [
+    //   {
+    //     test: /\.jsx$|\.js$/,
+    //     loader: 'eslint-loader',
+    //     exclude: /node_modules/,
+    //   },
+    // ],
     loaders: [{
       test: /\.jsx$|\.js$/,
       exclude: /node_modules/,

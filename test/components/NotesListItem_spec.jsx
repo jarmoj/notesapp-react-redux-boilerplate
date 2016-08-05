@@ -1,108 +1,191 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import NotesListItem from '../../src/components/NotesListItem';
-import {expect} from 'chai';
-import {List, Map} from 'immutable';
-import notes from '../test_data';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
+import { mount } from 'enzyme';
+import { Map } from 'immutable';
 import dateFormat from 'dateformat';
+import NotesListItem from '../../src/components/NotesListItem';
 
-const {renderIntoDocument,
-       scryRenderedDOMComponentsWithTag,
-       Simulate} = TestUtils;
+const { renderIntoDocument,
+        Simulate } = TestUtils;
+
+const timestamp = new Map({
+  created: '1970-10-12T11:33:00.000Z',
+  modified: '1980-10-12T12:33:00.000Z',
+});
 
 describe('NotesListItem - Selection', () => {
   it('clicking row calls rowClicked() handler', () => {
-    let wasCalled = "";
-    const title = "some title title";
-    let rowClicked = function (title) {
-      wasCalled = title;
+    let wasCalled = '';
+    const title = 'some title title';
+    function rowClicked(atitle) {
+      wasCalled = atitle;
     }
-    const component = renderIntoDocument(
-      <NotesListItem title={title} rowClicked={rowClicked} />
+    const component = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            title={title}
+            text=""
+            rowClicked={rowClicked}
+            timestamp={timestamp}
+            orderBy=""
+            isSelected={false}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
-    Simulate.click(component._row);
+
+    const row = component.find('tr');
+    row.simulate('click');
 
     expect(wasCalled).to.equal(title);
   });
 });
 
 describe('NotesListItem - Visual', () => {
-  it('Every even row gets even-row and odd one odd-row class', () => {
-    const componentEven = renderIntoDocument(
-      <NotesListItem />
-    );
-    expect(componentEven._row.classList.contains('even-row')).to.equal(true);
-    expect(componentEven._row.classList.contains('odd-row')).to.equal(false);
+  it('renders item with its title, text body, and date modified/created depending orderBy', () => {
+    const title = 'some title title';
+    const text = 'something for the text body';
 
-    const componentOdd = renderIntoDocument(
-      <NotesListItem />
+    const setup = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            title={title}
+            text={text}
+            timestamp={timestamp}
+            orderBy="modified"
+            rowClicked={() => null}
+            isSelected={false}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
 
-    expect(componentOdd._row.classList.contains('even-row')).to.equal(false);
-    expect(componentOdd._row.classList.contains('odd-row')).to.equal(true);
+    const componentModified = setup.find('NotesListItem');
+
+    expect(componentModified.text()).to.contain(title);
+    expect(componentModified.text()).to.contain(text);
+    expect(componentModified.text()).to.contain(dateFormat(timestamp.get('modified')));
+
+    const setup2 = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            title={title}
+            text={text}
+            timestamp={timestamp}
+            orderBy="created"
+            rowClicked={() => null}
+            isSelected={false}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
+    );
+
+    const componentCreated = setup2.find('NotesListItem');
+
+    expect(componentCreated.text()).to.contain(title);
+    expect(componentCreated.text()).to.contain(text);
+    expect(componentCreated.text()).to.contain(dateFormat(timestamp.get('created')));
   });
-  it('renders a list item with its title contents, text body, and date modified/created depending orderBy', () => {
-    const title = "some title title";
-    const text = "something for the text body";
-    const timestamp = Map({
-      created: '1970-10-12T11:33:00.000Z',
-      modified: '1980-10-12T12:33:00.000Z'
-    });
 
-    const componentModified = renderIntoDocument(
-      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="modified" />
-    );
-
-    expect(componentModified._row.textContent).to.contain(title);
-    expect(componentModified._row.textContent).to.contain(text);
-    expect(componentModified._row.textContent).to.contain(dateFormat(timestamp.get('modified')));
-
-    const componentCreated = renderIntoDocument(
-      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="created" />
-    );
-
-    expect(componentCreated._row.textContent).to.contain(title);
-    expect(componentCreated._row.textContent).to.contain(text);
-    expect(componentCreated._row.textContent).to.contain(dateFormat(timestamp.get('created')));
-  });
   it('check that a list item that is selected by select prop gets selected class', () => {
-    const componentNotSelected = renderIntoDocument(
-      <NotesListItem selected={false} />
+    const setup = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            isSelected={false}
+            title=""
+            text=""
+            timestamp={timestamp}
+            orderBy="created"
+            rowClicked={() => null}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
 
-    expect(componentNotSelected._row.classList.contains('selected')).to.equal(false);
+    const component = setup.find('tr');
+    expect(component.hasClass('selected')).to.equal(false);
 
-    const componentSelected = renderIntoDocument(
-      <NotesListItem selected={true} />
+    const setup2 = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            isSelected
+            title=""
+            text=""
+            timestamp={timestamp}
+            orderBy="created"
+            rowClicked={() => null}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
-    expect(componentSelected._row.classList.contains('selected')).to.equal(true);
 
+    const component2 = setup2.find('tr');
+    expect(component2.hasClass('selected')).to.equal(true);
   });
+
   it('has a pretty date format for the timestamp', () => {
-    const title = "some title title";
-    const text = "something for the text body";
-    const timestamp = Map({
-      created: '1970-10-12T11:33:00.000Z',
-      modified: '1980-10-12T12:33:00.000Z'
-    });
+    const title = 'some title title';
+    const text = 'something for the text body';
 
-    const componentModified = renderIntoDocument(
-      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="modified" />
+    const setup = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            title={title}
+            text={text}
+            timestamp={timestamp}
+            orderBy="modified"
+            rowClicked={() => null}
+            isSelected={false}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
 
-    expect(componentModified._row.textContent).to.contain(title);
-    expect(componentModified._row.textContent).to.contain(text);
-    expect(componentModified._row.textContent).to.contain(dateFormat(timestamp.get('modified')));
+    const component = setup.find('NotesListItem');
 
-    const componentCreated = renderIntoDocument(
-      <NotesListItem title={title} text={text} timestamp={timestamp} orderBy="created" />
+    expect(component.text()).to.contain(title);
+    expect(component.text()).to.contain(text);
+    expect(component.text()).to.contain(dateFormat(timestamp.get('modified')));
+
+    const setup2 = mount(
+      <table>
+        <tbody>
+          <NotesListItem
+            title={title}
+            text={text}
+            timestamp={timestamp}
+            orderBy="created"
+            rowClicked={() => null}
+            isSelected={false}
+            deleteClicked={() => null}
+          />
+        </tbody>
+      </table>
     );
 
-    expect(componentCreated._row.textContent).to.contain(title);
-    expect(componentCreated._row.textContent).to.contain(text);
-    expect(componentCreated._row.textContent).to.contain(dateFormat(timestamp.get('created')));
+    const component2 = setup2.find('NotesListItem');
+
+    expect(component2.text()).to.contain(title);
+    expect(component2.text()).to.contain(text);
+    expect(component2.text()).to.contain(dateFormat(timestamp.get('created')));
   });
-  it('timestamps are compared properly', () => {
+
+  it('TODO: test timestamps are compared properly', () => {
+    
     expect(false).to.equal(true);
   });
 });

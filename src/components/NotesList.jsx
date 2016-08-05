@@ -78,14 +78,14 @@ export class NotesList extends React.Component {
     if (notes === undefined) {
       return List.of();
     }
-    return notes.sortBy(note => note.getIn(['timestamp', 'modified']));
+    return notes.sortBy(note => new Date(note.getIn(['timestamp', 'modified'])));
   }
 
   orderByCreated(notes) {
     if (notes === undefined) {
       return List.of();
     }
-    return notes.sortBy(note => note.getIn(['timestamp', 'created']));
+    return notes.sortBy(note => new Date(note.getIn(['timestamp', 'created'])));
   }
 
   aDeScending(notes) {
@@ -137,17 +137,17 @@ export class NotesList extends React.Component {
             <tr>
               <th
                 className="notes-list-header-title"
-                ref={c => this._titleHeader = c} // eslint-disable-line
+                ref={c => this.titleHeader = c} // eslint-disable-line
                 onClick={this.titleHeaderOnClickCallback}
               >Title</th>
               <th
                 className="notes-list-header-date"
-                ref={c => this._timestampHeader = c} // eslint-disable-line
+                ref={c => this.timestampHeader = c} // eslint-disable-line
                 onClick={this.timestampHeaderOnClickCallback}
               >{this.timestampHeaderText()}</th>
               <th
                 className="notes-list-header-destroy"
-                ref={c => this._arrowHeader = c} // eslint-disable-line
+                ref={c => this.arrowHeader = c} // eslint-disable-line
                 onClick={this.arrowHeaderOnClickCallback}
               >{this.arrowHeaderText()}</th>
             </tr>
@@ -159,7 +159,7 @@ export class NotesList extends React.Component {
               {this.aDeScending(this.orderBy(this.props.notes)).map(item =>
                 <NotesListItem
                   key={item.get('title')}
-                  ref={c => this._items = (this._items ? this._items.concat([c]) : [c])} // eslint-disable-line
+                  ref={c => this.items = (this.items ? this.items.concat([c]) : [c])} // eslint-disable-line
                   title={item.get('title')}
                   text={item.get('text')}
                   timestamp={item.get('timestamp')}

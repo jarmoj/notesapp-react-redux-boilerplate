@@ -1,37 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import NotesApp from '../../src/actions/index';
-import {expect} from 'chai';
-import {List, Map, Set, is} from 'immutable';
-import _state from '../test_data';
-import * as types from '../../src/types.js';
-import * as actions from '../../src/actions/index';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
+import { List, Set, is } from 'immutable';
 import diff from 'immutablediff';
 import * as tk from 'timekeeper';
 import urlencode from 'urlencode';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import _state from '../test_data';
+import * as types from '../../src/types.js';
+import * as actions from '../../src/actions/index';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
-
-mockAxios = global.mockAxios;
 
 describe('actions', () => {
   it('should create an action to set the complete state of the app', () => {
     const state = _state;
     const expectedAction = {
       type: types.SET_STATE,
-      state
+      state,
     };
     expect(actions.setState(state)).to.deep.equal(expectedAction);
   });
 
   it('should give action to set query and set notes to empty with difficult query', () => {
-    mockAxios.reset();
-    mockAxios.onGet(`${actions.SEARCH_URL}` + urlencode("test query")).reply(200, {
-      notes: []
+    global.mockAxios.reset();
+    const encoded = urlencode('test query');
+    global.mockAxios.onGet(`${actions.SEARCH_URL}${encoded}`).reply(200, {
+      notes: [],
     });
 
     const query = 'test query';
@@ -39,16 +36,16 @@ describe('actions', () => {
     const expectedActions = [
       {
         type: types.SET_QUERY,
-        query
+        query,
       },
       {
         type: types.SET_NOTES,
-        notes
+        notes,
       },
       {
         type: types.SELECT_NOTE,
-        title: null
-      }
+        title: null,
+      },
     ];
 
     const getState = _state;
@@ -60,26 +57,26 @@ describe('actions', () => {
   });
 
   it('should give action to set query and set notes to all with empty query', () => {
-    mockAxios.reset();
-    mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
-      notes: _state.get("notes").toJS()
+    global.mockAxios.reset();
+    global.mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
+      notes: _state.get('notes').toJS(),
     });
 
     const query = '';
-    const notes = _state.get("notes");
+    const notes = _state.get('notes');
     const expectedActions = [
       {
         type: types.SET_QUERY,
-        query
+        query,
       },
       {
         type: types.SET_NOTES,
-        notes
+        notes,
       },
       {
         type: types.SELECT_NOTE,
-        title: null
-      }
+        title: null,
+      },
     ];
 
     const getState = _state;
@@ -91,8 +88,8 @@ describe('actions', () => {
   });
 
   it('should create an action to add new note with given title and text', () => {
-    mockAxios.reset();
-    mockAxios.onPut('http://localhost:3456/notes').reply(200);
+    global.mockAxios.reset();
+    global.mockAxios.onPut('http://localhost:3456/notes').reply(200);
 
     const timestamp = (new Date()).toISOString();
     tk.freeze(timestamp);
@@ -103,12 +100,12 @@ describe('actions', () => {
         type: types.ADD_NOTE,
         title,
         text,
-        timestamp
+        timestamp,
       },
       {
         type: types.SELECT_NOTE,
-        title
-      }
+        title,
+      },
     ];
 
     const getState = _state;
@@ -122,16 +119,16 @@ describe('actions', () => {
 
   it('should create an action to select note by title', () => {
     const title = 'react';
-    const notes = List.of(_state.get("notes").get(0));
+    const notes = List.of(_state.get('notes').get(0));
     const expectedActions = [
       {
         type: types.SET_QUERY,
-        query: title
+        query: title,
       },
       {
         type: types.SELECT_NOTE,
-        title
-      }
+        title,
+      },
     ];
 
     const getState = _state;
@@ -141,26 +138,25 @@ describe('actions', () => {
     expect(actionsGot).to.deep.equal(expectedActions);
   });
 
-  it('clearSelection should give action to empty query and set notes to all and selected to null', () => {
-    mockAxios.reset();
-    mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
-      notes: _state.get("notes").toJS()
+  it('clearSelection should empty query, set notes to all and selected to null', () => {
+    global.mockAxios.reset();
+    global.mockAxios.onGet(`${actions.SEARCH_URL}`).reply(200, {
+      notes: _state.get('notes').toJS(),
     });
 
-    const notes = List.of();
     const expectedActions = [
       {
         type: types.SELECT_NOTE,
-        title: null
+        title: null,
       },
       {
         type: types.SET_QUERY,
-        query: ''
+        query: '',
       },
       {
         type: types.SET_NOTES,
-        notes: _state.get("notes")
-      }
+        notes: _state.get('notes'),
+      },
     ];
 
     const getState = _state;
@@ -173,8 +169,8 @@ describe('actions', () => {
 
   it('should create an action to edit the note having title with given text', () => {
     const url = `${actions.ADD_URL}`;
-    mockAxios.reset();
-    mockAxios.onPut(url).reply(200);
+    global.mockAxios.reset();
+    global.mockAxios.onPut(url).reply(200);
 
     const timestamp = (new Date()).toISOString();
     tk.freeze(timestamp);
@@ -187,12 +183,12 @@ describe('actions', () => {
         selected,
         title,
         text,
-        timestamp
+        timestamp,
       },
       {
         type: types.SELECT_NOTE,
-        title
-      }
+        title,
+      },
     ];
 
     const getState = _state;
@@ -208,18 +204,18 @@ describe('actions', () => {
     const selected = 'test title';
     const encoded = urlencode(selected);
     const url = `${actions.DELETE_URL}/${encoded}`;
-    mockAxios.reset();
-    mockAxios.onDelete(url).reply(200);
+    global.mockAxios.reset();
+    global.mockAxios.onDelete(url).reply(200);
 
     const expectedActions = [
       {
         type: types.DELETE_NOTE,
-        selected
+        selected,
       },
       {
         type: types.SELECT_NOTE,
-        title: null
-      }
+        title: null,
+      },
     ];
 
     const getState = _state;
@@ -232,29 +228,29 @@ describe('actions', () => {
 
   it('should create an action to set list order by to title', () => {
     const expectedAction = {
-      type: types.ORDER_BY_TITLE
+      type: types.ORDER_BY_TITLE,
     };
     expect(actions.orderByTitle()).to.deep.equal(expectedAction);
   });
 
   it('should create an action to set list order by to modified', () => {
     const expectedAction = {
-      type: types.ORDER_BY_MODIFIED
+      type: types.ORDER_BY_MODIFIED,
     };
     expect(actions.orderByModified()).to.deep.equal(expectedAction);
   });
 
   it('should create an action to set list order by to created', () => {
     const expectedAction = {
-      type: types.ORDER_BY_CREATED
+      type: types.ORDER_BY_CREATED,
     };
     expect(actions.orderByCreated()).to.deep.equal(expectedAction);
   });
 
   it('should create an action to toggle list order between ascending / descending', () => {
     const expectedAction = {
-      type: types.TOGGLE_ASCENDING_DESCENDING
+      type: types.TOGGLE_ASCENDING_DESCENDING,
     };
-    expect(actions.toggleAcendingDescending()).to.deep.equal(expectedAction);
+    expect(actions.toggleAscendingDescending()).to.deep.equal(expectedAction);
   });
 });

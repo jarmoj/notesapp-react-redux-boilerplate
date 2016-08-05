@@ -187,7 +187,7 @@ export function orderByCreated() {
   };
 }
 
-export function toggleAcendingDescending() {
+export function toggleAscendingDescending() {
   return {
     type: types.TOGGLE_ASCENDING_DESCENDING,
   };

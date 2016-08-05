@@ -50,14 +50,21 @@ export default class NotesSearch extends React.Component {
   }
 
   onKeyUpCallback(e) {
-    if (e.keyCode === 13) {
-      this.returnPressed();
+    switch (e.keyCode) {
+      case 13:
+        this.returnPressed();
+        break;
+      case 27:
+        this.escapePressed();
+        break;
+      default:
+        break;
     }
   }
 
   onKeyDownCallback(e) {
     this.search = this.search_fast;
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && this.state.query.length > 1) {
       this.search = this.search_slow;
     }
   }
@@ -82,6 +89,10 @@ export default class NotesSearch extends React.Component {
       query: this.state.value,
     });
     this.props.returnPressed();
+  }
+
+  escapePressed() {
+    this.onChangeCallback({ target: { value: '' } });
   }
 
   focus() {

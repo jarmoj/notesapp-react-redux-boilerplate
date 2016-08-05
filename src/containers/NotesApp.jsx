@@ -18,7 +18,7 @@ export class NotesApp extends React.Component {
       notes: ImmutablePropTypes.list.isRequired,
       selected: React.PropTypes.string,
       orderBy: React.PropTypes.string.isRequired,
-      toggleAcendingDescending: React.PropTypes.func.isRequired,
+      toggleAscendingDescending: React.PropTypes.func.isRequired,
       clearSelection: React.PropTypes.func.isRequired,
       orderByTitle: React.PropTypes.func.isRequired,
       orderByModified: React.PropTypes.func.isRequired,
@@ -61,17 +61,11 @@ export class NotesApp extends React.Component {
     };
   }
 
-  setAscendingDescendingToDefault() {
-    if (this.props.orderBy.split(' ')[1] === 'ascending') {
-      this.props.toggleAcendingDescending();
+  setOrderToDefault() {
+    this.props.orderByTitle();
+    if (this.props.orderBy.split(' ')[1] === 'descending') {
+      this.props.toggleAscendingDescending();
     }
-  }
-
-  escapePressed() {
-    this.noteEdited.flush();
-    this.props.clearSelection();
-    this.search.focus();
-    this.setAscendingDescendingToDefault();
   }
 
   orderByTimestamp() {
@@ -88,6 +82,17 @@ export class NotesApp extends React.Component {
     } else {
       this.props.orderByModified();
     }
+  }
+
+  escapePressed() {
+    this.noteEdited.flush();
+
+    if (this.props.query === '') {
+      this.setOrderToDefault();
+    }
+
+    this.props.clearSelection();
+    this.search.focus();
   }
 
   returnPressed() {
@@ -127,10 +132,10 @@ export class NotesApp extends React.Component {
               selected={this.props.selected}
               titleHeaderClicked={this.props.orderByTitle}
               timestampHeaderClicked={this.orderByTimestamp}
-              arrowHeaderClicked={this.props.toggleAcendingDescending}
+              arrowHeaderClicked={this.props.toggleAscendingDescending}
               selectNote={this.props.selectNote}
               deleteNote={this.props.deleteNote}
-              ref={c => this._list = c} // eslint-disable-line
+              ref={c => this.list = c} // eslint-disable-line
             />
             <NotesEdit
               notes={this.props.notes}
@@ -175,7 +180,7 @@ export function mapDispatchToProps(dispatch) {
     orderByTitle: bindActionCreators(actionCreators.orderByTitle, dispatch),
     orderByModified: bindActionCreators(actionCreators.orderByModified, dispatch),
     orderByCreated: bindActionCreators(actionCreators.orderByCreated, dispatch),
-    toggleAcendingDescending: bindActionCreators(actionCreators.toggleAcendingDescending, dispatch),
+    toggleAscendingDescending: bindActionCreators(actionCreators.toggleAscendingDescending, dispatch),
   };
 }
 

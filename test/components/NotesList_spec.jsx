@@ -1,47 +1,74 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import {NotesList, UP_POINTING, DOWN_POINTING} from '../../src/components/NotesList';
-import {expect} from 'chai';
-import {List, Map} from 'immutable';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
+import { List } from 'immutable';
+import { shallow } from 'enzyme';
+import { NotesList, UP_POINTING, DOWN_POINTING } from '../../src/components/NotesList';
 import _state from '../test_data';
-import { mount, shallow } from 'enzyme';
 
-const {renderIntoDocument,
-       scryRenderedDOMComponentsWithTag,
-       Simulate} = TestUtils;
+const { renderIntoDocument,
+        Simulate } = TestUtils;
 
 describe('NotesList', () => {
   it('by default renders a list with notes in modified descending order', () => {
     const notes = _state.get('notes');
     const component = renderIntoDocument(
-      <NotesList notes={notes} />
+      <NotesList
+        notes={notes}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
-    expect(component._items[0].props.title).to.equal('react');
-    expect(component._items[1].props.title).to.equal('redux');
-    expect(component._items[2].props.title).to.equal('immutable');
+    expect(component.items[0].props.title).to.equal('react');
+    expect(component.items[1].props.title).to.equal('redux');
+    expect(component.items[2].props.title).to.equal('immutable');
   });
   it('clicking note in list will call selectNote handler', () => {
-    let wasCalled = "";
+    let wasCalled = '';
     const notes = _state.get('notes');
-    let selectNote = function (title) {
+    function selectNote(title) {
       wasCalled = title;
     }
     const component = renderIntoDocument(
-      <NotesList notes={notes} selectNote={selectNote}/>
+      <NotesList
+        notes={notes}
+        selectNote={selectNote}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        deleteNote={() => null}
+      />
     );
-    Simulate.click(component._items[1]._row);
+    Simulate.click(component.items[1].row);
 
     expect(wasCalled).to.equal('redux');
   });
   it('clicking Title header will call titleHeaderClicked handler', () => {
-    let wasCalled = false
-    let titleHeaderClicked = function () {
+    let wasCalled = false;
+    function titleHeaderClicked() {
       wasCalled = true;
     }
     const component = renderIntoDocument(
-      <NotesList notes={List.of()} titleHeaderClicked={titleHeaderClicked}/>
+      <NotesList
+        notes={List.of()}
+        titleHeaderClicked={titleHeaderClicked}
+        selected=""
+        orderBy=""
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
-    Simulate.click(component._titleHeader);
+    Simulate.click(component.titleHeader);
 
     expect(wasCalled).to.equal(true);
   });
@@ -49,7 +76,16 @@ describe('NotesList', () => {
     const notes = _state.get('notes');
 
     const component = renderIntoDocument(
-      <NotesList notes={notes}/>
+      <NotesList
+        notes={notes}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
     const notesTitleAscending = component.orderByTitle(notes);
@@ -61,7 +97,16 @@ describe('NotesList', () => {
     const notes = _state.get('notes');
 
     const component = renderIntoDocument(
-      <NotesList notes={notes}/>
+      <NotesList
+        notes={notes}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
     const notesModifiedAscending = component.orderByModified(notes);
@@ -73,30 +118,57 @@ describe('NotesList', () => {
     const notes = _state.get('notes');
 
     const componentTitleAscending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="title ascending"/>
+      <NotesList
+        notes={notes}
+        orderBy="title ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentTitleAscending._items[0].props.title).to.equal('immutable');
-    expect(componentTitleAscending._items[1].props.title).to.equal('react');
-    expect(componentTitleAscending._items[2].props.title).to.equal('redux');
+    expect(componentTitleAscending.items[0].props.title).to.equal('immutable');
+    expect(componentTitleAscending.items[1].props.title).to.equal('react');
+    expect(componentTitleAscending.items[2].props.title).to.equal('redux');
 
     const componentTitleDescending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="title descending"/>
+      <NotesList
+        notes={notes}
+        orderBy="title descending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentTitleDescending._items[0].props.title).to.equal('redux');
-    expect(componentTitleDescending._items[1].props.title).to.equal('react');
-    expect(componentTitleDescending._items[2].props.title).to.equal('immutable');
+    expect(componentTitleDescending.items[0].props.title).to.equal('redux');
+    expect(componentTitleDescending.items[1].props.title).to.equal('react');
+    expect(componentTitleDescending.items[2].props.title).to.equal('immutable');
   });
   it('clicking Modified / Created header will call timestampHeaderClicked handler', () => {
-    let wasCalled = false
-    let timestampHeaderClicked = function () {
+    let wasCalled = false;
+    function timestampHeaderClicked() {
       wasCalled = true;
     }
     const component = renderIntoDocument(
-      <NotesList notes={List.of()} timestampHeaderClicked={timestampHeaderClicked}/>
+      <NotesList
+        notes={List.of()}
+        timestampHeaderClicked={timestampHeaderClicked}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
-    Simulate.click(component._timestampHeader);
+    Simulate.click(component.timestampHeader);
 
     expect(wasCalled).to.equal(true);
   });
@@ -104,84 +176,170 @@ describe('NotesList', () => {
     const notes = _state.get('notes');
 
     const componentModifiedAscending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="modified ascending"/>
+      <NotesList
+        notes={notes}
+        orderBy="modified ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentModifiedAscending._items[0].props.title).to.equal('immutable');
-    expect(componentModifiedAscending._items[1].props.title).to.equal('redux');
-    expect(componentModifiedAscending._items[2].props.title).to.equal('react');
+    expect(componentModifiedAscending.items[0].props.title).to.equal('immutable');
+    expect(componentModifiedAscending.items[1].props.title).to.equal('redux');
+    expect(componentModifiedAscending.items[2].props.title).to.equal('react');
 
     const componentModifiedDescending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="modified descending"/>
+      <NotesList
+        notes={notes}
+        orderBy="modified descending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentModifiedDescending._items[0].props.title).to.equal('react');
-    expect(componentModifiedDescending._items[1].props.title).to.equal('redux');
-    expect(componentModifiedDescending._items[2].props.title).to.equal('immutable');
+    expect(componentModifiedDescending.items[0].props.title).to.equal('react');
+    expect(componentModifiedDescending.items[1].props.title).to.equal('redux');
+    expect(componentModifiedDescending.items[2].props.title).to.equal('immutable');
 
     const componentCreatedAscending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="created ascending"/>
+      <NotesList
+        notes={notes}
+        orderBy="created ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentCreatedAscending._items[0].props.title).to.equal('react');
-    expect(componentCreatedAscending._items[1].props.title).to.equal('redux');
-    expect(componentCreatedAscending._items[2].props.title).to.equal('immutable');
+    expect(componentCreatedAscending.items[0].props.title).to.equal('react');
+    expect(componentCreatedAscending.items[1].props.title).to.equal('redux');
+    expect(componentCreatedAscending.items[2].props.title).to.equal('immutable');
 
     const componentCreatedDescending = renderIntoDocument(
-      <NotesList notes={notes} orderBy="created descending"/>
+      <NotesList
+        notes={notes}
+        orderBy="created descending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentCreatedDescending._items[0].props.title).to.equal('immutable');
-    expect(componentCreatedDescending._items[1].props.title).to.equal('redux');
-    expect(componentCreatedDescending._items[2].props.title).to.equal('react');
+    expect(componentCreatedDescending.items[0].props.title).to.equal('immutable');
+    expect(componentCreatedDescending.items[1].props.title).to.equal('redux');
+    expect(componentCreatedDescending.items[2].props.title).to.equal('react');
   });
   it('orderby modify | created is printed in the timestamp header text', () => {
     const componentModified = renderIntoDocument(
-      <NotesList notes={List.of()} orderBy="modified ascending"/>
+      <NotesList
+        notes={List.of()}
+        orderBy="modified ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentModified._timestampHeader.textContent).to.contain('Modified');
+    expect(componentModified.timestampHeader.textContent).to.contain('Modified');
 
     const componentCreated = renderIntoDocument(
-      <NotesList notes={List.of()} orderBy="created ascending"/>
+      <NotesList
+        notes={List.of()}
+        orderBy="created ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentCreated._timestampHeader.textContent).to.contain('Created');
+    expect(componentCreated.timestampHeader.textContent).to.contain('Created');
   });
   it('orderby ascending | descending is reflected in the header arrow', () => {
     const componentAscending = renderIntoDocument(
-      <NotesList notes={List.of()} orderBy="modified ascending"/>
+      <NotesList
+        notes={List.of()}
+        orderBy="modified ascending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentAscending._arrowHeader.textContent).to.contain(UP_POINTING);
+    expect(componentAscending.arrowHeader.textContent).to.contain(UP_POINTING);
 
     const componentDescending = renderIntoDocument(
-      <NotesList notes={List.of()} orderBy="modified descending"/>
+      <NotesList
+        notes={List.of()}
+        orderBy="modified descending"
+        selected=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        arrowHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
 
-    expect(componentDescending._arrowHeader.textContent).to.contain(DOWN_POINTING);
+    expect(componentDescending.arrowHeader.textContent).to.contain(DOWN_POINTING);
   });
   it('clicking header arrow will call arrowHeaderClicked handler', () => {
-    let wasCalled = false
-    let arrowHeaderClicked = function () {
+    let wasCalled = false;
+    function arrowHeaderClicked() {
       wasCalled = true;
     }
     const component = renderIntoDocument(
-      <NotesList notes={List.of()} arrowHeaderClicked={arrowHeaderClicked}/>
+      <NotesList
+        notes={List.of()}
+        arrowHeaderClicked={arrowHeaderClicked}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
-    Simulate.click(component._arrowHeader);
+    Simulate.click(component.arrowHeader);
 
     expect(wasCalled).to.equal(true);
   });
   it('list is scrollable (in class)', () => {
     const component = shallow(
-      <NotesList/>
+      <NotesList
+        notes={List.of()}
+        arrowHeaderClicked={() => null}
+        selected=""
+        orderBy=""
+        titleHeaderClicked={() => null}
+        timestampHeaderClicked={() => null}
+        selectNote={() => null}
+        deleteNote={() => null}
+      />
     );
-    const scrollable = component.find(".scrollable");
+    const scrollable = component.find('.scrollable');
     expect(scrollable).to.not.equal(undefined);
-  });
-
-  it('list is scrollable (in class)', () => {
-    expect(true).to.equal(false);
   });
 });

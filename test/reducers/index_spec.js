@@ -1,15 +1,16 @@
-import {List, Map, fromJS, Set} from 'immutable';
-import {expect} from 'chai';
+import { List, Map, fromJS, Set } from 'immutable';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 import reducer from '../../src/reducers/index';
 import _state from '../test_data';
 import * as types from '../../src/types.js';
 
 describe('reducer', () => {
   it('handles SET_STATE', () => {
-    const initialState = Map();
+    const initialState = new Map();
     const action = {
       type: types.SET_STATE,
-      state: _state
+      state: _state,
     };
 
     const nextState = reducer(initialState, action);
@@ -21,12 +22,10 @@ describe('reducer', () => {
     const query = 'test query string';
     const action = {
       type: types.SET_QUERY,
-      query
-    }
+      query,
+    };
     const expectedState = _state.setIn(['query'], query);
-
     const nextState = reducer(initialState, action);
-
     expect(nextState).to.equal(expectedState);
   });
 
@@ -40,18 +39,15 @@ describe('reducer', () => {
       type: types.ADD_NOTE,
       title,
       text,
-      timestamp
-    }
+      timestamp,
+    };
     const nextState = reducer(initialState, action);
     const nextNotes = nextState.get('notes');
 
     expect(nextNotes.count()).to.equal(initialNotes.count() + 1);
 
-    const newNote = nextNotes.find(note => {
-      return note.get('title') == title;
-    });
-
-    expect(newNote.get('text') == text);
+    const newNote = nextNotes.find(note => note.get('title') === title);
+    expect(newNote.get('text') === text);
 
     const modified = newNote.getIn(['timestamp', 'modified']);
     const created = newNote.getIn(['timestamp', 'created']);
@@ -67,8 +63,8 @@ describe('reducer', () => {
     const title = 'redux';
     const action = {
       type: types.SELECT_NOTE,
-      title
-    }
+      title,
+    };
     const nextState = reducer(initialState, action);
 
     expect(nextState.get('selected')).to.equal(title);
@@ -86,9 +82,9 @@ describe('reducer', () => {
       selected,
       title,
       text,
-      timestamp
-    }
-    const initialNote = initialNotes.find(note => note.get('title') == selected);
+      timestamp,
+    };
+    const initialNote = initialNotes.find(note => note.get('title') === selected);
 
     const initialModified = initialNote.getIn(['timestamp', 'modified']);
 
@@ -97,41 +93,38 @@ describe('reducer', () => {
 
     expect(nextNotes.count()).to.equal(initialNotes.count());
 
-    const newNote = nextNotes.find(note => note.get('title') == title);
+    const newNote = nextNotes.find(note => note.get('title') === title);
 
     const modified = newNote.getIn(['timestamp', 'modified']);
-
-    expect((new Date(modified)).toISOString()).to.not.equal((new Date(initialModified)).toISOString());
+    const expected = (new Date(initialModified)).toISOString();
+    expect((new Date(modified)).toISOString()).to.not.equal(expected);
 
     expect(newNote.get('title')).to.equal(title);
     expect(newNote.get('text')).to.equal(text);
-});
+  });
 
   it('handles DELETE_NOTE by deleting the note from notes', () => {
     const initialState = _state;
     const selected = 'redux';
     const action = {
       type: types.DELETE_NOTE,
-      selected
-    }
+      selected,
+    };
     const nextState = reducer(initialState, action);
-
     expect(nextState.get('notes').count()).to.equal(initialState.get('notes').count() - 1);
 
-    const deletedIndex = nextState.get('notes').findIndex(note => note.get('title') == selected);
-
+    const deletedIndex = nextState.get('notes').findIndex(note => note.get('title') === selected);
     expect(deletedIndex).to.equal(-1);
   });
 
   it('handles ORDER_BY_TITLE by setting list order be by title', () => {
-    const initialState = _state;
+    const initialState = _state.set('orderBy', 'modified ascending');
     const action = {
       type: types.ORDER_BY_TITLE,
-    }
-    expect(initialState.get('orderBy')).to.not.contain("title");
+    };
+    expect(initialState.get('orderBy')).to.not.contain('title');
 
     const nextState = reducer(initialState, action);
-
     expect(nextState.get('orderBy')).to.contain('title');
   });
 
@@ -139,16 +132,14 @@ describe('reducer', () => {
     const initialState = _state;
     const action0 = {
       type: types.ORDER_BY_TITLE,
-    }
+    };
     const action = {
       type: types.ORDER_BY_MODIFIED,
-    }
+    };
     const nextState0 = reducer(initialState, action0);
-
-    expect(nextState0.get('orderBy')).to.not.contain("modified");
+    expect(nextState0.get('orderBy')).to.not.contain('modified');
 
     const nextState = reducer(nextState0, action);
-
     expect(nextState.get('orderBy')).to.contain('modified');
   });
 
@@ -156,24 +147,21 @@ describe('reducer', () => {
     const initialState = _state;
     const action = {
       type: types.ORDER_BY_CREATED,
-    }
-    expect(initialState.get('orderBy')).to.not.contain("created");
+    };
+    expect(initialState.get('orderBy')).to.not.contain('created');
 
     const nextState = reducer(initialState, action);
-
     expect(nextState.get('orderBy')).to.contain('created');
   });
 
-  it('handles TOGGLE_ASCENDING_DESCENDING by toggling the list to be orderder between ascending / descending', () => {
+  it('handles TOGGLE_ASCENDING_DESCENDING to get list orderder between (a/de)scending', () => {
     const initialState = _state;
     const action = {
       type: types.TOGGLE_ASCENDING_DESCENDING,
-    }
-    expect(initialState.get('orderBy')).to.contain('descending');
+    };
+    expect(initialState.get('orderBy')).to.contain('ascending');
 
     const nextState = reducer(initialState, action);
-
-    expect(nextState.get('orderBy')).to.contain('ascending');
+    expect(nextState.get('orderBy')).to.contain('descending');
   });
-
 });

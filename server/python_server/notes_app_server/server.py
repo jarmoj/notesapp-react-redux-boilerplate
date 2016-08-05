@@ -60,7 +60,7 @@ def add_note(note):
     """Add note to notes."""
     if find_note(note["title"]):
         raise NoteAlreadyExists(note["title"])
-    db["notes"].append(note)
+    db['notes'].append(note)
 
 
 def delete_note(title):
@@ -68,7 +68,7 @@ def delete_note(title):
     found = find_note(title)
     if not found:
         raise NoSuchNoteExists(title)
-    del db["notes"][found[0]]
+    del db['notes'][found[0]]
 
 
 def update_note(title, note):
@@ -77,12 +77,12 @@ def update_note(title, note):
     if not found:
         raise NoSuchNoteExists(title)
     note["timestamp"]["created"] = found[1]["timestamp"]["created"]
-    db["notes"][found[0]] = note
+    db['notes'][found[0]] = note
 
 
 def find_note(title):
     """Return (index, note) of note that has title or False if no such note."""
-    for i, note in enumerate(db["notes"]):
+    for i, note in enumerate(db['notes']):
         if note["title"] == title:
             return i, note
     return False
@@ -106,7 +106,7 @@ def search_notes(query):
 
     notes = []
     query_tokens = tokenize(query)
-    for note in db["notes"]:
+    for note in db['notes']:
         if match_token(note, query_tokens):
             notes.append(note)
     return notes
@@ -147,7 +147,7 @@ class NotesRootHandler(CorsBaseHandler):
     def get(self):
         """Handle get and return all notes from database."""
         response = {
-            'notes': db["notes"]
+            'notes': db['notes']
         }
         self.write(response)
 
@@ -219,7 +219,7 @@ class NotesTitlesHandler(CorsBaseHandler):
     def get(self):
         """Handle get and return all note titles from database."""
         response = {
-            'note_titles': [note["title"] for note in db["notes"]]
+            'note_titles': [note["title"] for note in db['notes']]
         }
         self.write(response)
 
@@ -234,7 +234,7 @@ class NotesSearchHandler(CorsBaseHandler):
         }
         if self.get_argument('q') == "":
             response = {
-                'notes': db["notes"]
+                'notes': db['notes']
             }
         else:
             response = {

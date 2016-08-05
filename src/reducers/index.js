@@ -48,27 +48,30 @@ function deleteNote(state, selected) {
   return state.update('notes', notes => notes.delete(index));
 }
 
-function orderByX(state, x) {
-  const parts = state.get('orderBy').split(' ');
-  if (parts[1] === 'ascending') {
-    return state.set('orderBy', `${x} ascending`);
-  }
-  return state.set('orderBy', `${x} descending`);
-}
+// function orderByX(state, x, direction) {
+//   const parts = state.get('orderBy').split(' ');
+//   if (parts[1] === 'ascending') {
+//     return state.set('orderBy', `${x} ascending`);
+//   }
+//   return state.set('orderBy', `${x} descending`);
+// }
 
 function orderByTitle(state) {
-  return orderByX(state, 'title');
+  // return orderByX(state, 'title');
+  return state.set('orderBy', 'title ascending');
 }
 
 function orderByModified(state) {
-  return orderByX(state, 'modified');
+  // return orderByX(state, 'modified');
+  return state.set('orderBy', 'modified descending');
 }
 
 function orderByCreated(state) {
-  return orderByX(state, 'created');
+  // return orderByX(state, 'created');
+  return state.set('orderBy', 'created descending');
 }
 
-function toggleAcendingDescending(state) {
+function toggleAscendingDescending(state) {
   const parts = state.get('orderBy').split(' ');
   if (parts[1] === 'ascending') {
     return state.set('orderBy', `${parts[0]} descending`);
@@ -99,7 +102,7 @@ export default function (state = new Map(), action) {
     case types.ORDER_BY_CREATED:
       return orderByCreated(state);
     case types.TOGGLE_ASCENDING_DESCENDING:
-      return toggleAcendingDescending(state);
+      return toggleAscendingDescending(state);
     default:
       break;
   }
