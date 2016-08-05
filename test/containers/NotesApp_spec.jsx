@@ -312,7 +312,7 @@ describe('NotesApp - Key - Escape', () => {
   });
 });
 
-describe('NotesApp - Focus', () => {
+describe.skip('NotesApp - Focus', () => {
   it('TODO: test focus moves to edit field when new note is created / exists', () => {
     expect(false).to.equal(true);
   });
@@ -322,7 +322,7 @@ describe('NotesApp - Focus', () => {
   });
 });
 
-describe('NotesApp - TODO', () => {
+describe.skip('NotesApp - TODO', () => {
   it('TODO: webpack compile to dist with minimize and obfuscate', () => {
     expect(false).to.equal(true);
   });
@@ -340,6 +340,10 @@ describe('NotesApp - TODO', () => {
   });
 
   it('TODO: add polling for changes in notes on server', () => {
+    expect(false).to.equal(true);
+  });
+
+  it('TODO: suppress line selection when destroying note', () => {
     expect(false).to.equal(true);
   });
 });

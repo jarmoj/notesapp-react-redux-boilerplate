@@ -48,7 +48,7 @@ describe('NotesSearch', () => {
     expect(wasCalled).to.equal(true);
   });
 
-  it('TODO: test autocompletes a selected with highlight if selected starts with the query part', () => {
+  it.skip('TODO: test autocompletes a selected with highlight if selected starts with the query part', () => {
     expect(true).to.equal(false);
   });
 });

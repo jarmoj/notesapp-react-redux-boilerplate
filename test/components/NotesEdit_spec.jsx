@@ -23,6 +23,7 @@ describe('NotesEdit', () => {
     expect(wasCalled).to.equal(inputStr);
   });
 
-  it('if none selected or no note returned with selected the textarea is disabled', () => {
+  it.skip('TODO: test if nothing selected or note the textarea is disabled', () => {
+    expect(true).to.equal(false);
   });
 });

@@ -184,8 +184,7 @@ describe('NotesListItem - Visual', () => {
     expect(component2.text()).to.contain(dateFormat(timestamp.get('created')));
   });
 
-  it('TODO: test timestamps are compared properly', () => {
-    
+  it.skip('TODO: test timestamps are compared properly', () => {
     expect(false).to.equal(true);
   });
 });
