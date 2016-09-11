@@ -48,7 +48,20 @@ describe('NotesSearch', () => {
     expect(wasCalled).to.equal(true);
   });
 
-  it.skip('TODO: test autocompletes a selected with highlight if selected starts with the query part', () => {
+  it.skip('TODO: test returnPressed will remove selection and make it also part of query', () => {
     expect(true).to.equal(false);
   });
+
+  it.skip('TODO: test complete selected with highlight if it starts with the query part', () => {
+    expect(true).to.equal(false);
+  });
+
+  it.skip('TODO: test arrow right include highlighted into query', () => {
+    expect(true).to.equal(false);
+  });
+
+  it.skip('TODO: test arrow right include highlighted into query', () => {
+    expect(true).to.equal(false);
+  });
+
 });
