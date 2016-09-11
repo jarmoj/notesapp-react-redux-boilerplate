@@ -1,5 +1,7 @@
 # Notes App - React - Redux
 
+(under work)
+
 This is a Notes App that got its inspiration from Notational Velocity, nvALT,
 Simplenote, and other such note taking tools. I used the project as a climbing
 tree to latest web stack and especially to React and Redux.
